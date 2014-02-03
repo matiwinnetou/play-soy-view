@@ -1,5 +1,6 @@
 package com.github.mati1979.play.soyplugin.spring;
 
+import com.github.mati1979.play.soyplugin.config.ConfigDefaults;
 import com.google.template.soy.jssrc.SoyJsSrcOptions;
 import com.google.template.soy.tofu.SoyTofuOptions;
 import org.springframework.context.annotation.Bean;
@@ -9,7 +10,6 @@ import com.github.mati1979.play.soyplugin.bundle.SoyMsgBundleResolver;
 import com.github.mati1979.play.soyplugin.compile.DefaultTofuCompiler;
 import com.github.mati1979.play.soyplugin.compile.TofuCompiler;
 import com.github.mati1979.play.soyplugin.config.ConfigKeys;
-import com.github.mati1979.play.soyplugin.config.SoyViewConfigDefaults;
 import com.github.mati1979.play.soyplugin.data.DefaultToSoyDataConverter;
 import com.github.mati1979.play.soyplugin.data.ToSoyDataConverter;
 import com.github.mati1979.play.soyplugin.global.compile.CompileTimeGlobalModelResolver;
@@ -66,7 +66,7 @@ public class PlaySoyConfig {
 
     @Bean
     public SoyTofuOptions soyTofuOptions() {
-        final boolean hotReloadMode = Play.application().configuration().getBoolean(ConfigKeys.GLOBAL_HOT_RELOAD_MODE, SoyViewConfigDefaults.GLOBAL_HOT_RELOAD_MODE);
+        final boolean hotReloadMode = Play.application().configuration().getBoolean(ConfigKeys.GLOBAL_HOT_RELOAD_MODE, ConfigDefaults.GLOBAL_HOT_RELOAD_MODE);
         final SoyTofuOptions soyTofuOptions = new SoyTofuOptions();
         soyTofuOptions.setUseCaching(!hotReloadMode);
 

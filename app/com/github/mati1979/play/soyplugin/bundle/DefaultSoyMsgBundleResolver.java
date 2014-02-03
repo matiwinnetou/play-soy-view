@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.github.mati1979.play.soyplugin.config.ConfigDefaults;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
@@ -14,7 +15,6 @@ import com.google.template.soy.msgs.restricted.SoyMsg;
 import com.google.template.soy.msgs.restricted.SoyMsgBundleImpl;
 import com.google.template.soy.xliffmsgplugin.XliffMsgPlugin;
 import com.github.mati1979.play.soyplugin.config.ConfigKeys;
-import com.github.mati1979.play.soyplugin.config.SoyViewConfigDefaults;
 import play.Play;
 
 public class DefaultSoyMsgBundleResolver implements com.github.mati1979.play.soyplugin.bundle.SoyMsgBundleResolver {
@@ -25,16 +25,16 @@ public class DefaultSoyMsgBundleResolver implements com.github.mati1979.play.soy
     /** friendly */ Map<Locale, SoyMsgBundle> msgBundles = new ConcurrentHashMap<Locale, SoyMsgBundle>();
 
     /** a path to a bundle */
-    private String messagesPath = Play.application().configuration().getString(ConfigKeys.I18N_MESSAGES_PATH, SoyViewConfigDefaults.I18N_MESSAGES_PATH);
+    private String messagesPath = Play.application().configuration().getString(ConfigKeys.I18N_MESSAGES_PATH, ConfigDefaults.I18N_MESSAGES_PATH);
 
     /** will cache msgBundles if a hotReloadMode is off, if debug is on,
      *  will compile msg bundles each time it is invoked */
-    private boolean hotReloadMode = Play.application().configuration().getBoolean(ConfigKeys.GLOBAL_HOT_RELOAD_MODE, SoyViewConfigDefaults.GLOBAL_HOT_RELOAD_MODE);
+    private boolean hotReloadMode = Play.application().configuration().getBoolean(ConfigKeys.GLOBAL_HOT_RELOAD_MODE, ConfigDefaults.GLOBAL_HOT_RELOAD_MODE);
 
     /** in case translation is missing for a passed in locale,
      *  whether the implementation should fallback to English returning
      *  an english translation if available */
-    private boolean fallbackToEnglish = Play.application().configuration().getBoolean(ConfigKeys.I18N_FALLBACK_TO_ENGLISH, SoyViewConfigDefaults.I18N_FALLBACK_TO_ENGLISH);
+    private boolean fallbackToEnglish = Play.application().configuration().getBoolean(ConfigKeys.I18N_FALLBACK_TO_ENGLISH, ConfigDefaults.I18N_FALLBACK_TO_ENGLISH);
 
     /**
      * Based on a provided locale return a SoyMsgBundle file.

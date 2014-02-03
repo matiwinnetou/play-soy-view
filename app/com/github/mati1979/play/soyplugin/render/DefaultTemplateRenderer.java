@@ -1,11 +1,11 @@
 package com.github.mati1979.play.soyplugin.render;
 
+import com.github.mati1979.play.soyplugin.config.ConfigDefaults;
 import com.google.common.base.Optional;
 import com.google.template.soy.data.SoyMapData;
 import com.google.template.soy.msgs.SoyMsgBundle;
 import com.google.template.soy.tofu.SoyTofu;
 import com.github.mati1979.play.soyplugin.config.ConfigKeys;
-import com.github.mati1979.play.soyplugin.config.SoyViewConfigDefaults;
 import play.Play;
 
 public class DefaultTemplateRenderer implements TemplateRenderer {
@@ -18,9 +18,9 @@ public class DefaultTemplateRenderer implements TemplateRenderer {
     /**
      * whether debug is on, in case it is on - Soy's Renderer Don't Add To Cache will be turned on, which means
      * renderer caching will be disabled */
-    private boolean hotReloadMode = Play.application().configuration().getBoolean(ConfigKeys.GLOBAL_HOT_RELOAD_MODE, SoyViewConfigDefaults.GLOBAL_HOT_RELOAD_MODE);
+    private boolean hotReloadMode = Play.application().configuration().getBoolean(ConfigKeys.GLOBAL_HOT_RELOAD_MODE, ConfigDefaults.GLOBAL_HOT_RELOAD_MODE);
 
-    private String charsetEncoding = Play.application().configuration().getString(ConfigKeys.GLOBAL_CHARSET_ENCODING, SoyViewConfigDefaults.GLOBAL_CHARSET_ENCODING);
+    private String charsetEncoding = Play.application().configuration().getString(ConfigKeys.GLOBAL_CHARSET_ENCODING, ConfigDefaults.GLOBAL_CHARSET_ENCODING);
 
     @Override
     public String render(final RenderRequest renderRequest) throws Exception {

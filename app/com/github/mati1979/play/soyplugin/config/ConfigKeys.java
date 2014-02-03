@@ -21,4 +21,12 @@ public class ConfigKeys {
 
     public final static String RESOLVE_FILE_EXTENSION = "soyplugin.resolve.file.extension";
 
+    public final static String AJAX_SECURITY_ENABLED = "soyplugin.ajax.security.enabled";
+
+    public final static String AJAX_ALLOWED_URLS = "soyplugin.ajax.allowed.urls";
+
+    public final static String AJAX_CACHE_CONTROL = "soyplugin.ajax.cache.control";
+
+    public final static String AJAX_EXPIRE_HEADERS = "soyplugin.ajax.expire.headers";
+
 }

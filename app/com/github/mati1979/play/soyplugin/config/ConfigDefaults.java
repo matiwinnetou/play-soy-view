@@ -6,7 +6,7 @@ package com.github.mati1979.play.soyplugin.config;
  * Date: 23/06/2013
  * Time: 18:02
  */
-public class SoyViewConfigDefaults {
+public class ConfigDefaults {
 
     public final static boolean GLOBAL_HOT_RELOAD_MODE = false;
 
@@ -28,5 +28,13 @@ public class SoyViewConfigDefaults {
     public static final String I18N_MESSAGES_PATH = "conf/xliffs/messages";
 
     public final static boolean I18N_FALLBACK_TO_ENGLISH = true;
+
+    public final static boolean AJAX_SECURITY_ENABLED = false;
+
+    public final static String AJAX_ALLOWED_URLS = "";
+
+    public final static String AJAX_CACHE_CONTROL = "no-cache";
+
+    public final static String AJAX_EXPIRE_HEADERS = "";
 
 }
