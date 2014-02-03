@@ -1,6 +1,6 @@
-1. if it logically makes sense
-2. Introduce basic runtime data providers (cookie, request params, etc)
-3. test in prod distribution mode
-4. Convert messages from conf/messages automatically to xliffs
-5. ajax compilation to js
-6. Test distribution mode
+*. Introduce basic runtime data providers (cookie, request params, etc)
+*. Test in prod distribution mode, fix issues
+*. Convert messages from conf/messages automatically to xliffs
+*. ajax compilation to js
+*. Test distribution mode
+*. Try more than first accepted languages

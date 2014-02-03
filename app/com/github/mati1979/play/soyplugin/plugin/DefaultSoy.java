@@ -38,6 +38,18 @@ public class DefaultSoy implements Soy {
 
     private LocaleProvider localeProvider = new EmptyLocaleProvider();
 
+    public DefaultSoy(CompiledTemplatesHolder compiledTemplatesHolder, GlobalRuntimeModelResolver globalRuntimeModelResolver, SoyMsgBundleResolver soyMsgBundleResolver, TemplateRenderer templateRenderer, ToSoyDataConverter toSoyDataConverter, LocaleProvider localeProvider) {
+        this.compiledTemplatesHolder = compiledTemplatesHolder;
+        this.globalRuntimeModelResolver = globalRuntimeModelResolver;
+        this.soyMsgBundleResolver = soyMsgBundleResolver;
+        this.templateRenderer = templateRenderer;
+        this.toSoyDataConverter = toSoyDataConverter;
+        this.localeProvider = localeProvider;
+    }
+
+    public DefaultSoy() {
+    }
+
     @Override
     public String html(final String view, Object model) throws Exception {
         return html(view, toSoyDataConverter.toSoyMap(model));

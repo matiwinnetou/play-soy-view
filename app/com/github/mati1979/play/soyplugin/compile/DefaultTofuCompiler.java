@@ -41,6 +41,15 @@ public class DefaultTofuCompiler implements TofuCompiler {
 
     private SoyTofuOptions soyTofuOptions = createSoyTofuOptions();
 
+    public DefaultTofuCompiler(CompileTimeGlobalModelResolver compileTimeGlobalModelResolver, SoyJsSrcOptions soyJsSrcOptions, SoyTofuOptions soyTofuOptions) {
+        this.compileTimeGlobalModelResolver = compileTimeGlobalModelResolver;
+        this.soyJsSrcOptions = soyJsSrcOptions;
+        this.soyTofuOptions = soyTofuOptions;
+    }
+
+    public DefaultTofuCompiler() {
+    }
+
     @Override
     public SoyTofu compile(@Nullable final Collection<URL> urls) throws IOException {
         Preconditions.checkNotNull("compileTimeGlobalModelResolver", compileTimeGlobalModelResolver);

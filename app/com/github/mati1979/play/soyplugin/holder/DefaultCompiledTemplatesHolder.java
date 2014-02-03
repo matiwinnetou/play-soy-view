@@ -3,8 +3,6 @@ package com.github.mati1979.play.soyplugin.holder;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.template.soy.tofu.SoyTofu;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.github.mati1979.play.soyplugin.compile.EmptyTofuCompiler;
 import com.github.mati1979.play.soyplugin.compile.TofuCompiler;
 import com.github.mati1979.play.soyplugin.config.ConfigKeys;
@@ -36,6 +34,14 @@ public class DefaultCompiledTemplatesHolder implements CompiledTemplatesHolder {
     private Optional<SoyTofu> compiledTemplates = Optional.absent();
 
     private boolean preCompileTemplates = Play.application().configuration().getBoolean(ConfigKeys.COMPILE_PRECOMPILE_TEMPLATES, SoyViewConfigDefaults.COMPILE_PRECOMPILE_TEMPLATES);
+
+    public DefaultCompiledTemplatesHolder(final TofuCompiler tofuCompiler, final TemplateFilesResolver templatesFileResolver) {
+        this.tofuCompiler = tofuCompiler;
+        this.templatesFileResolver = templatesFileResolver;
+    }
+
+    public DefaultCompiledTemplatesHolder() {
+    }
 
     public Optional<SoyTofu> compiledTemplates() throws IOException {
         if (shouldCompileTemplates()) {

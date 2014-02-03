@@ -66,20 +66,16 @@ public class PlaySoyConfig {
 
     @Bean
     public SoyTofuOptions soyTofuOptions() {
+        final boolean hotReloadMode = Play.application().configuration().getBoolean(ConfigKeys.GLOBAL_HOT_RELOAD_MODE, SoyViewConfigDefaults.GLOBAL_HOT_RELOAD_MODE);
         final SoyTofuOptions soyTofuOptions = new SoyTofuOptions();
-        soyTofuOptions.setUseCaching(Play.application().configuration().getBoolean(ConfigKeys.GLOBAL_HOT_RELOAD_MODE, SoyViewConfigDefaults.GLOBAL_HOT_RELOAD_MODE));
+        soyTofuOptions.setUseCaching(!hotReloadMode);
 
         return soyTofuOptions;
     }
 
     @Bean
     public TofuCompiler soyTofuCompiler(final CompileTimeGlobalModelResolver compileTimeGlobalModelResolver, final SoyJsSrcOptions soyJsSrcOptions, final SoyTofuOptions soyTofuOptions) {
-        final DefaultTofuCompiler defaultTofuCompiler = new DefaultTofuCompiler();
-        defaultTofuCompiler.setCompileTimeGlobalModelResolver(compileTimeGlobalModelResolver);
-        defaultTofuCompiler.setSoyJsSrcOptions(soyJsSrcOptions);
-        defaultTofuCompiler.setSoyTofuOptions(soyTofuOptions);
-
-        return defaultTofuCompiler;
+        return new DefaultTofuCompiler(compileTimeGlobalModelResolver, soyJsSrcOptions, soyTofuOptions);
     }
 
     @Bean
@@ -89,11 +85,7 @@ public class PlaySoyConfig {
 
     @Bean
     public CompiledTemplatesHolder soyTemplatesHolder(final TemplateFilesResolver templateFilesResolver, final TofuCompiler tofuCompiler) throws Exception {
-        final DefaultCompiledTemplatesHolder defaultCompiledTemplatesHolder = new DefaultCompiledTemplatesHolder();
-        defaultCompiledTemplatesHolder.setTemplatesFileResolver(templateFilesResolver);
-        defaultCompiledTemplatesHolder.setTofuCompiler(tofuCompiler);
-
-        return defaultCompiledTemplatesHolder;
+        return new DefaultCompiledTemplatesHolder(tofuCompiler, templateFilesResolver);
     }
 
     @Bean
@@ -108,16 +100,7 @@ public class PlaySoyConfig {
                    final SoyMsgBundleResolver msgBundleResolver,
                    final TemplateRenderer templateRenderer,
                    final ToSoyDataConverter toSoyDataConverter) {
-
-        final DefaultSoy defaultSoy = new DefaultSoy();
-        defaultSoy.setCompiledTemplatesHolder(compiledTemplatesHolder);
-        defaultSoy.setGlobalRuntimeModelResolver(globalRuntimeModelResolver);
-        defaultSoy.setLocaleProvider(localeProvider);
-        defaultSoy.setSoyMsgBundleResolver(msgBundleResolver);
-        defaultSoy.setTemplateRenderer(templateRenderer);
-        defaultSoy.setToSoyDataConverter(toSoyDataConverter);
-
-        return defaultSoy;
+        return new DefaultSoy(compiledTemplatesHolder, globalRuntimeModelResolver, msgBundleResolver, templateRenderer, toSoyDataConverter, localeProvider);
     }
 
 }
