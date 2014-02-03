@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Collection;
 
 import com.google.common.base.Optional;
+import play.mvc.Http;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -15,8 +16,8 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface TemplateUrlComposer {
 
-    Optional<String> compose(HttpServletRequest request, String soyTemplateFileName) throws IOException;
+    Optional<String> compose(Http.Request request, String soyTemplateFileName) throws IOException;
 
-    Optional<String> compose(HttpServletRequest request, Collection<String> soyTemplateFileNames) throws IOException;
+    Optional<String> compose(Http.Request request, Collection<String> soyTemplateFileNames) throws IOException;
 
 }

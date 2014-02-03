@@ -6,8 +6,8 @@ import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.github.mati1979.play.soyplugin.ajax.hash.EmptyHashFileGenerator;
 import com.github.mati1979.play.soyplugin.ajax.hash.HashFileGenerator;
+import play.mvc.Http;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ public class DefaultTemplateUrlComposer implements TemplateUrlComposer {
     public DefaultTemplateUrlComposer() {
     }
 
-    public Optional<String> compose(final HttpServletRequest request, final Collection<String> soyTemplateFileNames) throws IOException {
+    public Optional<String> compose(final Http.Request request, final Collection<String> soyTemplateFileNames) throws IOException {
         final Optional<String> md5 = hashHelper(soyTemplateFileNames);
         if (!md5.isPresent()) {
             return Optional.absent();
@@ -58,7 +58,7 @@ public class DefaultTemplateUrlComposer implements TemplateUrlComposer {
     }
 
     @Override
-    public Optional<String> compose(final HttpServletRequest request, final String soyTemplateFileName) throws IOException {
+    public Optional<String> compose(final Http.Request request, final String soyTemplateFileName) throws IOException {
         return compose(request, Lists.newArrayList(soyTemplateFileName));
     }
 

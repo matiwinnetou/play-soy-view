@@ -1,5 +1,7 @@
 package com.github.mati1979.play.soyplugin.ajax.config;
 
+import com.github.mati1979.play.soyplugin.ajax.url.DefaultTemplateUrlComposer;
+import com.github.mati1979.play.soyplugin.ajax.url.TemplateUrlComposer;
 import com.github.mati1979.play.soyplugin.bundle.SoyMsgBundleResolver;
 import com.github.mati1979.play.soyplugin.compile.TofuCompiler;
 import com.github.mati1979.play.soyplugin.config.ConfigDefaults;
@@ -51,6 +53,11 @@ public class PlaySoyViewAjaxConfig {
         md5HashFileGenerator.setHotReloadMode(hotReloadMode);
 
         return md5HashFileGenerator;
+    }
+
+    @Bean
+    public TemplateUrlComposer soyTemplateUrlComposer(final TemplateFilesResolver templateFilesResolver, HashFileGenerator hashFileGenerator) {
+        return new DefaultTemplateUrlComposer(templateFilesResolver, hashFileGenerator);
     }
 
     @Bean

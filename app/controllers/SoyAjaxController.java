@@ -138,10 +138,10 @@ public class SoyAjaxController extends Controller {
     }
 
     public Result compile(final String hash,
-                          final List<String> templateFileNames,
+                          final List<String> file,
                           final String locale,
                           final boolean disableProcessors) throws IOException {
-        return compileJs(templateFileNames.toArray(new String[0]), hash, new Boolean(disableProcessors).booleanValue(), locale);
+        return compileJs(file.toArray(new String[0]), hash, new Boolean(disableProcessors).booleanValue(), locale);
     }
 
     private Result compileJs(final String[] templateFileNames,
