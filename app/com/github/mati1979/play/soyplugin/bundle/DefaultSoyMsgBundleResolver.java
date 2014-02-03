@@ -17,21 +17,6 @@ import com.github.mati1979.play.soyplugin.config.ConfigKeys;
 import com.github.mati1979.play.soyplugin.config.SoyViewConfigDefaults;
 import play.Play;
 
-/**
- * Created with IntelliJ IDEA.
- * User: mati
- * Date: 20/06/2013
- * Time: 00:01
- *
- * An implementation of SoyMsgBundleResolver that returns SoyMsgBundle based on a configurable url,
- * which can be retrieved from classpath using Thread.getContextClassLoader().
- *
- * The implementation will fallback to English translation if a language specific translation cannot be found
- * only if fallbackToEnglish configuration option is set.
- *
- * Assuming defaults and locale set to pl_PL, an implementation will look for a following file in a classpath:
- * messages_pl_PL.xlf
- */
 public class DefaultSoyMsgBundleResolver implements com.github.mati1979.play.soyplugin.bundle.SoyMsgBundleResolver {
 
     private static final play.Logger.ALogger logger = play.Logger.of(DefaultSoyMsgBundleResolver.class);
@@ -62,7 +47,6 @@ public class DefaultSoyMsgBundleResolver implements com.github.mati1979.play.soy
      * @throws IOException in case there is an i/o error reading msg bundle
      */
     public Optional<SoyMsgBundle> resolve(final Optional<Locale> locale) throws IOException {
-        logger.info("resolve:" + locale);
         if (!locale.isPresent()) {
             return Optional.absent();
         }
@@ -105,7 +89,6 @@ public class DefaultSoyMsgBundleResolver implements com.github.mati1979.play.soy
      * @throws IOException
      */
     protected SoyMsgBundle createSoyMsgBundle(final Locale locale) throws IOException {
-        logger.info("createSoyMsgBundle:" + locale);
         Preconditions.checkNotNull(messagesPath, "messagesPath cannot be null!");
 
         final String path2 = messagesPath  + "_" + locale.toString() + ".xlf";
