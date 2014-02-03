@@ -1,0 +1,4 @@
+*.eml
+.idea
+target
+.settings
