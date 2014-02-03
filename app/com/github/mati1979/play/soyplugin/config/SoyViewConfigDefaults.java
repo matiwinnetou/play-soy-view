@@ -25,7 +25,7 @@ public class SoyViewConfigDefaults {
     public final static String RESOLVE_TEMPLATES_LOCATION = "app/views/closure";
 
 
-    public static final String I18N_MESSAGES_PATH = "app/views/xliffs/messages";
+    public static final String I18N_MESSAGES_PATH = "conf/xliffs/messages";
 
     public final static boolean I18N_FALLBACK_TO_ENGLISH = true;
 
