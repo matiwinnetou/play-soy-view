@@ -1,9 +1,9 @@
 package com.github.mati1979.play.soyplugin.locale;
 
-import java.util.Locale;
-
 import com.google.common.base.Optional;
 import play.mvc.Http;
+
+import java.util.Locale;
 
 /**
  * Created with IntelliJ IDEA.

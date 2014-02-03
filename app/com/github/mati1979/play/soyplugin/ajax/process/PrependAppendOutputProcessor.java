@@ -1,11 +1,11 @@
 package com.github.mati1979.play.soyplugin.ajax.process;
 
+import org.apache.commons.io.IOUtils;
+import org.springframework.util.StringUtils;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
-
-import org.apache.commons.io.IOUtils;
-import org.springframework.util.StringUtils;
 
 /**
  * Created with IntelliJ IDEA.

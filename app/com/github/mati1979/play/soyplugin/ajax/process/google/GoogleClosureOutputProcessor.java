@@ -1,14 +1,6 @@
 package com.github.mati1979.play.soyplugin.ajax.process.google;
 
-import javax.annotation.concurrent.ThreadSafe;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.Writer;
-import java.util.logging.Level;
-
-import com.github.mati1979.play.soyplugin.config.ConfigDefaults;
-import com.github.mati1979.play.soyplugin.config.ConfigKeys;
+import com.github.mati1979.play.soyplugin.ajax.process.OutputProcessor;
 import com.google.common.collect.Lists;
 import com.google.javascript.jscomp.*;
 import com.google.javascript.jscomp.Compiler;
@@ -16,8 +8,15 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
-import com.github.mati1979.play.soyplugin.ajax.process.OutputProcessor;
-import play.Play;
+
+import javax.annotation.concurrent.ThreadSafe;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
+import java.util.logging.Level;
+
+import static com.github.mati1979.play.soyplugin.config.PlayConfAccessor.GLOBAL_ENCODING;
 
 /**
  * Created with IntelliJ IDEA.
@@ -30,7 +29,7 @@ public class GoogleClosureOutputProcessor implements OutputProcessor {
 
     private static final Logger logger = LoggerFactory.getLogger(GoogleClosureOutputProcessor.class);
 
-    private String encoding = Play.application().configuration().getString(ConfigKeys.GLOBAL_CHARSET_ENCODING, ConfigDefaults.GLOBAL_CHARSET_ENCODING);
+    private String encoding = GLOBAL_ENCODING;
 
     private CompilationLevel compilationLevel = CompilationLevel.SIMPLE_OPTIMIZATIONS;
 

@@ -1,13 +1,7 @@
 package com.github.mati1979.play.soyplugin.compile;
 
-import javax.annotation.Nullable;
-import java.io.IOException;
-import java.net.URL;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
-import com.github.mati1979.play.soyplugin.config.ConfigDefaults;
+import com.github.mati1979.play.soyplugin.global.compile.CompileTimeGlobalModelResolver;
+import com.github.mati1979.play.soyplugin.global.compile.EmptyCompileTimeGlobalModelResolver;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
@@ -17,11 +11,16 @@ import com.google.template.soy.jssrc.SoyJsSrcOptions;
 import com.google.template.soy.msgs.SoyMsgBundle;
 import com.google.template.soy.tofu.SoyTofu;
 import com.google.template.soy.tofu.SoyTofuOptions;
-import com.github.mati1979.play.soyplugin.config.ConfigKeys;
-import com.github.mati1979.play.soyplugin.global.compile.CompileTimeGlobalModelResolver;
-import com.github.mati1979.play.soyplugin.global.compile.EmptyCompileTimeGlobalModelResolver;
 import play.Logger;
-import play.Play;
+
+import javax.annotation.Nullable;
+import java.io.IOException;
+import java.net.URL;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
+import static com.github.mati1979.play.soyplugin.config.PlayConfAccessor.GLOBAL_HOT_RELOAD_MODE;
 
 /**
  * Created with IntelliJ IDEA.
@@ -33,7 +32,7 @@ public class DefaultTofuCompiler implements TofuCompiler {
 
     private static final Logger.ALogger logger = Logger.of(DefaultTofuCompiler.class);
 
-    private boolean hotReloadMode = Play.application().configuration().getBoolean(ConfigKeys.GLOBAL_HOT_RELOAD_MODE, ConfigDefaults.GLOBAL_HOT_RELOAD_MODE);
+    private boolean hotReloadMode = GLOBAL_HOT_RELOAD_MODE;
 
     private CompileTimeGlobalModelResolver compileTimeGlobalModelResolver = new EmptyCompileTimeGlobalModelResolver();
 

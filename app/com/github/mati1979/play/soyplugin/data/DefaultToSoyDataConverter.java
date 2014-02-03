@@ -14,6 +14,11 @@
 
 package com.github.mati1979.play.soyplugin.data;
 
+import com.google.common.base.Optional;
+import com.google.common.collect.Lists;
+import com.google.common.primitives.Primitives;
+import com.google.template.soy.data.SoyMapData;
+
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
@@ -21,13 +26,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-
-import com.google.common.base.Optional;
-import com.google.common.collect.Lists;
-import com.google.common.primitives.Primitives;
-import com.google.template.soy.data.SoyMapData;
 
 /**
  * An implementation of ToSoyDataConverter that will recursively inspect

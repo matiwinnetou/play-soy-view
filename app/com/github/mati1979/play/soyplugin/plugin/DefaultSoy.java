@@ -1,7 +1,5 @@
 package com.github.mati1979.play.soyplugin.plugin;
 
-import com.google.common.base.Optional;
-import com.google.template.soy.data.SoyMapData;
 import com.github.mati1979.play.soyplugin.bundle.EmptySoyMsgBundleResolver;
 import com.github.mati1979.play.soyplugin.bundle.SoyMsgBundleResolver;
 import com.github.mati1979.play.soyplugin.data.EmptyToSoyDataConverter;
@@ -15,6 +13,8 @@ import com.github.mati1979.play.soyplugin.locale.LocaleProvider;
 import com.github.mati1979.play.soyplugin.render.DefaultTemplateRenderer;
 import com.github.mati1979.play.soyplugin.render.RenderRequest;
 import com.github.mati1979.play.soyplugin.render.TemplateRenderer;
+import com.google.common.base.Optional;
+import com.google.template.soy.data.SoyMapData;
 import play.mvc.Http;
 
 import java.util.HashMap;

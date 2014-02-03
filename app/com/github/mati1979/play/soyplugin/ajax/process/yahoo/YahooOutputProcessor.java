@@ -1,15 +1,15 @@
 package com.github.mati1979.play.soyplugin.ajax.process.yahoo;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.io.Writer;
-
+import com.github.mati1979.play.soyplugin.ajax.process.OutputProcessor;
 import com.yahoo.platform.yui.compressor.JavaScriptCompressor;
 import org.mozilla.javascript.ErrorReporter;
 import org.mozilla.javascript.EvaluatorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.github.mati1979.play.soyplugin.ajax.process.OutputProcessor;
+
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
 
 /**
  * Created with IntelliJ IDEA.

@@ -1,10 +1,10 @@
 package com.github.mati1979.play.soyplugin.data;
 
-import javax.annotation.Nullable;
-import java.util.Map;
-
 import com.google.common.base.Optional;
 import com.google.template.soy.data.SoyMapData;
+
+import javax.annotation.Nullable;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.

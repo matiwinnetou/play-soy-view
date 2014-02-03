@@ -1,13 +1,13 @@
 package com.github.mati1979.play.soyplugin.compile;
 
+import com.google.common.base.Optional;
+import com.google.template.soy.msgs.SoyMsgBundle;
+import com.google.template.soy.tofu.SoyTofu;
+
 import javax.annotation.Nullable;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collection;
-
-import com.google.common.base.Optional;
-import com.google.template.soy.msgs.SoyMsgBundle;
-import com.google.template.soy.tofu.SoyTofu;
 
 /**
  * The SoyTofu binary compiler that based on

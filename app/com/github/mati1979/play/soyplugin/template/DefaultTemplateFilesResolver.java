@@ -1,13 +1,10 @@
 package com.github.mati1979.play.soyplugin.template;
 
-import com.github.mati1979.play.soyplugin.config.ConfigDefaults;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import com.github.mati1979.play.soyplugin.config.ConfigKeys;
-import play.Play;
 
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
@@ -19,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+
+import static com.github.mati1979.play.soyplugin.config.PlayConfAccessor.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -35,16 +34,16 @@ public class DefaultTemplateFilesResolver implements TemplateFilesResolver {
     private static final play.Logger.ALogger logger = play.Logger.of(DefaultTemplateFilesResolver.class);
 
     /** spring resource that points to a root path, in which soy templates are located */
-    private String templatesLocation = Play.application().configuration().getString(ConfigKeys.RESOLVE_TEMPLATES_LOCATION, ConfigDefaults.RESOLVE_TEMPLATES_LOCATION);
+    private String templatesLocation = COMPILE_TEMPLATES_LOCATION;
 
-    private boolean recursive = Play.application().configuration().getBoolean(ConfigKeys.RESOLVE_RECURSIVE, ConfigDefaults.RESOLVE_RECURSIVE);
+    private boolean recursive = COMPILE_RECURSIVE;
 
-    private boolean hotReloadMode = Play.application().configuration().getBoolean(ConfigKeys.GLOBAL_HOT_RELOAD_MODE, ConfigDefaults.GLOBAL_HOT_RELOAD_MODE);
+    private boolean hotReloadMode = GLOBAL_HOT_RELOAD_MODE;
 
     /** a thread safe cache for resolved templates, no need to worry of ddos attack */
     /** friendly */ CopyOnWriteArrayList<URL> cachedFiles = new CopyOnWriteArrayList<>();
 
-    private String filesExtension = Play.application().configuration().getString(ConfigKeys.RESOLVE_FILE_EXTENSION, ConfigDefaults.RESOLVE_FILES_EXTENSION);
+    private String filesExtension = COMPILE_FILES_EXTENSION;
 
     public DefaultTemplateFilesResolver() {
     }

@@ -9,8 +9,6 @@ import com.github.mati1979.play.soyplugin.bundle.EmptySoyMsgBundleResolver;
 import com.github.mati1979.play.soyplugin.bundle.SoyMsgBundleResolver;
 import com.github.mati1979.play.soyplugin.compile.EmptyTofuCompiler;
 import com.github.mati1979.play.soyplugin.compile.TofuCompiler;
-import com.github.mati1979.play.soyplugin.config.ConfigDefaults;
-import com.github.mati1979.play.soyplugin.config.ConfigKeys;
 import com.github.mati1979.play.soyplugin.locale.EmptyLocaleProvider;
 import com.github.mati1979.play.soyplugin.locale.LocaleProvider;
 import com.github.mati1979.play.soyplugin.template.EmptyTemplateFilesResolver;
@@ -23,7 +21,6 @@ import com.google.template.soy.msgs.SoyMsgBundle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
-import play.Play;
 import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
@@ -37,6 +34,8 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
+import static com.github.mati1979.play.soyplugin.config.PlayConfAccessor.*;
+
 @ThreadSafe
 public class SoyAjaxController extends Controller {
 
@@ -48,9 +47,9 @@ public class SoyAjaxController extends Controller {
 
     private static final Logger logger = LoggerFactory.getLogger(SoyAjaxController.class);
 
-    private String cacheControl = Play.application().configuration().getString(ConfigKeys.AJAX_CACHE_CONTROL, ConfigDefaults.AJAX_CACHE_CONTROL);
+    private String cacheControl = AJAX_CACHE_CONTROL;
 
-    private String expireHeaders = Play.application().configuration().getString(ConfigKeys.AJAX_CACHE_CONTROL, ConfigDefaults.AJAX_EXPIRE_HEADERS);
+    private String expireHeaders = AJAX_EXPIRE_HEADERS;
 
     /** maximum number of entries this cache will hold */
     private int cacheMaxSize = DEF_CACHE_MAX_SIZE;
@@ -91,12 +90,12 @@ public class SoyAjaxController extends Controller {
      * CacheControl (Http 1.1) and Expires (Http 1.0) http headers
      * will be set to user configured values.
      */
-    private boolean hotReloadMode = Play.application().configuration().getBoolean(ConfigKeys.GLOBAL_HOT_RELOAD_MODE, ConfigDefaults.GLOBAL_HOT_RELOAD_MODE);
+    private boolean hotReloadMode = GLOBAL_HOT_RELOAD_MODE;
 
     /**
      * character encoding, by default utf-8
      */
-    private String encoding = Play.application().configuration().getString(ConfigKeys.GLOBAL_CHARSET_ENCODING, ConfigDefaults.GLOBAL_CHARSET_ENCODING);
+    private String encoding = GLOBAL_ENCODING;
 
     /**
      * List of output processors, output processors typically perform obfuscation

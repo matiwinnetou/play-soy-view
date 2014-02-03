@@ -1,13 +1,13 @@
 package com.github.mati1979.play.soyplugin.compile;
 
-import javax.annotation.Nullable;
-import java.net.URL;
-import java.util.Collection;
-
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.google.template.soy.msgs.SoyMsgBundle;
 import com.google.template.soy.tofu.SoyTofu;
+
+import javax.annotation.Nullable;
+import java.net.URL;
+import java.util.Collection;
 
 /**
  * Created with IntelliJ IDEA.

@@ -1,19 +1,19 @@
 package com.github.mati1979.play.soyplugin.holder;
 
-import com.github.mati1979.play.soyplugin.config.ConfigDefaults;
+import com.github.mati1979.play.soyplugin.compile.EmptyTofuCompiler;
+import com.github.mati1979.play.soyplugin.compile.TofuCompiler;
+import com.github.mati1979.play.soyplugin.template.EmptyTemplateFilesResolver;
+import com.github.mati1979.play.soyplugin.template.TemplateFilesResolver;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.template.soy.tofu.SoyTofu;
-import com.github.mati1979.play.soyplugin.compile.EmptyTofuCompiler;
-import com.github.mati1979.play.soyplugin.compile.TofuCompiler;
-import com.github.mati1979.play.soyplugin.config.ConfigKeys;
-import com.github.mati1979.play.soyplugin.template.EmptyTemplateFilesResolver;
-import com.github.mati1979.play.soyplugin.template.TemplateFilesResolver;
-import play.Play;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collection;
+
+import static com.github.mati1979.play.soyplugin.config.PlayConfAccessor.COMPILE_PRECOMPILE_TEMPLATES;
+import static com.github.mati1979.play.soyplugin.config.PlayConfAccessor.GLOBAL_HOT_RELOAD_MODE;
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,15 +25,15 @@ public class DefaultCompiledTemplatesHolder implements CompiledTemplatesHolder {
 
     private static final play.Logger.ALogger logger = play.Logger.of(DefaultCompiledTemplatesHolder.class);
 
-    private boolean hotReloadMode = Play.application().configuration().getBoolean(ConfigKeys.GLOBAL_HOT_RELOAD_MODE, ConfigDefaults.GLOBAL_HOT_RELOAD_MODE);
-
     private TofuCompiler tofuCompiler = new EmptyTofuCompiler();
 
     private TemplateFilesResolver templatesFileResolver = new EmptyTemplateFilesResolver();
 
     private Optional<SoyTofu> compiledTemplates = Optional.absent();
 
-    private boolean preCompileTemplates = Play.application().configuration().getBoolean(ConfigKeys.COMPILE_PRECOMPILE_TEMPLATES, ConfigDefaults.COMPILE_PRECOMPILE_TEMPLATES);
+    private boolean hotReloadMode = GLOBAL_HOT_RELOAD_MODE;
+
+    private boolean preCompileTemplates = COMPILE_PRECOMPILE_TEMPLATES;
 
     public DefaultCompiledTemplatesHolder(final TofuCompiler tofuCompiler, final TemplateFilesResolver templatesFileResolver) throws IOException {
         this.tofuCompiler = tofuCompiler;

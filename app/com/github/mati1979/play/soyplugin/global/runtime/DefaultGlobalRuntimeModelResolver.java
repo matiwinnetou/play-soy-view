@@ -1,14 +1,12 @@
 package com.github.mati1979.play.soyplugin.global.runtime;
 
-import java.util.List;
-import java.util.Map;
-
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.google.template.soy.data.SoyMapData;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import play.mvc.Http;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.

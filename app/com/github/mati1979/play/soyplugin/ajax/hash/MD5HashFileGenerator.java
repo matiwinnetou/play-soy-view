@@ -1,7 +1,5 @@
 package com.github.mati1979.play.soyplugin.ajax.hash;
 
-import com.github.mati1979.play.soyplugin.config.ConfigDefaults;
-import com.github.mati1979.play.soyplugin.config.ConfigKeys;
 import com.google.common.base.Optional;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -9,7 +7,6 @@ import com.google.common.hash.HashCode;
 import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
 import org.apache.commons.io.input.ReaderInputStream;
-import play.Play;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import static com.github.mati1979.play.soyplugin.config.PlayConfAccessor.GLOBAL_HOT_RELOAD_MODE;
 
 /**
  * Created with IntelliJ IDEA.
@@ -36,7 +35,7 @@ public class MD5HashFileGenerator implements HashFileGenerator {
 
     private static final play.Logger.ALogger logger = play.Logger.of(MD5HashFileGenerator.class);
 
-    private boolean hotReloadMode = Play.application().configuration().getBoolean(ConfigKeys.GLOBAL_HOT_RELOAD_MODE, ConfigDefaults.GLOBAL_HOT_RELOAD_MODE);
+    private boolean hotReloadMode = GLOBAL_HOT_RELOAD_MODE;
 
     private final static int DEF_CACHE_MAX_SIZE = 10000;
 

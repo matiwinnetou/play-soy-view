@@ -1,14 +1,11 @@
 package com.github.mati1979.play.soyplugin.ajax.runtime;
 
 import com.github.mati1979.play.soyplugin.ajax.hash.HashFileGenerator;
-import com.github.mati1979.play.soyplugin.config.ConfigDefaults;
-import com.github.mati1979.play.soyplugin.config.ConfigKeys;
 import com.github.mati1979.play.soyplugin.global.runtime.RuntimeDataResolver;
 import com.github.mati1979.play.soyplugin.template.TemplateFilesResolver;
 import com.google.common.base.*;
 import com.google.common.collect.FluentIterable;
 import com.google.template.soy.data.SoyMapData;
-import play.Play;
 import play.mvc.Http;
 
 import java.io.IOException;
@@ -17,6 +14,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.github.mati1979.play.soyplugin.config.PlayConfAccessor.AJAX_ALLOWED_URLS;
 
 /**
  * Created with IntelliJ IDEA.
@@ -30,7 +29,7 @@ public class SoyHashesRuntimeDataResolver implements RuntimeDataResolver {
 
     private TemplateFilesResolver templateFilesResolver;
 
-    private String ajaxAllowedUrls = Play.application().configuration().getString(ConfigKeys.AJAX_ALLOWED_URLS, ConfigDefaults.AJAX_ALLOWED_URLS);
+    private String ajaxAllowedUrls = AJAX_ALLOWED_URLS;
 
     public SoyHashesRuntimeDataResolver(HashFileGenerator hashFileGenerator, TemplateFilesResolver templateFilesResolver) {
         this.hashFileGenerator = hashFileGenerator;

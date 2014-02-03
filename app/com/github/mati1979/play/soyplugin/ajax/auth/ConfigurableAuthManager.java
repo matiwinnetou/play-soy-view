@@ -1,8 +1,8 @@
 package com.github.mati1979.play.soyplugin.ajax.auth;
 
-import java.util.List;
-
 import com.google.common.collect.ImmutableList;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.

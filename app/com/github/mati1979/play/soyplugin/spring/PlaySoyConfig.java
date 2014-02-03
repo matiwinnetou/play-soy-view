@@ -1,15 +1,9 @@
 package com.github.mati1979.play.soyplugin.spring;
 
-import com.github.mati1979.play.soyplugin.config.ConfigDefaults;
-import com.google.template.soy.jssrc.SoyJsSrcOptions;
-import com.google.template.soy.tofu.SoyTofuOptions;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import com.github.mati1979.play.soyplugin.bundle.DefaultSoyMsgBundleResolver;
 import com.github.mati1979.play.soyplugin.bundle.SoyMsgBundleResolver;
 import com.github.mati1979.play.soyplugin.compile.DefaultTofuCompiler;
 import com.github.mati1979.play.soyplugin.compile.TofuCompiler;
-import com.github.mati1979.play.soyplugin.config.ConfigKeys;
 import com.github.mati1979.play.soyplugin.data.DefaultToSoyDataConverter;
 import com.github.mati1979.play.soyplugin.data.ToSoyDataConverter;
 import com.github.mati1979.play.soyplugin.global.compile.CompileTimeGlobalModelResolver;
@@ -26,7 +20,13 @@ import com.github.mati1979.play.soyplugin.render.DefaultTemplateRenderer;
 import com.github.mati1979.play.soyplugin.render.TemplateRenderer;
 import com.github.mati1979.play.soyplugin.template.DefaultTemplateFilesResolver;
 import com.github.mati1979.play.soyplugin.template.TemplateFilesResolver;
-import play.Play;
+import com.google.template.soy.jssrc.SoyJsSrcOptions;
+import com.google.template.soy.tofu.SoyTofuOptions;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import static com.github.mati1979.play.soyplugin.config.PlayConfAccessor.GLOBAL_HOT_RELOAD_MODE;
+
 
 /**
  * Created by mati on 02/02/2014.
@@ -66,9 +66,8 @@ public class PlaySoyConfig {
 
     @Bean
     public SoyTofuOptions soyTofuOptions() {
-        final boolean hotReloadMode = Play.application().configuration().getBoolean(ConfigKeys.GLOBAL_HOT_RELOAD_MODE, ConfigDefaults.GLOBAL_HOT_RELOAD_MODE);
         final SoyTofuOptions soyTofuOptions = new SoyTofuOptions();
-        soyTofuOptions.setUseCaching(!hotReloadMode);
+        soyTofuOptions.setUseCaching(!GLOBAL_HOT_RELOAD_MODE);
 
         return soyTofuOptions;
     }

@@ -1,6 +1,8 @@
 package com.github.mati1979.play.soyplugin.ajax.process;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
 
 /**
  * Created with IntelliJ IDEA.

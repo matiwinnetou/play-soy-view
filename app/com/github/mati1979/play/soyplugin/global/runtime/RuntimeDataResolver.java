@@ -1,9 +1,9 @@
 package com.github.mati1979.play.soyplugin.global.runtime;
 
-import java.util.Map;
-
 import com.google.template.soy.data.SoyMapData;
 import play.mvc.Http;
+
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.

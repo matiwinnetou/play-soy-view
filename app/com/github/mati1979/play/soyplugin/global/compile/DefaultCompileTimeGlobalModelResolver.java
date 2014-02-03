@@ -1,11 +1,11 @@
 package com.github.mati1979.play.soyplugin.global.compile;
 
+import com.google.common.base.Optional;
+import com.google.template.soy.data.SoyMapData;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-
-import com.google.common.base.Optional;
-import com.google.template.soy.data.SoyMapData;
 
 /**
  * Created with IntelliJ IDEA.

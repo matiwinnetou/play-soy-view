@@ -1,10 +1,10 @@
 package com.github.mati1979.play.soyplugin.ajax.hash;
 
+import com.google.common.base.Optional;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collection;
-
-import com.google.common.base.Optional;
 
 /**
  * Created with IntelliJ IDEA.

@@ -1,6 +1,8 @@
 *. Introduce basic runtime data providers (cookie, request params, etc)
-*. Test in prod distribution mode, fix issues
+*. Test in prod distribution mode, fix issues, which may occur
+*. Try more than first accepted languages, if first one fails then proceed to next
+*. push to sonatype and maven central -> requires sbt plugin for gpg preparation, etc
+*. Move configs to a static file, now lots of code duplication
+
+Nice to have
 *. Convert messages from conf/messages automatically to xliffs
-*. ajax compilation to js
-*. Test distribution mode
-*. Try more than first accepted languages
