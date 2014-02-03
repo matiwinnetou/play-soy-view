@@ -46,7 +46,6 @@ public class DefaultTemplateRenderer implements TemplateRenderer {
             renderer.setIjData(globalModel.get());
         }
         final Optional<SoyMsgBundle> soyMsgBundleOptional = renderRequest.getSoyMsgBundle();
-        System.out.println("Setting msg bundle:" + soyMsgBundleOptional);
         if (soyMsgBundleOptional.isPresent()) {
             renderer.setMsgBundle(soyMsgBundleOptional.get());
             if (isHotReloadModeOff()) {
