@@ -1,4 +1,4 @@
-package controllers;
+package com.github.mati1979.play.soyplugin.ajax;
 
 import com.github.mati1979.play.soyplugin.ajax.auth.AuthManager;
 import com.github.mati1979.play.soyplugin.ajax.auth.PermissableAuthManager;
