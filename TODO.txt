@@ -1,8 +1,10 @@
 *. Introduce basic runtime data providers (cookie, request params, etc)
-*. Test in prod distribution mode, fix issues, which may occur
+*. Test in prod distribution mode, fix issues, which may occur, e.g. class path issues
 *. Try more than first accepted languages, if first one fails then proceed to next
 *. push to sonatype and maven central -> requires sbt plugin for gpg preparation, etc
 *. Move configs to a static file, now lots of code duplication
+*. make it idiomatic for play, make sure ClosurePlugin bootstraps a tree of components
+*. research if spring bootstrap can be used in library mode
 
 Nice to have
 *. Convert messages from conf/messages automatically to xliffs

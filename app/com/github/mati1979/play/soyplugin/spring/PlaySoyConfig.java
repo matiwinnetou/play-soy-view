@@ -27,7 +27,6 @@ import org.springframework.context.annotation.Configuration;
 
 import static com.github.mati1979.play.soyplugin.config.PlayConfAccessor.GLOBAL_HOT_RELOAD_MODE;
 
-
 /**
  * Created by mati on 02/02/2014.
  */
