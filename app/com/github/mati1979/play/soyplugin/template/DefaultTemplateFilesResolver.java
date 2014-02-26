@@ -5,6 +5,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import play.Play;
 
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
@@ -107,14 +108,14 @@ public class DefaultTemplateFilesResolver implements TemplateFilesResolver {
     private List<URL> toFiles(final String templatesLocation) {
         final List<URL> templateFiles = Lists.newArrayList();
         try {
-            final File baseDirectory = new File(templatesLocation);
+            final File baseDirectory = Play.application().getFile(templatesLocation);
             if (baseDirectory.isDirectory()) {
                 templateFiles.addAll(findSoyFiles(baseDirectory, recursive));
             } else {
                 throw new IllegalArgumentException("Soy template base directory:" + templatesLocation + "' is not a directory");
             }
         } catch (final IOException e) {
-            throw new IllegalArgumentException("Soy template base directory '" + templatesLocation + "' does not exist", e);
+            throw new IllegalArgumentException("Error with soy template base directory:" + templatesLocation, e);
         }
 
         return templateFiles;

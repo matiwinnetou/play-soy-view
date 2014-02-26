@@ -23,7 +23,7 @@ public class ConfigDefaults {
 
     public final static String RESOLVE_FILES_EXTENSION = "soy";
 
-    public final static String RESOLVE_TEMPLATES_LOCATION = "app/views/closure";
+    public final static String RESOLVE_TEMPLATES_LOCATION = "conf/soy";
 
     public static final String I18N_MESSAGES_PATH = "conf/xliffs/messages";
 
