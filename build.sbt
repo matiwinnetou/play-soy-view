@@ -1,6 +1,6 @@
 name := "play-soy-view"
 
-version := "0.1"
+version := "0.1-SNAPSHOT"
 
 organization := "com.github.mati1979"
 
@@ -40,5 +40,4 @@ pomExtra := (
       <name>Mateusz Szczap</name>
       <url>https://github.com/mati1979</url>
     </developer>
-  </developers>
-  )
+  </developers>)
