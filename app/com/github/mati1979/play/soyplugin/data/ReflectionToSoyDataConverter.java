@@ -44,7 +44,7 @@ import java.util.concurrent.Callable;
  * timeout by default. If such a behaviour should be altered, developers
  * are requested to provider their own implementation.
  */
-public class DefaultToSoyDataConverter implements ToSoyDataConverter {
+public class ReflectionToSoyDataConverter implements ToSoyDataConverter {
 
     @Override
     public Optional<SoyMapData> toSoyMap(final Object model) throws Exception {
