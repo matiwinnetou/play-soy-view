@@ -4,7 +4,6 @@ import com.google.common.base.Optional;
 import com.google.template.soy.data.SoyMapData;
 import com.google.template.soy.msgs.SoyMsgBundle;
 import com.google.template.soy.tofu.SoyTofu;
-import play.mvc.Http;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,20 +19,15 @@ public class RenderRequest {
 
     private final String templateName;
 
-    private final Http.Request request;
-
-    private final Http.Response response;
-
     private final Optional<SoyMapData> soyModel;
 
     private final Optional<SoyMapData> globalRuntimeModel;
+
     private final Optional<SoyMsgBundle> soyMsgBundle;
 
     private RenderRequest(final Builder builder) {
         this.compiledTemplates = builder.compiledTemplates;
         this.templateName = builder.templateName;
-        this.request = builder.request;
-        this.response = builder.response;
         this.globalRuntimeModel = builder.globalRuntimeModel;
         this.soyMsgBundle = builder.soyMsgBundle;
         this.soyModel = builder.soyModel;
@@ -59,21 +53,10 @@ public class RenderRequest {
         return templateName;
     }
 
-    public Http.Request getRequest() {
-        return request;
-    }
-
-    public Http.Response getResponse() {
-        return response;
-    }
-
     public static class Builder {
 
         private Optional<SoyTofu> compiledTemplates;
         private String templateName;
-
-        private Http.Request request;
-        private Http.Response response;
 
         private Optional<SoyMapData> soyModel;
 
@@ -93,16 +76,6 @@ public class RenderRequest {
 
         public Builder templateName(final String templateName) {
             this.templateName = templateName;
-            return this;
-        }
-
-        public Builder response(final Http.Response response) {
-            this.response = response;
-            return this;
-        }
-
-        public Builder request(final Http.Request request) {
-            this.request = request;
             return this;
         }
 

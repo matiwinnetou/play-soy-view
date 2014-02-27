@@ -93,8 +93,6 @@ public class DefaultSoy implements Soy {
         final Optional<Locale> localeOptional = localeProvider.resolveLocale(request);
 
         final RenderRequest renderRequest = new RenderRequest.Builder()
-                .request(request)
-                .response(response)
                 .templateName(viewName)
                 .compiledTemplates(compiledTemplatesHolder.compiledTemplates())
                 .globalRuntimeModel(globalRuntimeModelResolver.resolveData(request, response, runtimeData(soyMapData)))

@@ -5,7 +5,6 @@ import com.google.template.soy.data.SoyMapData;
 import com.google.template.soy.msgs.SoyMsgBundle;
 import com.google.template.soy.tofu.SoyTofu;
 
-import static com.github.mati1979.play.soyplugin.config.PlayConfAccessor.GLOBAL_ENCODING;
 import static com.github.mati1979.play.soyplugin.config.PlayConfAccessor.GLOBAL_HOT_RELOAD_MODE;
 
 public class DefaultTemplateRenderer implements TemplateRenderer {
@@ -20,8 +19,6 @@ public class DefaultTemplateRenderer implements TemplateRenderer {
      * renderer caching will be disabled */
     private boolean hotReloadMode = GLOBAL_HOT_RELOAD_MODE;
 
-    private String charsetEncoding = GLOBAL_ENCODING;
-
     @Override
     public String render(final RenderRequest renderRequest) throws Exception {
         final SoyTofu compiledTemplates = renderRequest.getCompiledTemplates().get();
@@ -31,8 +28,6 @@ public class DefaultTemplateRenderer implements TemplateRenderer {
 
         final Optional<SoyMapData> soyModel = renderRequest.getSoyModel();
         setupRenderer(renderer, renderRequest, soyModel);
-
-        renderRequest.getResponse().setContentType("text/html; charset=" + charsetEncoding);
 
         return renderer.render();
     }
