@@ -11,8 +11,6 @@ libraryDependencies ++= Seq(
   "commons-io" % "commons-io" % "2.2"
 )
 
-autoScalaLibrary := false
-
 publishMavenStyle := true
 
 play.Project.playJavaSettings
