@@ -32,6 +32,7 @@ pomExtra := (
     <url>git@github.com:mati1979/play-soy-view.git</url>
     <connection>scm:git:git@github.com:mati1979/play-soy-view.git</connection>
   </scm>
+  <url>https://github.com/mati1979/play-soy-view</url>
   <developers>
     <developer>
       <id>matiwinnetou</id>
