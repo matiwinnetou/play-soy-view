@@ -51,23 +51,45 @@ public class DefaultSoy implements Soy {
     }
 
     @Override
-    public String html(final String view, Object model) throws Exception {
-        return html(view, toSoyDataConverter.toSoyMap(model));
+    public String html(final String view, final Object model) throws Exception {
+        final Http.Request request = Http.Context.current().request();
+        final Http.Response response = Http.Context.current().response();
+
+        return htmlPriv(request, response, view, toSoyDataConverter.toSoyMap(model));
     }
 
     @Override
     public String html(final String view, final SoyMapData model) throws Exception {
-        return html(view, Optional.of(model));
+        final Http.Request request = Http.Context.current().request();
+        final Http.Response response = Http.Context.current().response();
+
+        return htmlPriv(request, response, view, Optional.of(model));
     }
 
     @Override
     public String html(String view) throws Exception {
-        return html(view, Optional.<SoyMapData>absent());
-    }
-
-    private String html(final String viewName, final Optional<SoyMapData> soyMapData) throws Exception {
         final Http.Request request = Http.Context.current().request();
         final Http.Response response = Http.Context.current().response();
+
+        return htmlPriv(request, response, view, Optional.<SoyMapData>absent());
+    }
+
+    @Override
+    public String html(Http.Request request, Http.Response response, String view, SoyMapData soyMapData) throws Exception {
+        return htmlPriv(request, response, view, Optional.fromNullable(soyMapData));
+    }
+
+    @Override
+    public String html(Http.Request request, Http.Response response, String view, Object model) throws Exception {
+        return htmlPriv(request, response, view, toSoyDataConverter.toSoyMap(model));
+    }
+
+    @Override
+    public String html(Http.Request request, Http.Response response, String view) throws Exception {
+        return htmlPriv(request, response, view, Optional.<SoyMapData>absent());
+    }
+
+    private String htmlPriv(Http.Request request, Http.Response response, final String viewName, final Optional<SoyMapData> soyMapData) throws Exception {
         final Optional<Locale> localeOptional = localeProvider.resolveLocale(request);
 
         final RenderRequest renderRequest = new RenderRequest.Builder()

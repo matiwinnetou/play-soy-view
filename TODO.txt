@@ -1,9 +1,13 @@
-*. Introduce basic runtime data providers (cookie, request params, etc)
-*. Test in prod distribution mode, fix issues, which may occur, e.g. class path issues
-*. Try more than first accepted languages, if first one fails then proceed to next
 *. push to sonatype and maven central -> requires sbt plugin for gpg preparation, etc
-*. Move configs to a static file, now lots of code duplication
-*. make it idiomatic for play, make sure ClosurePlugin bootstraps a tree of components
+
+* progressive rendering with chunking
+
+*. Introduce basic runtime data providers (cookie, request params, etc)
+
+*. Try more than first accepted languages, if first one fails then proceed to next
+
+*. make it idiomatic for play, make sure ClosurePlugin bootstraps a tree of components, but so that it is reconfigurable later as well
+
 *. research if spring bootstrap can be used in library mode
 
 Nice to have
