@@ -30,9 +30,9 @@ import static com.github.mati1979.play.soyplugin.config.PlayConfAccessor.*;
  * for soy files based on provided templatesLocation path
  */
 @ThreadSafe
-public class DefaultTemplateFilesResolver implements TemplateFilesResolver {
+public class FileSystemTemplateFilesResolver implements TemplateFilesResolver {
 
-    private static final play.Logger.ALogger logger = play.Logger.of(DefaultTemplateFilesResolver.class);
+    private static final play.Logger.ALogger logger = play.Logger.of(FileSystemTemplateFilesResolver.class);
 
     /** spring resource that points to a root path, in which soy templates are located */
     private String templatesLocation = COMPILE_TEMPLATES_LOCATION;
@@ -46,7 +46,7 @@ public class DefaultTemplateFilesResolver implements TemplateFilesResolver {
 
     private String filesExtension = COMPILE_FILES_EXTENSION;
 
-    public DefaultTemplateFilesResolver() {
+    public FileSystemTemplateFilesResolver() {
     }
 
     @Override

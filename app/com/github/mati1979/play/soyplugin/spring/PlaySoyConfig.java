@@ -4,9 +4,10 @@ import com.github.mati1979.play.soyplugin.bundle.DefaultSoyMsgBundleResolver;
 import com.github.mati1979.play.soyplugin.bundle.SoyMsgBundleResolver;
 import com.github.mati1979.play.soyplugin.compile.DefaultTofuCompiler;
 import com.github.mati1979.play.soyplugin.compile.TofuCompiler;
-import com.github.mati1979.play.soyplugin.data.DefaultToSoyDataConverter;
+import com.github.mati1979.play.soyplugin.data.ReflectionToSoyDataConverter;
 import com.github.mati1979.play.soyplugin.data.ToSoyDataConverter;
 import com.github.mati1979.play.soyplugin.global.compile.CompileTimeGlobalModelResolver;
+import com.github.mati1979.play.soyplugin.global.compile.DefaultCompileTimeGlobalModelResolver;
 import com.github.mati1979.play.soyplugin.global.compile.EmptyCompileTimeGlobalModelResolver;
 import com.github.mati1979.play.soyplugin.global.runtime.EmptyGlobalRuntimeModelResolver;
 import com.github.mati1979.play.soyplugin.global.runtime.GlobalRuntimeModelResolver;
@@ -18,12 +19,15 @@ import com.github.mati1979.play.soyplugin.plugin.DefaultSoy;
 import com.github.mati1979.play.soyplugin.plugin.Soy;
 import com.github.mati1979.play.soyplugin.render.DefaultTemplateRenderer;
 import com.github.mati1979.play.soyplugin.render.TemplateRenderer;
-import com.github.mati1979.play.soyplugin.template.DefaultTemplateFilesResolver;
+import com.github.mati1979.play.soyplugin.template.FileSystemTemplateFilesResolver;
 import com.github.mati1979.play.soyplugin.template.TemplateFilesResolver;
 import com.google.template.soy.jssrc.SoyJsSrcOptions;
 import com.google.template.soy.tofu.SoyTofuOptions;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import play.Play;
+
+import java.util.Map;
 
 import static com.github.mati1979.play.soyplugin.config.PlayConfAccessor.GLOBAL_HOT_RELOAD_MODE;
 
@@ -39,8 +43,8 @@ public class PlaySoyConfig {
     }
 
     @Bean
-    public DefaultTemplateFilesResolver soyTemplateFilesResolver() throws Exception {
-        return new DefaultTemplateFilesResolver();
+    public FileSystemTemplateFilesResolver soyTemplateFilesResolver() throws Exception {
+        return new FileSystemTemplateFilesResolver();
     }
 
     @Bean
@@ -50,12 +54,20 @@ public class PlaySoyConfig {
 
     @Bean
     public CompileTimeGlobalModelResolver soyCompileTimeGlobalModelResolver() throws Exception {
-        return new EmptyCompileTimeGlobalModelResolver();
+        System.out.println("1111");
+
+        Map<String,Object> stringObjectMap = Play.application().configuration().asMap();
+        for (final String key : stringObjectMap.keySet()) {
+            final Object o = stringObjectMap.get(key);
+            System.out.println(key + ":" + o);
+        }
+
+        return new DefaultCompileTimeGlobalModelResolver(stringObjectMap);
     }
 
     @Bean
     public ToSoyDataConverter soyToSoyDataConverter() {
-        return new DefaultToSoyDataConverter();
+        return new ReflectionToSoyDataConverter();
     }
 
     @Bean
