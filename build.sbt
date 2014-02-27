@@ -1,6 +1,6 @@
 name := "play-soy-view"
 
-version := "0.1-SNAPSHOT"
+version := "0.1"
 
 organization := "pl.matisoft"
 
@@ -20,7 +20,7 @@ publishTo := {
   if (isSnapshot.value)
     Some("snapshots" at nexus + "content/repositories/snapshots")
   else
-    Some("releases"  at nexus + "service/local/staging/deploy/maven2")
+    Some("releases" at nexus + "service/local/staging/deploy/maven2")
 }
 
 licenses := Seq("Apache-style" -> url("http://www.apache.org/licenses/LICENSE-2.0.html"))
