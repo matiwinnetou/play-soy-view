@@ -65,10 +65,6 @@ public class PlaySoyConfig {
             merged.putAll(userConfig.get().asMap());
         }
 
-        System.out.println("pluginConf:" + pluginConfig.orNull().asMap());
-        System.out.println("userConf:" + userConfig.orNull().asMap());
-        System.out.println("merged:" + merged);
-
         return new DefaultCompileTimeGlobalModelResolver(merged);
     }
 
