@@ -1,11 +1,10 @@
 package com.github.mati1979.play.soyplugin.render;
 
+import com.github.mati1979.play.soyplugin.config.PlayConfAccessor;
 import com.google.common.base.Optional;
 import com.google.template.soy.data.SoyMapData;
 import com.google.template.soy.msgs.SoyMsgBundle;
 import com.google.template.soy.tofu.SoyTofu;
-
-import static com.github.mati1979.play.soyplugin.config.PlayConfAccessor.GLOBAL_HOT_RELOAD_MODE;
 
 public class DefaultTemplateRenderer implements TemplateRenderer {
 
@@ -17,7 +16,7 @@ public class DefaultTemplateRenderer implements TemplateRenderer {
     /**
      * whether debug is on, in case it is on - Soy's Renderer Don't Add To Cache will be turned on, which means
      * renderer caching will be disabled */
-    private boolean hotReloadMode = GLOBAL_HOT_RELOAD_MODE;
+    private boolean hotReloadMode = PlayConfAccessor.GLOBAL_HOT_RELOAD_MODE;
 
     @Override
     public String render(final RenderRequest renderRequest) throws Exception {

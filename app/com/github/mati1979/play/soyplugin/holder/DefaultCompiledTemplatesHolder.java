@@ -2,6 +2,7 @@ package com.github.mati1979.play.soyplugin.holder;
 
 import com.github.mati1979.play.soyplugin.compile.EmptyTofuCompiler;
 import com.github.mati1979.play.soyplugin.compile.TofuCompiler;
+import com.github.mati1979.play.soyplugin.config.PlayConfAccessor;
 import com.github.mati1979.play.soyplugin.template.EmptyTemplateFilesResolver;
 import com.github.mati1979.play.soyplugin.template.TemplateFilesResolver;
 import com.google.common.base.Optional;
@@ -13,7 +14,6 @@ import java.net.URL;
 import java.util.Collection;
 
 import static com.github.mati1979.play.soyplugin.config.PlayConfAccessor.COMPILE_PRECOMPILE_TEMPLATES;
-import static com.github.mati1979.play.soyplugin.config.PlayConfAccessor.GLOBAL_HOT_RELOAD_MODE;
 
 /**
  * Created with IntelliJ IDEA.
@@ -31,7 +31,7 @@ public class DefaultCompiledTemplatesHolder implements CompiledTemplatesHolder {
 
     private Optional<SoyTofu> compiledTemplates = Optional.absent();
 
-    private boolean hotReloadMode = GLOBAL_HOT_RELOAD_MODE;
+    private boolean hotReloadMode = PlayConfAccessor.GLOBAL_HOT_RELOAD_MODE;
 
     private boolean preCompileTemplates = COMPILE_PRECOMPILE_TEMPLATES;
 

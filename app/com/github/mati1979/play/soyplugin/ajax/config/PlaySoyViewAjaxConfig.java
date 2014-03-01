@@ -1,5 +1,6 @@
 package com.github.mati1979.play.soyplugin.ajax.config;
 
+import com.github.mati1979.play.soyplugin.ajax.SoyAjaxController;
 import com.github.mati1979.play.soyplugin.ajax.auth.AuthManager;
 import com.github.mati1979.play.soyplugin.ajax.auth.ConfigurableAuthManager;
 import com.github.mati1979.play.soyplugin.ajax.auth.PermissableAuthManager;
@@ -14,7 +15,6 @@ import com.github.mati1979.play.soyplugin.locale.LocaleProvider;
 import com.github.mati1979.play.soyplugin.spring.PlaySoyConfig;
 import com.github.mati1979.play.soyplugin.template.TemplateFilesResolver;
 import com.google.common.collect.Lists;
-import com.github.mati1979.play.soyplugin.ajax.SoyAjaxController;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;

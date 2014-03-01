@@ -4,11 +4,11 @@ import com.github.mati1979.play.soyplugin.bundle.DefaultSoyMsgBundleResolver;
 import com.github.mati1979.play.soyplugin.bundle.SoyMsgBundleResolver;
 import com.github.mati1979.play.soyplugin.compile.DefaultTofuCompiler;
 import com.github.mati1979.play.soyplugin.compile.TofuCompiler;
+import com.github.mati1979.play.soyplugin.config.PlayConfAccessor;
 import com.github.mati1979.play.soyplugin.data.ReflectionToSoyDataConverter;
 import com.github.mati1979.play.soyplugin.data.ToSoyDataConverter;
 import com.github.mati1979.play.soyplugin.global.compile.CompileTimeGlobalModelResolver;
 import com.github.mati1979.play.soyplugin.global.compile.DefaultCompileTimeGlobalModelResolver;
-import com.github.mati1979.play.soyplugin.global.compile.EmptyCompileTimeGlobalModelResolver;
 import com.github.mati1979.play.soyplugin.global.runtime.EmptyGlobalRuntimeModelResolver;
 import com.github.mati1979.play.soyplugin.global.runtime.GlobalRuntimeModelResolver;
 import com.github.mati1979.play.soyplugin.holder.CompiledTemplatesHolder;
@@ -21,15 +21,14 @@ import com.github.mati1979.play.soyplugin.render.DefaultTemplateRenderer;
 import com.github.mati1979.play.soyplugin.render.TemplateRenderer;
 import com.github.mati1979.play.soyplugin.template.FileSystemTemplateFilesResolver;
 import com.github.mati1979.play.soyplugin.template.TemplateFilesResolver;
+import com.google.common.base.Optional;
 import com.google.template.soy.jssrc.SoyJsSrcOptions;
 import com.google.template.soy.tofu.SoyTofuOptions;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import play.Play;
 
+import java.util.HashMap;
 import java.util.Map;
-
-import static com.github.mati1979.play.soyplugin.config.PlayConfAccessor.GLOBAL_HOT_RELOAD_MODE;
 
 /**
  * Created by mati on 02/02/2014.
@@ -54,15 +53,23 @@ public class PlaySoyConfig {
 
     @Bean
     public CompileTimeGlobalModelResolver soyCompileTimeGlobalModelResolver() throws Exception {
-        System.out.println("1111");
+        final Map<String,Object> merged = new HashMap<>();
 
-        Map<String,Object> stringObjectMap = Play.application().configuration().asMap();
-        for (final String key : stringObjectMap.keySet()) {
-            final Object o = stringObjectMap.get(key);
-            System.out.println(key + ":" + o);
+        final Optional<play.Configuration> pluginConfig = PlayConfAccessor.getPluginConfig();
+        if (pluginConfig.isPresent()) {
+            merged.putAll(pluginConfig.get().asMap());
         }
 
-        return new DefaultCompileTimeGlobalModelResolver(stringObjectMap);
+        final Optional<play.Configuration> userConfig = PlayConfAccessor.getUserConfig();
+        if (userConfig.isPresent()) {
+            merged.putAll(userConfig.get().asMap());
+        }
+
+        System.out.println("pluginConf:" + pluginConfig.orNull().asMap());
+        System.out.println("userConf:" + userConfig.orNull().asMap());
+        System.out.println("merged:" + merged);
+
+        return new DefaultCompileTimeGlobalModelResolver(merged);
     }
 
     @Bean
@@ -78,7 +85,7 @@ public class PlaySoyConfig {
     @Bean
     public SoyTofuOptions soyTofuOptions() {
         final SoyTofuOptions soyTofuOptions = new SoyTofuOptions();
-        soyTofuOptions.setUseCaching(!GLOBAL_HOT_RELOAD_MODE);
+        soyTofuOptions.setUseCaching(!PlayConfAccessor.GLOBAL_HOT_RELOAD_MODE);
 
         return soyTofuOptions;
     }

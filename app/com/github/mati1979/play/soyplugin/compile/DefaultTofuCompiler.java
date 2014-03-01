@@ -1,5 +1,6 @@
 package com.github.mati1979.play.soyplugin.compile;
 
+import com.github.mati1979.play.soyplugin.config.PlayConfAccessor;
 import com.github.mati1979.play.soyplugin.global.compile.CompileTimeGlobalModelResolver;
 import com.github.mati1979.play.soyplugin.global.compile.EmptyCompileTimeGlobalModelResolver;
 import com.google.common.base.Optional;
@@ -20,8 +21,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import static com.github.mati1979.play.soyplugin.config.PlayConfAccessor.GLOBAL_HOT_RELOAD_MODE;
-
 /**
  * Created with IntelliJ IDEA.
  * User: mszczap
@@ -32,7 +31,7 @@ public class DefaultTofuCompiler implements TofuCompiler {
 
     private static final Logger.ALogger logger = Logger.of(DefaultTofuCompiler.class);
 
-    private boolean hotReloadMode = GLOBAL_HOT_RELOAD_MODE;
+    private boolean hotReloadMode = PlayConfAccessor.GLOBAL_HOT_RELOAD_MODE;
 
     private CompileTimeGlobalModelResolver compileTimeGlobalModelResolver = new EmptyCompileTimeGlobalModelResolver();
 
