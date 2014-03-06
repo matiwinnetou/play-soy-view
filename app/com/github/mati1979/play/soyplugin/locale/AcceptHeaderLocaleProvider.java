@@ -19,7 +19,7 @@ import java.util.Locale;
 public class AcceptHeaderLocaleProvider implements LocaleProvider {
 
     public Optional<Locale> resolveLocale(final Http.Request request) {
-        final List<Lang> langs = Http.Context.current().request().acceptLanguages();
+        final List<Lang> langs = request.acceptLanguages();
         if (langs.size() > 0) {
             return Optional.of(langs.iterator().next().toLocale());
         }
