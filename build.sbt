@@ -1,4 +1,3 @@
-import SonatypeKeys._
 organization := "pl.matisoft"
 
 name := "play-soy-view"
@@ -13,6 +12,8 @@ libraryDependencies ++= Seq(
 )
 
 sonatypeSettings
+
+releaseSettings
 
 publishMavenStyle := true
 
