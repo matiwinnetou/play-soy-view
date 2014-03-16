@@ -1,8 +1,9 @@
+import SonatypeKeys._
+organization := "pl.matisoft"
+
 name := "play-soy-view"
 
-version := "0.1.1"
-
-organization := "pl.matisoft"
+version := "0.1.2-SNAPSHOT"
 
 libraryDependencies ++= Seq(
   "com.google.template" % "soy" % "2012-12-21",
@@ -10,6 +11,8 @@ libraryDependencies ++= Seq(
   "com.yahoo.platform.yui" % "yuicompressor" % "2.4.7",
   "commons-io" % "commons-io" % "2.2"
 )
+
+sonatypeSettings
 
 publishMavenStyle := true
 
