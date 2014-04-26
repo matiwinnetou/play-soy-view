@@ -22,11 +22,12 @@ public class SoyHashesRuntimeDataResolver implements RuntimeDataResolver {
         this.hashFileGenerator = hashFileGenerator;
     }
 
-    public void resolveData(final Http.Request request, final Http.Response response,
+    public void resolveData(final Http.Request request,
+                            final Http.Response response,
                             final Map<String, ?> model,
                             final SoyMapData root) {
         try {
-            root.put("soyplugin.ajax.soy.hash", hashFileGenerator.hash());
+            root.put("soyplugin.ajax.soy.hash", hashFileGenerator.hash().orNull());
         } catch (final IOException e) {
             throw new RuntimeException(e);
         }
