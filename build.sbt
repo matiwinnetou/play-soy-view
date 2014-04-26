@@ -2,7 +2,7 @@ organization := "pl.matisoft"
 
 name := "play-soy-view"
 
-version := "0.1.4"
+version := "0.1.5"
 
 libraryDependencies ++= Seq(
   "com.google.template" % "soy" % "2012-12-21",

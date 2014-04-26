@@ -13,6 +13,7 @@ https://github.com/mati1979/play-soy-view-example
 0.1.1 - minor bug fixes
 0.1.3 - minor improvements
 0.1.4 - minor improvements, e.g. AllowedUrls for ajax, introduced SoyViewConf interface and two implementations, play getting config values from play config and default where a user can configure values overriding defaults
+0.1.5 - small bug fix in SoyHashesRuntimeResolver
 
 # Maven Central:
 This artifact is already available in maven central
