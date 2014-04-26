@@ -89,8 +89,10 @@ public class PlaySoyConfig {
     }
 
     @Bean
-    public TofuCompiler soyTofuCompiler(final CompileTimeGlobalModelResolver compileTimeGlobalModelResolver, final SoyJsSrcOptions soyJsSrcOptions, final SoyTofuOptions soyTofuOptions) {
-        return new DefaultTofuCompiler(compileTimeGlobalModelResolver, soyViewConf());
+    public TofuCompiler soyTofuCompiler(final CompileTimeGlobalModelResolver compileTimeGlobalModelResolver,
+                                        final SoyJsSrcOptions soyJsSrcOptions,
+                                        final SoyTofuOptions soyTofuOptions) {
+        return new DefaultTofuCompiler(compileTimeGlobalModelResolver, soyViewConf(), soyJsSrcOptions, soyTofuOptions);
     }
 
     @Bean

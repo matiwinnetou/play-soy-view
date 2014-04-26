@@ -40,7 +40,9 @@ public class DefaultTofuCompiler implements TofuCompiler {
     private SoyViewConf soyViewConf;
 
     public DefaultTofuCompiler(final CompileTimeGlobalModelResolver compileTimeGlobalModelResolver,
-                               final SoyViewConf soyViewConf) {
+                               final SoyViewConf soyViewConf,
+                               final SoyJsSrcOptions soyJsSrcOptions,
+                               final SoyTofuOptions soyTofuOptions) {
         this.compileTimeGlobalModelResolver = compileTimeGlobalModelResolver;
         this.soyViewConf = soyViewConf;
     }
