@@ -25,16 +25,14 @@ public class DefaultGlobalRuntimeModelResolver implements GlobalRuntimeModelReso
 
     private List<RuntimeDataResolver> userResolvers = Lists.newArrayList();
 
-    public DefaultGlobalRuntimeModelResolver(List<RuntimeDataResolver> resolvers) {
+    public DefaultGlobalRuntimeModelResolver(final List<RuntimeDataResolver> resolvers) {
         this.resolvers = resolvers;
     }
 
-    public DefaultGlobalRuntimeModelResolver(List<RuntimeDataResolver> resolvers, List<RuntimeDataResolver> userResolvers) {
+    public DefaultGlobalRuntimeModelResolver(final List<RuntimeDataResolver> resolvers,
+                                             final List<RuntimeDataResolver> userResolvers) {
         this.resolvers = resolvers;
         this.userResolvers = userResolvers;
-    }
-
-    public DefaultGlobalRuntimeModelResolver() {
     }
 
     @Override
@@ -52,22 +50,6 @@ public class DefaultGlobalRuntimeModelResolver implements GlobalRuntimeModelReso
         }
 
         return Optional.of(root);
-    }
-
-    public void setResolvers(List<RuntimeDataResolver> resolvers) {
-        this.resolvers = resolvers;
-    }
-
-    public List<RuntimeDataResolver> getResolvers() {
-        return resolvers;
-    }
-
-    public List<RuntimeDataResolver> getUserResolvers() {
-        return userResolvers;
-    }
-
-    public void setUserResolvers(List<RuntimeDataResolver> userResolvers) {
-        this.userResolvers = userResolvers;
     }
 
 }

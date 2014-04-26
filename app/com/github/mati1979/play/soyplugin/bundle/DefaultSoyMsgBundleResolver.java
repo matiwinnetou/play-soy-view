@@ -1,5 +1,6 @@
 package com.github.mati1979.play.soyplugin.bundle;
 
+import com.github.mati1979.play.soyplugin.config.SoyViewConf;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
@@ -18,8 +19,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.github.mati1979.play.soyplugin.config.PlayConfAccessor.*;
-
 public class DefaultSoyMsgBundleResolver implements SoyMsgBundleResolver {
 
     private static final play.Logger.ALogger logger = play.Logger.of(DefaultSoyMsgBundleResolver.class);
@@ -27,27 +26,17 @@ public class DefaultSoyMsgBundleResolver implements SoyMsgBundleResolver {
     /** a cache of soy msg bundles */
     /** friendly */ Map<Locale, SoyMsgBundle> msgBundles = new ConcurrentHashMap<Locale, SoyMsgBundle>();
 
-    /** a path to a bundle */
-    private String messagesPath = I18N_MESSAGES_PATH;
+    private SoyViewConf soyViewConf = null;
 
-    /** will cache msgBundles if a hotReloadMode is off, if debug is on,
-     *  will compile msg bundles each time it is invoked */
-    private boolean hotReloadMode = GLOBAL_HOT_RELOAD_MODE;
-
-    /** in case translation is missing for a passed in locale,
-     *  whether the implementation should fallback to English returning
-     *  an english translation if available */
-    private boolean fallbackToEnglish = I18N_FALLBACK_TO_ENGLISH;
+    public DefaultSoyMsgBundleResolver(final SoyViewConf soyViewConf) {
+        this.soyViewConf = soyViewConf;
+    }
 
     /**
      * Based on a provided locale return a SoyMsgBundle file.
      *
      * If a passed in locale object is "Optional.absent()",
      * the implementation will return Optional.absent() as well
-     *
-     * @param locale
-     * @return
-     * @throws IOException in case there is an i/o error reading msg bundle
      */
     public Optional<SoyMsgBundle> resolve(final Optional<Locale> locale) throws IOException {
         if (!locale.isPresent()) {
@@ -56,7 +45,7 @@ public class DefaultSoyMsgBundleResolver implements SoyMsgBundleResolver {
 
         synchronized (msgBundles) {
             SoyMsgBundle soyMsgBundle = null;
-            if (isHotReloadModeOff()) {
+            if (!soyViewConf.globalHotReloadMode()) {
                 soyMsgBundle = msgBundles.get(locale.get());
             }
             if (soyMsgBundle == null) {
@@ -65,7 +54,7 @@ public class DefaultSoyMsgBundleResolver implements SoyMsgBundleResolver {
                     soyMsgBundle = createSoyMsgBundle(new Locale(locale.get().getLanguage()));
                 }
 
-                if (soyMsgBundle == null && fallbackToEnglish) {
+                if (soyMsgBundle == null && soyViewConf.i18nFallbackToEnglish()) {
                     soyMsgBundle = createSoyMsgBundle(Locale.ENGLISH);
                 }
 
@@ -73,7 +62,7 @@ public class DefaultSoyMsgBundleResolver implements SoyMsgBundleResolver {
                     return Optional.absent();
                 }
 
-                if (isHotReloadModeOff()) {
+                if (!soyViewConf.globalHotReloadMode()) {
                     msgBundles.put(locale.get(), soyMsgBundle);
                 }
             }
@@ -86,15 +75,11 @@ public class DefaultSoyMsgBundleResolver implements SoyMsgBundleResolver {
      * An implementation that using a ContextClassLoader iterates over all urls it finds
      * based on a messagePath and locale, e.g. messages_de_DE.xlf and returns a merged
      * SoyMsgBundle of SoyMsgBundle matching a a pattern it finds in a class path.
-     *
-     * @param locale
-     * @return
-     * @throws IOException
      */
     protected SoyMsgBundle createSoyMsgBundle(final Locale locale) throws IOException {
-        Preconditions.checkNotNull(messagesPath, "messagesPath cannot be null!");
+        Preconditions.checkNotNull(soyViewConf.i18nMessagesPath(), "messagesPath cannot be null!");
 
-        final String path2 = messagesPath  + "_" + locale.toString() + ".xlf";
+        final String path2 = soyViewConf.i18nMessagesPath()  + "_" + locale.toString() + ".xlf";
 
         final List<SoyMsgBundle> msgBundles = Lists.newArrayList();
 
@@ -112,10 +97,6 @@ public class DefaultSoyMsgBundleResolver implements SoyMsgBundleResolver {
 
     /**
      * Merge msg bundles together, creating new MsgBundle with merges msg bundles passed in as a method argument
-     *
-     * @param locale
-     * @param soyMsgBundles
-     * @return
      */
     private Optional<? extends SoyMsgBundle> mergeMsgBundles(final Locale locale, final List<SoyMsgBundle> soyMsgBundles) {
         if (soyMsgBundles.isEmpty()) {
@@ -130,34 +111,6 @@ public class DefaultSoyMsgBundleResolver implements SoyMsgBundleResolver {
         }
 
         return Optional.of(new SoyMsgBundleImpl(locale.toString(), msgs));
-    }
-
-    public void setMessagesPath(final String messagesPath) {
-        this.messagesPath = messagesPath;
-    }
-
-    public void setHotReloadMode(final boolean hotReloadMode) {
-        this.hotReloadMode = hotReloadMode;
-    }
-
-    public void setFallbackToEnglish(boolean fallbackToEnglish) {
-        this.fallbackToEnglish = fallbackToEnglish;
-    }
-
-    public String getMessagesPath() {
-        return messagesPath;
-    }
-
-    public boolean isHotReloadMode() {
-        return hotReloadMode;
-    }
-
-    private boolean isHotReloadModeOff() {
-        return !hotReloadMode;
-    }
-
-    public boolean isFallbackToEnglish() {
-        return fallbackToEnglish;
     }
 
 }

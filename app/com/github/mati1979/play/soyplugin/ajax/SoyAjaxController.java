@@ -9,6 +9,7 @@ import com.github.mati1979.play.soyplugin.bundle.EmptySoyMsgBundleResolver;
 import com.github.mati1979.play.soyplugin.bundle.SoyMsgBundleResolver;
 import com.github.mati1979.play.soyplugin.compile.EmptyTofuCompiler;
 import com.github.mati1979.play.soyplugin.compile.TofuCompiler;
+import com.github.mati1979.play.soyplugin.config.SoyViewConf;
 import com.github.mati1979.play.soyplugin.locale.EmptyLocaleProvider;
 import com.github.mati1979.play.soyplugin.locale.LocaleProvider;
 import com.github.mati1979.play.soyplugin.template.EmptyTemplateFilesResolver;
@@ -25,6 +26,7 @@ import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.concurrent.ThreadSafe;
 import java.io.IOException;
 import java.io.StringReader;
@@ -33,8 +35,6 @@ import java.net.URL;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
-
-import static com.github.mati1979.play.soyplugin.config.PlayConfAccessor.*;
 
 @ThreadSafe
 public class SoyAjaxController extends Controller {
@@ -46,10 +46,6 @@ public class SoyAjaxController extends Controller {
     private final static int DEF_EXPIRE_AFTER_WRITE = 1;
 
     private static final Logger logger = LoggerFactory.getLogger(SoyAjaxController.class);
-
-    private String cacheControl = AJAX_CACHE_CONTROL;
-
-    private String expireHeaders = AJAX_EXPIRE_HEADERS;
 
     /** maximum number of entries this cache will hold */
     private int cacheMaxSize = DEF_CACHE_MAX_SIZE;
@@ -71,7 +67,6 @@ public class SoyAjaxController extends Controller {
     private Cache<String, Map<String,String>> cachedJsTemplates = CacheBuilder.newBuilder()
             .expireAfterWrite(expireAfterWrite, TimeUnit.valueOf(expireAfterWriteUnit))
             .maximumSize(cacheMaxSize)
-            .concurrencyLevel(1) //look up a constant class, 1 is not very clear
             .build();
 
     private TemplateFilesResolver templateFilesResolver = new EmptyTemplateFilesResolver();
@@ -81,21 +76,6 @@ public class SoyAjaxController extends Controller {
     private SoyMsgBundleResolver soyMsgBundleResolver = new EmptySoyMsgBundleResolver();
 
     private LocaleProvider localeProvider = new EmptyLocaleProvider();
-
-    /**
-     * whether debug is on or off, if it is on then caching of entries will not work
-     * to support hot reloading while developing, if it is on, then we assume it is
-     * like production mode and caching of compiled soy to JavaScript templates
-     * will be working. In addition in production mode (debug off)
-     * CacheControl (Http 1.1) and Expires (Http 1.0) http headers
-     * will be set to user configured values.
-     */
-    private boolean hotReloadMode = GLOBAL_HOT_RELOAD_MODE;
-
-    /**
-     * character encoding, by default utf-8
-     */
-    private String encoding = GLOBAL_ENCODING;
 
     /**
      * List of output processors, output processors typically perform obfuscation
@@ -111,28 +91,28 @@ public class SoyAjaxController extends Controller {
 
     private AuthManager authManager = new PermissableAuthManager();
 
-    public SoyAjaxController() {
-    }
+    private SoyViewConf soyViewConf;
 
-    public SoyAjaxController(AuthManager authManager,
-                             LocaleProvider localeProvider,
-                             SoyMsgBundleResolver soyMsgBundleResolver,
-                             TofuCompiler tofuCompiler,
-                             TemplateFilesResolver templateFilesResolver,
-                             List<OutputProcessor> outputProcessors) {
+    public SoyAjaxController(final AuthManager authManager,
+                             final LocaleProvider localeProvider,
+                             final SoyMsgBundleResolver soyMsgBundleResolver,
+                             final TofuCompiler tofuCompiler,
+                             final TemplateFilesResolver templateFilesResolver,
+                             final List<OutputProcessor> outputProcessors,
+                             final SoyViewConf soyViewConf) {
         this.authManager = authManager;
         this.localeProvider = localeProvider;
         this.soyMsgBundleResolver = soyMsgBundleResolver;
         this.tofuCompiler = tofuCompiler;
         this.templateFilesResolver = templateFilesResolver;
         this.outputProcessors = outputProcessors;
+        this.soyViewConf = soyViewConf;
     }
 
     public void init() {
         this.cachedJsTemplates = CacheBuilder.newBuilder()
                 .expireAfterWrite(expireAfterWrite, TimeUnit.valueOf(expireAfterWriteUnit))
                 .maximumSize(cacheMaxSize)
-                .concurrencyLevel(1) //look up a constant class, 1 is not very clear
                 .build();
     }
 
@@ -151,7 +131,7 @@ public class SoyAjaxController extends Controller {
         Preconditions.checkNotNull(templateFilesResolver, "templateFilesResolver cannot be null");
 
         try {
-            if (isHotReloadModeOff()) {
+            if (!soyViewConf.globalHotReloadMode()) {
                 final Optional<String> template = extractAndCombineAll(hash, templateFileNames);
                 if (template.isPresent()) {
                     return prepareResponseFor(template.get(), disableProcessors);
@@ -163,11 +143,11 @@ public class SoyAjaxController extends Controller {
             if (!allCompiledTemplates.isPresent()) {
                 return notFound("Template file(s) could not be resolved.");
             }
-            if (isHotReloadModeOff()) {
+            if (!soyViewConf.globalHotReloadMode()) {
                 synchronized (cachedJsTemplates) {
                     Map<String, String> map = cachedJsTemplates.getIfPresent(hash);
                     if (map == null) {
-                        map = new ConcurrentHashMap<String, String>();
+                        map = new ConcurrentHashMap<>();
                     } else {
                         map.put(PathUtils.arrayToPath(templateFileNames), allCompiledTemplates.get());
                     }
@@ -235,11 +215,11 @@ public class SoyAjaxController extends Controller {
     }
 
     private Result prepareResponseFor(final String templateContent, final boolean disableProcessors) throws IOException {
-        response().getHeaders().put("Content-Type", "text/javascript; charset=" + encoding);
-        response().getHeaders().put("Cache-Control", hotReloadMode ? "no-cache" : cacheControl);
+        response().getHeaders().put("Content-Type", "text/javascript; charset=" + soyViewConf.globalEncoding());
+        response().getHeaders().put("Cache-Control", soyViewConf.globalHotReloadMode() ? "no-cache" : soyViewConf.ajaxCacheControl());
 
-        if (StringUtils.hasText(expireHeaders) && !hotReloadMode) {
-            response().getHeaders().put("Expires", expireHeaders);
+        if (StringUtils.hasText(soyViewConf.ajaxExpireHeaders()) && !soyViewConf.globalHotReloadMode()) {
+            response().getHeaders().put("Expires", soyViewConf.ajaxExpireHeaders());
         }
 
         if (disableProcessors) {
@@ -279,66 +259,6 @@ public class SoyAjaxController extends Controller {
         final Optional<String> compiledTemplate = tofuCompiler.compileToJsSrc(templateFile.orNull(), soyMsgBundle.orNull());
 
         return compiledTemplate;
-    }
-
-    private boolean isHotReloadMode() {
-        return hotReloadMode;
-    }
-
-    private boolean isHotReloadModeOff() {
-        return !hotReloadMode;
-    }
-
-    public void setCacheControl(final String cacheControl) {
-        this.cacheControl = cacheControl;
-    }
-
-    public void setTemplateFilesResolver(final TemplateFilesResolver templateFilesResolver) {
-        this.templateFilesResolver = templateFilesResolver;
-    }
-
-    public void setTofuCompiler(final TofuCompiler tofuCompiler) {
-        this.tofuCompiler = tofuCompiler;
-    }
-
-    public void setSoyMsgBundleResolver(final SoyMsgBundleResolver soyMsgBundleResolver) {
-        this.soyMsgBundleResolver = soyMsgBundleResolver;
-    }
-
-    public void setLocaleProvider(final LocaleProvider localeProvider) {
-        this.localeProvider = localeProvider;
-    }
-
-    public void setHotReloadMode(final boolean hotReloadMode) {
-        this.hotReloadMode = hotReloadMode;
-    }
-
-    public void setEncoding(final String encoding) {
-        this.encoding = encoding;
-    }
-
-    public void setExpireHeaders(final String expiresHeaders) {
-        this.expireHeaders = expiresHeaders;
-    }
-
-    public void setOutputProcessors(List<OutputProcessor> outputProcessors) {
-        this.outputProcessors = outputProcessors;
-    }
-
-    public void setAuthManager(AuthManager authManager) {
-        this.authManager = authManager;
-    }
-
-    public void setCacheMaxSize(int cacheMaxSize) {
-        this.cacheMaxSize = cacheMaxSize;
-    }
-
-    public void setExpireAfterWrite(int expireAfterWrite) {
-        this.expireAfterWrite = expireAfterWrite;
-    }
-
-    public void setExpireAfterWriteUnit(String expireAfterWriteUnit) {
-        this.expireAfterWriteUnit = expireAfterWriteUnit;
     }
 
 }

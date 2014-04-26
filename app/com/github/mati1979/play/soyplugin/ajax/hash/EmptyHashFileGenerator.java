@@ -15,12 +15,7 @@ import java.util.Collection;
 public class EmptyHashFileGenerator implements HashFileGenerator {
 
     @Override
-    public Optional<String> hash(final Optional<URL> url) throws IOException {
-        return Optional.absent();
-    }
-
-    @Override
-    public Optional<String> hashMulti(Collection<URL> urls) throws IOException {
+    public Optional<String> hash() throws IOException {
         return Optional.absent();
     }
 

@@ -1,6 +1,6 @@
 package com.github.mati1979.play.soyplugin.compile;
 
-import com.github.mati1979.play.soyplugin.config.PlayConfAccessor;
+import com.github.mati1979.play.soyplugin.config.SoyViewConf;
 import com.github.mati1979.play.soyplugin.global.compile.CompileTimeGlobalModelResolver;
 import com.github.mati1979.play.soyplugin.global.compile.EmptyCompileTimeGlobalModelResolver;
 import com.google.common.base.Optional;
@@ -31,21 +31,18 @@ public class DefaultTofuCompiler implements TofuCompiler {
 
     private static final Logger.ALogger logger = Logger.of(DefaultTofuCompiler.class);
 
-    private boolean hotReloadMode = PlayConfAccessor.GLOBAL_HOT_RELOAD_MODE;
-
     private CompileTimeGlobalModelResolver compileTimeGlobalModelResolver = new EmptyCompileTimeGlobalModelResolver();
 
     private SoyJsSrcOptions soyJsSrcOptions = new SoyJsSrcOptions();
 
-    private SoyTofuOptions soyTofuOptions = createSoyTofuOptions();
+    private SoyTofuOptions soyTofuOptions = new SoyTofuOptions();
 
-    public DefaultTofuCompiler(CompileTimeGlobalModelResolver compileTimeGlobalModelResolver, SoyJsSrcOptions soyJsSrcOptions, SoyTofuOptions soyTofuOptions) {
+    private SoyViewConf soyViewConf;
+
+    public DefaultTofuCompiler(final CompileTimeGlobalModelResolver compileTimeGlobalModelResolver,
+                               final SoyViewConf soyViewConf) {
         this.compileTimeGlobalModelResolver = compileTimeGlobalModelResolver;
-        this.soyJsSrcOptions = soyJsSrcOptions;
-        this.soyTofuOptions = soyTofuOptions;
-    }
-
-    public DefaultTofuCompiler() {
+        this.soyViewConf = soyViewConf;
     }
 
     @Override
@@ -92,7 +89,7 @@ public class DefaultTofuCompiler implements TofuCompiler {
 
     private SoyTofuOptions createSoyTofuOptions() {
         final SoyTofuOptions soyTofuOptions = new SoyTofuOptions();
-        soyTofuOptions.setUseCaching(isHotReloadModeOff());
+        soyTofuOptions.setUseCaching(!soyViewConf.globalHotReloadMode());
 
         return soyTofuOptions;
     }
@@ -112,20 +109,20 @@ public class DefaultTofuCompiler implements TofuCompiler {
     }
 
     @Override
-    public Collection<String> compileToJsSrc(Collection<URL> templates, @Nullable SoyMsgBundle soyMsgBundle) {
+    public Collection<String> compileToJsSrc(final Collection<URL> templates, @Nullable SoyMsgBundle soyMsgBundle) {
         Preconditions.checkNotNull("soyJsSrcOptions", soyJsSrcOptions);
         logger.debug("SoyJavaScript compilation of template:" + templates);
         final long time1 = System.currentTimeMillis();
 
         final SoyFileSet soyFileSet = buildSoyFileSetFrom(templates);
 
-        final List<String> ret = soyFileSet.compileToJsSrc(soyJsSrcOptions, soyMsgBundle);
+        final List<String> compiled = soyFileSet.compileToJsSrc(soyJsSrcOptions, soyMsgBundle);
 
         final long time2 = System.currentTimeMillis();
 
         logger.debug("SoyJavaScript compilation complete." + (time2 - time1) + " ms");
 
-        return ret;
+        return compiled;
     }
 
     private SoyFileSet buildSoyFileSetFrom(final Collection<URL> urls) {
@@ -141,36 +138,12 @@ public class DefaultTofuCompiler implements TofuCompiler {
         return builder.build();
     }
 
-    public void setHotReloadMode(final boolean hotReloadMode) {
-        this.hotReloadMode = hotReloadMode;
-    }
-
-    public void setCompileTimeGlobalModelResolver(final CompileTimeGlobalModelResolver compileTimeGlobalModelResolver) {
-        this.compileTimeGlobalModelResolver = compileTimeGlobalModelResolver;
-    }
-
-    public void setSoyJsSrcOptions(final SoyJsSrcOptions soyJsSrcOptions) {
-        this.soyJsSrcOptions = soyJsSrcOptions;
-    }
-
-    public boolean isHotReloadMode() {
-        return hotReloadMode;
-    }
-
-    public boolean isHotReloadModeOff() {
-        return !hotReloadMode;
-    }
-
     public SoyJsSrcOptions getSoyJsSrcOptions() {
         return soyJsSrcOptions;
     }
 
     public SoyTofuOptions getSoyTofuOptions() {
         return soyTofuOptions;
-    }
-
-    public void setSoyTofuOptions(SoyTofuOptions soyTofuOptions) {
-        this.soyTofuOptions = soyTofuOptions;
     }
 
 }

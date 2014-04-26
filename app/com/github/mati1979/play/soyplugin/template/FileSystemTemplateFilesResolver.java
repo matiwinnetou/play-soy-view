@@ -1,5 +1,6 @@
 package com.github.mati1979.play.soyplugin.template;
 
+import com.github.mati1979.play.soyplugin.config.SoyViewConf;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
@@ -18,8 +19,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import static com.github.mati1979.play.soyplugin.config.PlayConfAccessor.*;
-
 /**
  * Created with IntelliJ IDEA.
  * User: mati
@@ -34,27 +33,21 @@ public class FileSystemTemplateFilesResolver implements TemplateFilesResolver {
 
     private static final play.Logger.ALogger logger = play.Logger.of(FileSystemTemplateFilesResolver.class);
 
-    /** spring resource that points to a root path, in which soy templates are located */
-    private String templatesLocation = COMPILE_TEMPLATES_LOCATION;
-
-    private boolean recursive = COMPILE_RECURSIVE;
-
-    private boolean hotReloadMode = GLOBAL_HOT_RELOAD_MODE;
-
     /** a thread safe cache for resolved templates, no need to worry of ddos attack */
     /** friendly */ CopyOnWriteArrayList<URL> cachedFiles = new CopyOnWriteArrayList<>();
 
-    private String filesExtension = COMPILE_FILES_EXTENSION;
+    private SoyViewConf soyViewConf;
 
-    public FileSystemTemplateFilesResolver() {
+    public FileSystemTemplateFilesResolver(final SoyViewConf soyViewConf) {
+        this.soyViewConf = soyViewConf;
     }
 
     @Override
     public Collection<URL> resolve() throws IOException {
-        Preconditions.checkNotNull(templatesLocation, "templatesLocation cannot be null!");
+        Preconditions.checkNotNull(soyViewConf.resolveTemplatesLocation(), "templatesLocation cannot be null!");
 
-        if (hotReloadMode) {
-            final List<URL> files = toFiles(templatesLocation);
+        if (soyViewConf.globalHotReloadMode()) {
+            final List<URL> files = toFiles(soyViewConf.resolveTemplatesLocation());
             logger.debug("Debug on - resolved files:" + files.size());
 
             return files;
@@ -63,8 +56,8 @@ public class FileSystemTemplateFilesResolver implements TemplateFilesResolver {
         //no debug
         synchronized (cachedFiles) {
             if (cachedFiles.isEmpty()) {
-                final List<URL> files = toFiles(templatesLocation);
-                logger.debug("templates location:" + templatesLocation);
+                final List<URL> files = toFiles(soyViewConf.resolveTemplatesLocation());
+                logger.debug("templates location:" + soyViewConf.resolveTemplatesLocation());
                 logger.debug("Using cache resolve, debug off, urls:" + files.size());
                 cachedFiles.addAll(files);
             }
@@ -110,7 +103,7 @@ public class FileSystemTemplateFilesResolver implements TemplateFilesResolver {
         try {
             final File baseDirectory = Play.application().getFile(templatesLocation);
             if (baseDirectory.isDirectory()) {
-                templateFiles.addAll(findSoyFiles(baseDirectory, recursive));
+                templateFiles.addAll(findSoyFiles(baseDirectory, soyViewConf.resolveRecursive()));
             } else {
                 throw new IllegalArgumentException("Soy template base directory:" + templatesLocation + "' is not a directory");
             }
@@ -146,39 +139,7 @@ public class FileSystemTemplateFilesResolver implements TemplateFilesResolver {
     }
 
     private String dotWithExtension() {
-        return "." + filesExtension;
-    }
-
-    public void setTemplatesLocation(String templatesLocation) {
-        this.templatesLocation = templatesLocation;
-    }
-
-    public void setRecursive(boolean recursive) {
-        this.recursive = recursive;
-    }
-
-    public void setHotReloadMode(boolean hotReloadMode) {
-        this.hotReloadMode = hotReloadMode;
-    }
-
-    public String getTemplatesLocation() {
-        return templatesLocation;
-    }
-
-    public boolean isRecursive() {
-        return recursive;
-    }
-
-    public boolean isHotReloadMode() {
-        return hotReloadMode;
-    }
-
-    public String getFilesExtension() {
-        return filesExtension;
-    }
-
-    public void setFilesExtension(String filesExtension) {
-        this.filesExtension = filesExtension;
+        return "." + soyViewConf.resolveFilesExtension();
     }
 
 }

@@ -1,6 +1,7 @@
 package com.github.mati1979.play.soyplugin.ajax.process.google;
 
 import com.github.mati1979.play.soyplugin.ajax.process.OutputProcessor;
+import com.github.mati1979.play.soyplugin.config.SoyViewConf;
 import com.google.common.collect.Lists;
 import com.google.javascript.jscomp.*;
 import com.google.javascript.jscomp.Compiler;
@@ -16,8 +17,6 @@ import java.io.Reader;
 import java.io.Writer;
 import java.util.logging.Level;
 
-import static com.github.mati1979.play.soyplugin.config.PlayConfAccessor.GLOBAL_ENCODING;
-
 /**
  * Created with IntelliJ IDEA.
  * User: mati
@@ -29,13 +28,17 @@ public class GoogleClosureOutputProcessor implements OutputProcessor {
 
     private static final Logger logger = LoggerFactory.getLogger(GoogleClosureOutputProcessor.class);
 
-    private String encoding = GLOBAL_ENCODING;
-
     private CompilationLevel compilationLevel = CompilationLevel.SIMPLE_OPTIMIZATIONS;
 
     private boolean logCompilerErrors = true;
 
     private boolean logCompilerWarnings = false;
+
+    private SoyViewConf soyViewConf;
+
+    public GoogleClosureOutputProcessor(final SoyViewConf soyViewConf) {
+        this.soyViewConf = soyViewConf;
+    }
 
     @Override
     public void process(final Reader reader, final Writer writer) throws IOException {
@@ -49,7 +52,7 @@ public class GoogleClosureOutputProcessor implements OutputProcessor {
             compiler.disableThreads();
             compiler.initOptions(compilerOptions);
 
-            final SourceFile input = SourceFile.fromInputStream("dummy.js", new ByteArrayInputStream(originalJsSourceCode.getBytes(getEncoding())));
+            final SourceFile input = SourceFile.fromInputStream("dummy.js", new ByteArrayInputStream(originalJsSourceCode.getBytes(soyViewConf.globalEncoding())));
             final Result result = compiler.compile(Lists.<SourceFile>newArrayList(), Lists.newArrayList(input), compilerOptions);
 
             logWarningsAndErrors(result);
@@ -96,35 +99,11 @@ public class GoogleClosureOutputProcessor implements OutputProcessor {
          * should specify a CodingConvention. {@link http://code.google.com/p/wro4j/issues/detail?id=155}
          */
         options.setCodingConvention(new ClosureCodingConvention());
-        options.setOutputCharset(getEncoding());
+        options.setOutputCharset(soyViewConf.globalEncoding());
         //set it to warning, otherwise compiler will fail
         options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.WARNING);
 
         return options;
-    }
-
-    public String getEncoding() {
-        return encoding;
-    }
-
-    public void setEncoding(String encoding) {
-        this.encoding = encoding;
-    }
-
-    public void setCompilationLevel(String compilationLevel) {
-        this.compilationLevel = CompilationLevel.valueOf(compilationLevel);
-    }
-
-    public CompilationLevel getCompilationLevel() {
-        return compilationLevel;
-    }
-
-    public void setLogCompilerErrors(boolean logCompilerErrors) {
-        this.logCompilerErrors = logCompilerErrors;
-    }
-
-    public void setLogCompilerWarnings(boolean logCompilerWarnings) {
-        this.logCompilerWarnings = logCompilerWarnings;
     }
 
 }

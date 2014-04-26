@@ -5,6 +5,8 @@ import com.github.mati1979.play.soyplugin.bundle.SoyMsgBundleResolver;
 import com.github.mati1979.play.soyplugin.compile.DefaultTofuCompiler;
 import com.github.mati1979.play.soyplugin.compile.TofuCompiler;
 import com.github.mati1979.play.soyplugin.config.PlayConfAccessor;
+import com.github.mati1979.play.soyplugin.config.PlaySoyViewConf;
+import com.github.mati1979.play.soyplugin.config.SoyViewConf;
 import com.github.mati1979.play.soyplugin.data.ReflectionToSoyDataConverter;
 import com.github.mati1979.play.soyplugin.data.ToSoyDataConverter;
 import com.github.mati1979.play.soyplugin.global.compile.CompileTimeGlobalModelResolver;
@@ -43,7 +45,7 @@ public class PlaySoyConfig {
 
     @Bean
     public FileSystemTemplateFilesResolver soyTemplateFilesResolver() throws Exception {
-        return new FileSystemTemplateFilesResolver();
+        return new FileSystemTemplateFilesResolver(soyViewConf());
     }
 
     @Bean
@@ -79,31 +81,36 @@ public class PlaySoyConfig {
     }
 
     @Bean
-    public SoyTofuOptions soyTofuOptions() {
+    public SoyTofuOptions soyTofuOptions(final SoyViewConf soyViewConf) {
         final SoyTofuOptions soyTofuOptions = new SoyTofuOptions();
-        soyTofuOptions.setUseCaching(!PlayConfAccessor.GLOBAL_HOT_RELOAD_MODE);
+        soyTofuOptions.setUseCaching(!soyViewConf.globalHotReloadMode());
 
         return soyTofuOptions;
     }
 
     @Bean
     public TofuCompiler soyTofuCompiler(final CompileTimeGlobalModelResolver compileTimeGlobalModelResolver, final SoyJsSrcOptions soyJsSrcOptions, final SoyTofuOptions soyTofuOptions) {
-        return new DefaultTofuCompiler(compileTimeGlobalModelResolver, soyJsSrcOptions, soyTofuOptions);
+        return new DefaultTofuCompiler(compileTimeGlobalModelResolver, soyViewConf());
     }
 
     @Bean
     public SoyMsgBundleResolver soyMsgBundleResolver() {
-        return new DefaultSoyMsgBundleResolver();
+        return new DefaultSoyMsgBundleResolver(soyViewConf());
     }
 
     @Bean
     public CompiledTemplatesHolder soyTemplatesHolder(final TemplateFilesResolver templateFilesResolver, final TofuCompiler tofuCompiler) throws Exception {
-        return new DefaultCompiledTemplatesHolder(tofuCompiler, templateFilesResolver);
+        return new DefaultCompiledTemplatesHolder(tofuCompiler, templateFilesResolver, soyViewConf());
+    }
+
+    @Bean
+    public SoyViewConf soyViewConf() {
+        return new PlaySoyViewConf();
     }
 
     @Bean
     public TemplateRenderer soyTemplateRenderer() {
-        return new DefaultTemplateRenderer();
+        return new DefaultTemplateRenderer(soyViewConf());
     }
 
     @Bean

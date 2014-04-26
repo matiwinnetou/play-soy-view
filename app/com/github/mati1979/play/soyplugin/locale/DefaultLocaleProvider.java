@@ -29,8 +29,4 @@ public class DefaultLocaleProvider implements LocaleProvider {
         return Optional.fromNullable(locale);
     }
 
-    public void setLocale(final Locale locale) {
-        this.locale = locale;
-    }
-
 }

@@ -2,7 +2,7 @@ package com.github.mati1979.play.soyplugin.holder;
 
 import com.github.mati1979.play.soyplugin.compile.EmptyTofuCompiler;
 import com.github.mati1979.play.soyplugin.compile.TofuCompiler;
-import com.github.mati1979.play.soyplugin.config.PlayConfAccessor;
+import com.github.mati1979.play.soyplugin.config.SoyViewConf;
 import com.github.mati1979.play.soyplugin.template.EmptyTemplateFilesResolver;
 import com.github.mati1979.play.soyplugin.template.TemplateFilesResolver;
 import com.google.common.base.Optional;
@@ -12,8 +12,6 @@ import com.google.template.soy.tofu.SoyTofu;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collection;
-
-import static com.github.mati1979.play.soyplugin.config.PlayConfAccessor.COMPILE_PRECOMPILE_TEMPLATES;
 
 /**
  * Created with IntelliJ IDEA.
@@ -31,17 +29,14 @@ public class DefaultCompiledTemplatesHolder implements CompiledTemplatesHolder {
 
     private Optional<SoyTofu> compiledTemplates = Optional.absent();
 
-    private boolean hotReloadMode = PlayConfAccessor.GLOBAL_HOT_RELOAD_MODE;
+    private SoyViewConf soyViewConf = null;
 
-    private boolean preCompileTemplates = COMPILE_PRECOMPILE_TEMPLATES;
-
-    public DefaultCompiledTemplatesHolder(final TofuCompiler tofuCompiler, final TemplateFilesResolver templatesFileResolver) throws IOException {
+    public DefaultCompiledTemplatesHolder(final TofuCompiler tofuCompiler,
+                                          final TemplateFilesResolver templatesFileResolver,
+                                          final SoyViewConf soyViewConf) throws IOException {
         this.tofuCompiler = tofuCompiler;
         this.templatesFileResolver = templatesFileResolver;
-        init();
-    }
-
-    public DefaultCompiledTemplatesHolder() throws IOException {
+        this.soyViewConf = soyViewConf;
         init();
     }
 
@@ -54,12 +49,12 @@ public class DefaultCompiledTemplatesHolder implements CompiledTemplatesHolder {
     }
 
     private boolean shouldCompileTemplates() {
-        return isHotReloadMode() || !compiledTemplates.isPresent();
+        return soyViewConf.globalHotReloadMode() || !compiledTemplates.isPresent();
     }
 
     public void init() throws IOException {
         logger.debug("TemplatesHolder init...");
-        if (preCompileTemplates) {
+        if (soyViewConf.compilePrecompileTemplates()) {
             this.compiledTemplates = Optional.fromNullable(compileTemplates());
         }
     }
@@ -69,37 +64,13 @@ public class DefaultCompiledTemplatesHolder implements CompiledTemplatesHolder {
         Preconditions.checkNotNull(tofuCompiler, "tofuCompiler cannot be null!");
 
         final Collection<URL> templateFiles = templatesFileResolver.resolve();
-        if (templateFiles != null && templateFiles.size() > 0) {
+        if (templateFiles.size() > 0) {
             logger.debug("Compiling templates, no:{}", templateFiles.size());
 
             return tofuCompiler.compile(templateFiles);
         }
 
         throw new IOException("0 template files have been found, check your templateFilesResolver!");
-    }
-
-    public void setHotReloadMode(final boolean hotReloadMode) {
-        this.hotReloadMode = hotReloadMode;
-    }
-
-    public boolean isHotReloadMode() {
-        return hotReloadMode;
-    }
-
-    public boolean isHotReloadModeOff() {
-        return !hotReloadMode;
-    }
-
-    public void setTofuCompiler(TofuCompiler tofuCompiler) {
-        this.tofuCompiler = tofuCompiler;
-    }
-
-    public void setTemplatesFileResolver(TemplateFilesResolver templatesFileResolver) {
-        this.templatesFileResolver = templatesFileResolver;
-    }
-
-    public void setPreCompileTemplates(boolean preCompileTemplates) {
-        this.preCompileTemplates = preCompileTemplates;
     }
 
 }

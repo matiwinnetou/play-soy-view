@@ -18,15 +18,16 @@ public interface TemplateFilesResolver {
 
     /**
      * Iterate over all files and provide urls of files pointing to soy template files
-     * @return
-     * @throws IOException
+     * @return resolved url
+     * @throws IOException - in case io exception occurs
      */
     Collection<URL> resolve() throws IOException;
 
     /**
      * Iterate over all files and provide a matching url for a template passed in as a parameter
-     * @return
-     * @throws IOException
+     * @param templateName - name of template
+     * @return resolved url
+     * @throws IOException - in case io exception occurs
      */
     Optional<URL> resolve(String templateName) throws IOException;
 

@@ -1,6 +1,6 @@
 package com.github.mati1979.play.soyplugin.ajax.auth;
 
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 
 import java.util.List;
 
@@ -12,41 +12,13 @@ import java.util.List;
  *
  * A configurable implementation of AuthManager that simply takes a list of allowed
  * templates to be compiled from an internal unmodifiable list
- *
- * Spring XML example:<br>
- * <code>
- *   <property name="authManager">
- *     <bean class="com.github.mati1979.play.soyplugin.ajax.auth.ConfigurableAuthManager">
- *       <property name="allowedTemplates">
- *        <list><value>ajax_macros</value></list>
- *       </property>
- *     </bean>
- *   </property>
- * </code>
- * Spring JavaConfig example:<br>
- * <code>
- *  @Bean
- *  public AuthManager authManager() {
- *     final ConfigurableAuthManager configurableAuthManager = new ConfigurableAuthManager();
- *     configurableAuthManager.setAllowedTemplates(Lists.newArrayList("templates/client-words.soy", "templates/server-time.soy"));
- *
- *     return configurableAuthManager;
- *  }
- * </code>
  */
 public class ConfigurableAuthManager implements AuthManager {
 
-    /**friendly*/ ImmutableList<String> allowedTemplates = new ImmutableList.Builder<String>().build();
+    /**friendly*/ List<String> allowedTemplates = Lists.newArrayList();
 
-    public ConfigurableAuthManager(List<String> allowedTemplates) {
-        this.allowedTemplates = ImmutableList.copyOf(allowedTemplates);
-    }
-
-    public ConfigurableAuthManager() {
-    }
-
-    public void setAllowedTemplates(final List<String> allowedTemplates) {
-        this.allowedTemplates = ImmutableList.copyOf(allowedTemplates);
+    public ConfigurableAuthManager(final List<String> allowedTemplates) {
+        this.allowedTemplates = allowedTemplates;
     }
 
     @Override

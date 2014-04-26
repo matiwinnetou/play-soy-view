@@ -16,8 +16,6 @@ import java.util.Collection;
  */
 public interface HashFileGenerator {
 
-   Optional<String> hash(Optional<URL> url) throws IOException;
-
-   Optional<String> hashMulti(Collection<URL> urls) throws IOException;
+   Optional<String> hash() throws IOException;
 
 }

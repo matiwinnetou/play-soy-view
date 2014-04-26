@@ -1,6 +1,9 @@
 package com.github.mati1979.play.soyplugin.ajax.config;
 
 import com.github.mati1979.play.soyplugin.ajax.SoyAjaxController;
+import com.github.mati1979.play.soyplugin.ajax.allowedurls.DefaultSoyAllowedUrlsResolver;
+import com.github.mati1979.play.soyplugin.ajax.allowedurls.SoyAllowedUrls;
+import com.github.mati1979.play.soyplugin.ajax.allowedurls.SoyAllowedUrlsResolver;
 import com.github.mati1979.play.soyplugin.ajax.auth.AuthManager;
 import com.github.mati1979.play.soyplugin.ajax.auth.ConfigurableAuthManager;
 import com.github.mati1979.play.soyplugin.ajax.auth.PermissableAuthManager;
@@ -10,7 +13,7 @@ import com.github.mati1979.play.soyplugin.ajax.process.OutputProcessor;
 import com.github.mati1979.play.soyplugin.ajax.process.google.GoogleClosureOutputProcessor;
 import com.github.mati1979.play.soyplugin.bundle.SoyMsgBundleResolver;
 import com.github.mati1979.play.soyplugin.compile.TofuCompiler;
-import com.github.mati1979.play.soyplugin.config.PlayConfAccessor;
+import com.github.mati1979.play.soyplugin.config.SoyViewConf;
 import com.github.mati1979.play.soyplugin.locale.LocaleProvider;
 import com.github.mati1979.play.soyplugin.spring.PlaySoyConfig;
 import com.github.mati1979.play.soyplugin.template.TemplateFilesResolver;
@@ -18,10 +21,6 @@ import com.google.common.collect.Lists;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-
-import java.util.Arrays;
-
-import static com.github.mati1979.play.soyplugin.config.PlayConfAccessor.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -33,51 +32,48 @@ import static com.github.mati1979.play.soyplugin.config.PlayConfAccessor.*;
 @Import(PlaySoyConfig.class)
 public class PlaySoyViewAjaxConfig {
 
-    @Bean
-    public HashFileGenerator soyMd5HashFileGenerator() {
-        final MD5HashFileGenerator md5HashFileGenerator = new MD5HashFileGenerator();
-        md5HashFileGenerator.setHotReloadMode(GLOBAL_HOT_RELOAD_MODE);
-
-        return md5HashFileGenerator;
+    @Bean(initMethod = "init")
+    public HashFileGenerator soyMd5HashFileGenerator(final SoyAllowedUrls soyAllowedUrls,
+                                                     final SoyViewConf soyViewConf) {
+        return new MD5HashFileGenerator(soyAllowedUrls, soyViewConf);
     }
 
-    @Bean
+    @Bean(initMethod = "init")
     public SoyAjaxController soyAjaxController(final AuthManager authManager,
                                                final LocaleProvider localeProvider,
                                                final TemplateFilesResolver templateFilesResolver,
                                                final TofuCompiler tofuCompiler,
-                                               final SoyMsgBundleResolver soyMsgBundleResolver) {
-        final GoogleClosureOutputProcessor googleClosureOutputProcessor = new GoogleClosureOutputProcessor();
-        googleClosureOutputProcessor.setEncoding(GLOBAL_ENCODING);
-
-        final SoyAjaxController soyAjaxController = new SoyAjaxController();
-        soyAjaxController.setAuthManager(authManager);
-        soyAjaxController.setEncoding(GLOBAL_ENCODING);
-        soyAjaxController.setHotReloadMode(GLOBAL_HOT_RELOAD_MODE);
-        soyAjaxController.setLocaleProvider(localeProvider);
-        soyAjaxController.setOutputProcessors(Lists.<OutputProcessor>newArrayList(googleClosureOutputProcessor));
-        if (AJAX_CACHE_CONTROL != null && !PlayConfAccessor.AJAX_CACHE_CONTROL.isEmpty()) {
-            soyAjaxController.setCacheControl(AJAX_CACHE_CONTROL);
-        }
-        soyAjaxController.setTemplateFilesResolver(templateFilesResolver);
-        soyAjaxController.setTofuCompiler(tofuCompiler);
-        soyAjaxController.setSoyMsgBundleResolver(soyMsgBundleResolver);
-        if (AJAX_EXPIRE_HEADERS != null && !AJAX_EXPIRE_HEADERS.isEmpty()) {
-            soyAjaxController.setExpireHeaders(AJAX_EXPIRE_HEADERS);
-        }
-        soyAjaxController.init();
-
-        return soyAjaxController;
+                                               final SoyMsgBundleResolver soyMsgBundleResolver,
+                                               final SoyViewConf soyViewConf) {
+        return new SoyAjaxController(authManager,
+                localeProvider,
+                soyMsgBundleResolver,
+                tofuCompiler,
+                templateFilesResolver,
+                Lists.<OutputProcessor>newArrayList(new GoogleClosureOutputProcessor(soyViewConf)),
+                soyViewConf
+        );
     }
 
     @Bean
-    public AuthManager soyAuthManager() {
-        if (AJAX_SECURITY_ENABLED && AJAX_ALLOWED_URLS != null && !AJAX_ALLOWED_URLS.isEmpty()) {
-            final String[] split = AJAX_ALLOWED_URLS.split(",");
-            return new ConfigurableAuthManager(Arrays.asList(split));
+    public SoyAllowedUrlsResolver soyAllowedUrlsResolver(final TemplateFilesResolver templateFilesResolver,
+                                      final SoyViewConf soyViewConf) {
+        return new DefaultSoyAllowedUrlsResolver(templateFilesResolver, soyViewConf);
+    }
+
+    @Bean
+    public SoyAllowedUrls soyAllowedUrls(final SoyAllowedUrlsResolver soyAllowedUrlsResolver) {
+        return soyAllowedUrlsResolver.allowedUrls();
+    }
+
+    @Bean
+    public AuthManager soyAuthManager(final SoyAllowedUrls soyAllowedUrls) {
+        if (soyAllowedUrls.isEnabledSecurity()) {
+            return new ConfigurableAuthManager(soyAllowedUrls.urls());
         }
 
         return new PermissableAuthManager();
     }
+
 
 }

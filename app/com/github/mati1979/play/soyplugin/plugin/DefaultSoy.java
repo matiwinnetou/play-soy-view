@@ -2,6 +2,7 @@ package com.github.mati1979.play.soyplugin.plugin;
 
 import com.github.mati1979.play.soyplugin.bundle.EmptySoyMsgBundleResolver;
 import com.github.mati1979.play.soyplugin.bundle.SoyMsgBundleResolver;
+import com.github.mati1979.play.soyplugin.config.EmptySoyViewConf;
 import com.github.mati1979.play.soyplugin.data.EmptyToSoyDataConverter;
 import com.github.mati1979.play.soyplugin.data.ToSoyDataConverter;
 import com.github.mati1979.play.soyplugin.global.runtime.EmptyGlobalRuntimeModelResolver;
@@ -32,13 +33,18 @@ public class DefaultSoy implements Soy {
 
     private SoyMsgBundleResolver soyMsgBundleResolver = new EmptySoyMsgBundleResolver();
 
-    private TemplateRenderer templateRenderer = new DefaultTemplateRenderer();
+    private TemplateRenderer templateRenderer = new DefaultTemplateRenderer(new EmptySoyViewConf());
 
     private ToSoyDataConverter toSoyDataConverter = new EmptyToSoyDataConverter();
 
     private LocaleProvider localeProvider = new EmptyLocaleProvider();
 
-    public DefaultSoy(CompiledTemplatesHolder compiledTemplatesHolder, GlobalRuntimeModelResolver globalRuntimeModelResolver, SoyMsgBundleResolver soyMsgBundleResolver, TemplateRenderer templateRenderer, ToSoyDataConverter toSoyDataConverter, LocaleProvider localeProvider) {
+    public DefaultSoy(final CompiledTemplatesHolder compiledTemplatesHolder,
+                      final GlobalRuntimeModelResolver globalRuntimeModelResolver,
+                      final SoyMsgBundleResolver soyMsgBundleResolver,
+                      final TemplateRenderer templateRenderer,
+                      final ToSoyDataConverter toSoyDataConverter,
+                      final LocaleProvider localeProvider) {
         this.compiledTemplatesHolder = compiledTemplatesHolder;
         this.globalRuntimeModelResolver = globalRuntimeModelResolver;
         this.soyMsgBundleResolver = soyMsgBundleResolver;
@@ -67,7 +73,7 @@ public class DefaultSoy implements Soy {
     }
 
     @Override
-    public String html(String view) throws Exception {
+    public String html(final String view) throws Exception {
         final Http.Request request = Http.Context.current().request();
         final Http.Response response = Http.Context.current().response();
 
@@ -75,21 +81,21 @@ public class DefaultSoy implements Soy {
     }
 
     @Override
-    public String html(Http.Request request, Http.Response response, String view, SoyMapData soyMapData) throws Exception {
+    public String html(final Http.Request request, final Http.Response response, final String view, final SoyMapData soyMapData) throws Exception {
         return htmlPriv(request, response, view, Optional.fromNullable(soyMapData));
     }
 
     @Override
-    public String html(Http.Request request, Http.Response response, String view, Object model) throws Exception {
+    public String html(final Http.Request request, final Http.Response response, final String view, final Object model) throws Exception {
         return htmlPriv(request, response, view, toSoyDataConverter.toSoyMap(model));
     }
 
     @Override
-    public String html(Http.Request request, Http.Response response, String view) throws Exception {
+    public String html(final Http.Request request, final Http.Response response, final String view) throws Exception {
         return htmlPriv(request, response, view, Optional.<SoyMapData>absent());
     }
 
-    private String htmlPriv(Http.Request request, Http.Response response, final String viewName, final Optional<SoyMapData> soyMapData) throws Exception {
+    private String htmlPriv(final Http.Request request, final Http.Response response, final String viewName, final Optional<SoyMapData> soyMapData) throws Exception {
         final Optional<Locale> localeOptional = localeProvider.resolveLocale(request);
 
         final RenderRequest renderRequest = new RenderRequest.Builder()
@@ -110,54 +116,6 @@ public class DefaultSoy implements Soy {
         }
 
         return runtimeData;
-    }
-
-    public CompiledTemplatesHolder getCompiledTemplatesHolder() {
-        return compiledTemplatesHolder;
-    }
-
-    public void setCompiledTemplatesHolder(CompiledTemplatesHolder compiledTemplatesHolder) {
-        this.compiledTemplatesHolder = compiledTemplatesHolder;
-    }
-
-    public GlobalRuntimeModelResolver getGlobalRuntimeModelResolver() {
-        return globalRuntimeModelResolver;
-    }
-
-    public void setGlobalRuntimeModelResolver(GlobalRuntimeModelResolver globalRuntimeModelResolver) {
-        this.globalRuntimeModelResolver = globalRuntimeModelResolver;
-    }
-
-    public SoyMsgBundleResolver getSoyMsgBundleResolver() {
-        return soyMsgBundleResolver;
-    }
-
-    public void setSoyMsgBundleResolver(SoyMsgBundleResolver soyMsgBundleResolver) {
-        this.soyMsgBundleResolver = soyMsgBundleResolver;
-    }
-
-    public TemplateRenderer getTemplateRenderer() {
-        return templateRenderer;
-    }
-
-    public void setTemplateRenderer(TemplateRenderer templateRenderer) {
-        this.templateRenderer = templateRenderer;
-    }
-
-    public ToSoyDataConverter getToSoyDataConverter() {
-        return toSoyDataConverter;
-    }
-
-    public void setToSoyDataConverter(ToSoyDataConverter toSoyDataConverter) {
-        this.toSoyDataConverter = toSoyDataConverter;
-    }
-
-    public LocaleProvider getLocaleProvider() {
-        return localeProvider;
-    }
-
-    public void setLocaleProvider(LocaleProvider localeProvider) {
-        this.localeProvider = localeProvider;
     }
 
 }

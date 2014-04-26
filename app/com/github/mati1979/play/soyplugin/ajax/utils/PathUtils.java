@@ -16,7 +16,8 @@ public class PathUtils {
 
     /**
      * Converts a String array to a String with coma separator
-     * example: String["a.soy", "b.soy"] -> output: a.soy,b.soy
+     * @param array - array of soy files
+     * @return soy files with commas
      */
    public static String arrayToPath(final String[] array) {
         if (array == null) {
