@@ -2,7 +2,7 @@ organization := "pl.matisoft"
 
 name := "play-soy-view"
 
-version := "0.1.7.p23"
+version := "0.1.7.play23"
 
 scalaVersion := "2.11.0"
 
