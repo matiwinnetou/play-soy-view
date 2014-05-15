@@ -25,7 +25,6 @@ import java.beans.PropertyDescriptor;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
 
 /**
  * An implementation of ToSoyDataConverter that will recursively inspect
@@ -47,7 +46,7 @@ import java.util.concurrent.Callable;
 public class ReflectionToSoyDataConverter implements ToSoyDataConverter {
 
     @Override
-    public Optional<SoyMapData> toSoyMap(final Object model) throws Exception {
+    public Optional<SoyMapData> toSoyMap(final Object model) {
         if (model == null) {
             return Optional.absent();
         }
@@ -55,7 +54,7 @@ public class ReflectionToSoyDataConverter implements ToSoyDataConverter {
         return Optional.fromNullable(objectToSoyDataMap(model));
     }
 
-    private Map<String, ?> toSoyCompatibleMap(final Object obj) throws Exception {
+    private Map<String, ?> toSoyCompatibleMap(final Object obj) {
         Object ret = toSoyCompatibleObjects(obj);
         if (!(ret instanceof Map)) {
             throw new IllegalArgumentException("Input should be a Map or POJO.");
@@ -64,7 +63,7 @@ public class ReflectionToSoyDataConverter implements ToSoyDataConverter {
         return (Map<String, ?>) ret;
     }
 
-    private Object toSoyCompatibleObjects(Object obj) throws Exception {
+    private Object toSoyCompatibleObjects(final Object obj) {
         if (obj == null) {
             return obj;
         }
@@ -78,7 +77,7 @@ public class ReflectionToSoyDataConverter implements ToSoyDataConverter {
         if (obj instanceof Map) {
             @SuppressWarnings("unchecked")
             Map<String, Object> map = (Map<String, Object>) obj;
-            Map<String, Object> newMap = new HashMap<String, Object>(map.size());
+            Map<String, Object> newMap = new HashMap<>(map.size());
             for (String key : map.keySet()) {
                 newMap.put(key, toSoyCompatibleObjects(map.get(key)));
             }
@@ -91,12 +90,6 @@ public class ReflectionToSoyDataConverter implements ToSoyDataConverter {
                 list.add(toSoyCompatibleObjects(subValue));
             }
             return list;
-        }
-
-        if (obj instanceof Callable) {
-            final Callable callable = (Callable) obj;
-
-            return toSoyCompatibleObjects(callable.call());
         }
 
         if (obj.getClass().isArray()) {
@@ -135,7 +128,7 @@ public class ReflectionToSoyDataConverter implements ToSoyDataConverter {
         return map;
     }
 
-    private SoyMapData objectToSoyDataMap(Object obj) throws Exception {
+    private SoyMapData objectToSoyDataMap(final Object obj) {
         if (obj == null) {
             return new SoyMapData();
         }

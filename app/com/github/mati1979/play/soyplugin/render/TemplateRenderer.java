@@ -8,6 +8,6 @@ package com.github.mati1979.play.soyplugin.render;
  */
 public interface TemplateRenderer {
 
-    String render(RenderRequest renderRequest) throws Exception;
+    String render(RenderRequest renderRequest);
 
 }

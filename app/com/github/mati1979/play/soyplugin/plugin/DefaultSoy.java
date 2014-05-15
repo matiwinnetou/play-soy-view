@@ -18,6 +18,7 @@ import com.google.common.base.Optional;
 import com.google.template.soy.data.SoyMapData;
 import play.mvc.Http;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -57,7 +58,7 @@ public class DefaultSoy implements Soy {
     }
 
     @Override
-    public String html(final String view, final Object model) throws Exception {
+    public String html(final String view, final Object model) {
         final Http.Request request = Http.Context.current().request();
         final Http.Response response = Http.Context.current().response();
 
@@ -65,7 +66,7 @@ public class DefaultSoy implements Soy {
     }
 
     @Override
-    public String html(final String view, final SoyMapData model) throws Exception {
+    public String html(final String view, final SoyMapData model) {
         final Http.Request request = Http.Context.current().request();
         final Http.Response response = Http.Context.current().response();
 
@@ -73,7 +74,7 @@ public class DefaultSoy implements Soy {
     }
 
     @Override
-    public String html(final String view) throws Exception {
+    public String html(final String view) {
         final Http.Request request = Http.Context.current().request();
         final Http.Response response = Http.Context.current().response();
 
@@ -81,32 +82,35 @@ public class DefaultSoy implements Soy {
     }
 
     @Override
-    public String html(final Http.Request request, final Http.Response response, final String view, final SoyMapData soyMapData) throws Exception {
+    public String html(final Http.Request request, final Http.Response response, final String view, final SoyMapData soyMapData) {
         return htmlPriv(request, response, view, Optional.fromNullable(soyMapData));
     }
 
     @Override
-    public String html(final Http.Request request, final Http.Response response, final String view, final Object model) throws Exception {
+    public String html(final Http.Request request, final Http.Response response, final String view, final Object model) {
         return htmlPriv(request, response, view, toSoyDataConverter.toSoyMap(model));
     }
 
     @Override
-    public String html(final Http.Request request, final Http.Response response, final String view) throws Exception {
+    public String html(final Http.Request request, final Http.Response response, final String view) {
         return htmlPriv(request, response, view, Optional.<SoyMapData>absent());
     }
 
-    private String htmlPriv(final Http.Request request, final Http.Response response, final String viewName, final Optional<SoyMapData> soyMapData) throws Exception {
+    private String htmlPriv(final Http.Request request, final Http.Response response, final String viewName, final Optional<SoyMapData> soyMapData) {
         final Optional<Locale> localeOptional = localeProvider.resolveLocale(request);
 
-        final RenderRequest renderRequest = new RenderRequest.Builder()
-                .templateName(viewName)
-                .compiledTemplates(compiledTemplatesHolder.compiledTemplates())
-                .globalRuntimeModel(globalRuntimeModelResolver.resolveData(request, response, runtimeData(soyMapData)))
-                .soyMsgBundle(soyMsgBundleResolver.resolve(localeOptional))
-                .soyModel(soyMapData)
-                .build();
-
-        return templateRenderer.render(renderRequest);
+        try {
+            final RenderRequest renderRequest = new RenderRequest.Builder()
+                    .templateName(viewName)
+                    .compiledTemplates(compiledTemplatesHolder.compiledTemplates())
+                    .globalRuntimeModel(globalRuntimeModelResolver.resolveData(request, response, runtimeData(soyMapData)))
+                    .soyMsgBundle(soyMsgBundleResolver.resolve(localeOptional))
+                    .soyModel(soyMapData)
+                    .build();
+            return templateRenderer.render(renderRequest);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private Map runtimeData(final Optional<SoyMapData> soyMapData) {

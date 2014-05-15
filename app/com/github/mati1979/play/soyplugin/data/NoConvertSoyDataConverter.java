@@ -27,10 +27,9 @@ public class NoConvertSoyDataConverter implements ToSoyDataConverter {
      *
      * @param model
      * @return SoyMapData if model is of this type and an empty SoyMapData in case model is *not* a SoyMapData
-     * @throws Exception
      */
     @Override
-    public Optional<SoyMapData> toSoyMap(@Nullable final Object model) throws Exception {
+    public Optional<SoyMapData> toSoyMap(@Nullable final Object model) {
         if (model instanceof SoyMapData) {
             return Optional.of((SoyMapData) model);
         }

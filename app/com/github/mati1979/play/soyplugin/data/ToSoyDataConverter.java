@@ -21,8 +21,7 @@ public interface ToSoyDataConverter {
      *
      * @param model
      * @return
-     * @throws Exception
      */
-    Optional<SoyMapData> toSoyMap(@Nullable final Object model) throws Exception;
+    Optional<SoyMapData> toSoyMap(@Nullable final Object model);
 
 }

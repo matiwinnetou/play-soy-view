@@ -29,6 +29,7 @@ import com.google.template.soy.tofu.SoyTofuOptions;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,7 +45,7 @@ public class PlaySoyConfig {
     }
 
     @Bean
-    public FileSystemTemplateFilesResolver soyTemplateFilesResolver() throws Exception {
+    public FileSystemTemplateFilesResolver soyTemplateFilesResolver() {
         return new FileSystemTemplateFilesResolver(soyViewConf());
     }
 
@@ -54,7 +55,7 @@ public class PlaySoyConfig {
     }
 
     @Bean
-    public CompileTimeGlobalModelResolver soyCompileTimeGlobalModelResolver() throws Exception {
+    public CompileTimeGlobalModelResolver soyCompileTimeGlobalModelResolver() {
         final Map<String,Object> merged = new HashMap<>();
 
         final Optional<play.Configuration> pluginConfig = PlayConfAccessor.getPluginConfig();
@@ -101,8 +102,12 @@ public class PlaySoyConfig {
     }
 
     @Bean
-    public CompiledTemplatesHolder soyTemplatesHolder(final TemplateFilesResolver templateFilesResolver, final TofuCompiler tofuCompiler) throws Exception {
-        return new DefaultCompiledTemplatesHolder(tofuCompiler, templateFilesResolver, soyViewConf());
+    public CompiledTemplatesHolder soyTemplatesHolder(final TemplateFilesResolver templateFilesResolver, final TofuCompiler tofuCompiler) {
+        try {
+            return new DefaultCompiledTemplatesHolder(tofuCompiler, templateFilesResolver, soyViewConf());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Bean

@@ -8,16 +8,16 @@ import play.mvc.Http;
  */
 public interface Soy {
 
-    String html(String view, Object model) throws Exception;
+    String html(String view, Object model);
 
-    String html(String view, SoyMapData soyMapData) throws Exception;
+    String html(String view, SoyMapData soyMapData);
 
-    String html(String view) throws Exception;
+    String html(String view);
 
-    String html(Http.Request request, Http.Response response, String view, SoyMapData soyMapData) throws Exception;
+    String html(Http.Request request, Http.Response response, String view, SoyMapData soyMapData);
 
-    String html(Http.Request request, Http.Response response, String view, Object model) throws Exception;
+    String html(Http.Request request, Http.Response response, String view, Object model);
 
-    String html(Http.Request request, Http.Response response, String view) throws Exception;
+    String html(Http.Request request, Http.Response response, String view);
 
 }

@@ -15,7 +15,7 @@ import com.google.template.soy.data.SoyMapData;
 public class EmptyToSoyDataConverter implements ToSoyDataConverter {
 
     @Override
-    public Optional<SoyMapData> toSoyMap(final Object model) throws Exception {
+    public Optional<SoyMapData> toSoyMap(final Object model) {
         return Optional.of(new SoyMapData());
     }
 
