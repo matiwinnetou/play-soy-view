@@ -7,7 +7,7 @@ name := "play-soy-view"
 
 version := "0.1.8.play23"
 
-scalaVersion := "2.11.0"
+scalaVersion := "2.10.4"
 
 lazy val root = (project in file(".")).enablePlugins(PlayJava)
 
@@ -24,7 +24,7 @@ releaseSettings
 
 publishMavenStyle := true
 
-crossScalaVersions := Seq("2.10.4", "2.11.0")
+//crossScalaVersions := Seq("2.10.4", "2.11.0")
 
 publishTo := {
   val nexus = "https://oss.sonatype.org/"
