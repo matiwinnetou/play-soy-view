@@ -174,26 +174,26 @@ public class SoyAjaxController extends Controller {
         return Optional.absent();
     }
 
-    private Map<URL,String> compileTemplates(final String[] templateFileNames, final Http.Request request, final String locale) throws Exception {
+    private Map<URL,String> compileTemplates(final String[] templateFileNames, final Http.Request request, final String locale) {
         final HashMap<URL,String> map = new HashMap<URL,String>();
         for (final String templateFileName : templateFileNames) {
             try {
                 final Optional<URL> templateUrl = templateFilesResolver.resolve(templateFileName);
                 if (!templateUrl.isPresent()) {
-                    throw new Exception("File not found:" + templateFileName);
+                    throw new RuntimeException("File not found:" + templateFileName);
                 }
                 if (!authManager.isAllowed(templateFileName)) {
-                    throw new Exception("no permission to compile:" + templateFileName);
+                    throw new RuntimeException("no permission to compile:" + templateFileName);
                 }
                 logger.debug("Compiling JavaScript template:" + templateUrl.orNull());
                 final Optional<String> templateContent = compileTemplateAndAssertSuccess(request, templateUrl, locale);
                 if (!templateContent.isPresent()) {
-                    throw new Exception("file cannot be compiled:" + templateUrl);
+                    throw new RuntimeException("file cannot be compiled:" + templateUrl);
                 }
 
                 map.put(templateUrl.get(), templateContent.get());
             } catch (final IOException e) {
-                throw new Exception("Unable to find file:" + templateFileName + ".soy");
+                throw new RuntimeException("Unable to find file:" + templateFileName + ".soy");
             }
         }
 

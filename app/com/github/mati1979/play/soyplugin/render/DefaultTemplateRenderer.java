@@ -14,10 +14,8 @@ public class DefaultTemplateRenderer implements TemplateRenderer {
         this.soyViewConf = soyViewConf;
     }
 
-    private static final play.Logger.ALogger logger = play.Logger.of(DefaultTemplateRenderer.class);
-
     @Override
-    public String render(final RenderRequest renderRequest) throws Exception {
+    public String render(final RenderRequest renderRequest) {
         final SoyTofu compiledTemplates = renderRequest.getCompiledTemplates().get();
 
         final String templateName = renderRequest.getTemplateName();
@@ -29,7 +27,7 @@ public class DefaultTemplateRenderer implements TemplateRenderer {
         return renderer.render();
     }
 
-    protected void setupRenderer(final SoyTofu.Renderer renderer, final RenderRequest renderRequest, final Optional<SoyMapData> model) throws Exception {
+    protected void setupRenderer(final SoyTofu.Renderer renderer, final RenderRequest renderRequest, final Optional<SoyMapData> model) {
         if (model.isPresent()) {
             renderer.setData(model.get());
         }

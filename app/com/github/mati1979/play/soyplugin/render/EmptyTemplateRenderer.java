@@ -11,7 +11,7 @@ package com.github.mati1979.play.soyplugin.render;
 public class EmptyTemplateRenderer implements TemplateRenderer {
 
     @Override
-    public String render(final RenderRequest renderRequest) throws Exception {
+    public String render(final RenderRequest renderRequest) {
         return "";
     }
 
