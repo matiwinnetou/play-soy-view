@@ -4,7 +4,7 @@ name := "play-soy-view"
 
 version := "0.1.7.p23"
 
-lazy val root = (project in file(".")).enablePlugins(PlayJava)
+scalaVersion := "2.11.0"
 
 libraryDependencies ++= Seq(
   "com.google.template" % "soy" % "2012-12-21",
@@ -18,8 +18,6 @@ sonatypeSettings
 releaseSettings
 
 publishMavenStyle := true
-
-scalaVersion := "2.11.0"
 
 publishTo := {
   val nexus = "https://oss.sonatype.org/"
