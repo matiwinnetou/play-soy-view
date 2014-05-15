@@ -2,7 +2,9 @@ organization := "pl.matisoft"
 
 name := "play-soy-view"
 
-version := "0.1.6"
+version := "0.1.7"
+
+lazy val root = (project in file(".")).enablePlugins(PlayJava)
 
 libraryDependencies ++= Seq(
   "com.google.template" % "soy" % "2012-12-21",
@@ -17,7 +19,9 @@ releaseSettings
 
 publishMavenStyle := true
 
-play.Project.playJavaSettings
+scalaVersion := "2.11.0"
+
+//crossScalaVersions := Seq("2.10.4", "2.11.0")
 
 publishTo := {
   val nexus = "https://oss.sonatype.org/"
