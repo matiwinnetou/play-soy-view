@@ -73,7 +73,7 @@ public class PlayConfAccessor {
 
     public static String AJAX_ALLOWED_URLS = getPluginConfig().or(Configuration.root()).getString(ConfigKeys.AJAX_ALLOWED_URLS, ConfigDefaults.AJAX_ALLOWED_URLS);
 
-    public static String AJAX_EXPIRE_HEADERS = getPluginConfig().or(Configuration.root()).getString(ConfigKeys.AJAX_CACHE_CONTROL, ConfigDefaults.AJAX_EXPIRE_HEADERS);
+    public static String AJAX_EXPIRE_HEADERS = getPluginConfig().or(Configuration.root()).getString(ConfigKeys.AJAX_EXPIRE_HEADERS, ConfigDefaults.AJAX_EXPIRE_HEADERS);
 
     public static String AJAX_CACHE_CONTROL = getPluginConfig().or(Configuration.root()).getString(ConfigKeys.AJAX_CACHE_CONTROL, ConfigDefaults.AJAX_CACHE_CONTROL);
 
