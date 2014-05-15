@@ -2,7 +2,7 @@ organization := "pl.matisoft"
 
 name := "play-soy-view"
 
-version := "0.1.7"
+version := "0.1.7.p23"
 
 lazy val root = (project in file(".")).enablePlugins(PlayJava)
 
@@ -20,8 +20,6 @@ releaseSettings
 publishMavenStyle := true
 
 scalaVersion := "2.11.0"
-
-//crossScalaVersions := Seq("2.10.4", "2.11.0")
 
 publishTo := {
   val nexus = "https://oss.sonatype.org/"
