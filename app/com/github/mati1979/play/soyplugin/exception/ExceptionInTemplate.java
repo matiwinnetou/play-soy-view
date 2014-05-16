@@ -30,7 +30,7 @@ public class ExceptionInTemplate extends play.api.PlayException.ExceptionSource 
                                final Integer position,
                                final String description,
                                final Throwable cause) {
-        super("Soy error", description, cause);
+        super("Syntax error in soy template:" + viewName, description, cause);
         this.viewName = viewName;
         this.line = line;
         this.position = position;
