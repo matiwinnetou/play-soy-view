@@ -17,7 +17,7 @@ https://github.com/mati1979/play-soy-view-example
 - 0.1.6 - fixed a small regression bug in PlaySoyViewConfig
 - 0.1.7 - minor bug fix to do with expire headers (typo) for ajax soy
 - 0.1.8 - removal of checked exception in favour of unchecked (runtime) exceptions
-- 0.1.9 - introduced ExceptionInTemplate from Play that shows line and column number of an error
+- 0.1.10 - introduced ExceptionInTemplate from Play that shows line and column number of an error
 
 # TODO
 - Play 2.3 support
