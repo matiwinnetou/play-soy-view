@@ -5,7 +5,6 @@ import com.google.common.base.Optional;
 import com.google.template.soy.base.SoySyntaxException;
 import org.apache.commons.io.FileUtils;
 
-import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -33,6 +32,7 @@ public class ExceptionInTemplate extends play.api.PlayException.ExceptionSource 
                                final String description,
                                final Throwable cause) {
         super("Syntax error in soy template: " + viewName, description, cause);
+        this.templateFile = templateFile;
         this.line = line;
         this.position = position;
         this.fileAsString = fileAsString(templateFile);
@@ -51,13 +51,14 @@ public class ExceptionInTemplate extends play.api.PlayException.ExceptionSource 
     }
 
     public String sourceName() {
-        return templateFile.transform(new Function<File, String>() {
-            @Nullable
+        final Optional<String> transform = templateFile.transform(new Function<File, String>() {
             @Override
             public String apply(final File input) {
                 return input.getAbsolutePath();
             }
-        }).or("unknown source file...");
+        });
+
+        return transform.or("missing source file");
     }
 
     private String fileAsString(final Optional<File> templateFile) {
