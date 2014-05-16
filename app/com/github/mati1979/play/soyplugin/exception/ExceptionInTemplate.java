@@ -19,22 +19,22 @@ public class ExceptionInTemplate extends play.api.PlayException.ExceptionSource 
 
     private final static Pattern PATTERN = Pattern.compile("^.+\\[line\\040(\\d{1,3}),\\040column\\040(\\d{1,3})\\].+$");
 
-    final File templateFile;
-    final Integer line;
-    final Integer position;
+    private Integer line;
+    private Integer position;
+    private String viewName;
+    private String fileAsString = "";
 
-    final String fileAsString;
-
-    public ExceptionInTemplate(final File templateFile, final Integer line, final Integer position, final String description, final Throwable cause) {
+    public ExceptionInTemplate(final Optional<File> templateFile,
+                               final String viewName,
+                               final Integer line,
+                               final Integer position,
+                               final String description,
+                               final Throwable cause) {
         super("Soy error", description, cause);
-        this.templateFile = templateFile;
+        this.viewName = viewName;
         this.line = line;
         this.position = position;
-        try {
-            this.fileAsString = FileUtils.readFileToString(templateFile);
-        } catch (IOException e) {
-            throw new RuntimeException("unable to read file:" + templateFile, e);
-        }
+        this.fileAsString = fileAsString(templateFile);
     }
 
     public Integer line() {
@@ -50,23 +50,33 @@ public class ExceptionInTemplate extends play.api.PlayException.ExceptionSource 
     }
 
     public String sourceName() {
-        return templateFile.getName();
+        return viewName;
+    }
+
+    private String fileAsString(final Optional<File> templateFile) {
+        if (templateFile.isPresent()) {
+            try {
+                return FileUtils.readFileToString(templateFile.get());
+            } catch (IOException e) {
+            }
+        }
+
+        return "missing file:" + templateFile;
     }
 
     public static ExceptionInTemplate createExceptionInTemplate(final SoySyntaxException e) {
         final Optional<File> fileOpt = createFile(e.getSourceLocation().getFilePath());
-        if (!fileOpt.isPresent()) {
-            throw new RuntimeException("file not found:" + e.getSourceLocation().getFilePath());
-        }
         final Matcher matcher = PATTERN.matcher(e.getOriginalMessage());
+        final String viewName = e.getTemplateName();
+        final String message = e.getMessage();
         if (matcher.matches()) {
             final Integer lineNo = Integer.parseInt(matcher.group(1).trim());
             final Integer position = Integer.parseInt(matcher.group(2).trim());
 
-            return new ExceptionInTemplate(fileOpt.get(), lineNo, position, e.getMessage(), e);
+            return new ExceptionInTemplate(fileOpt, viewName, lineNo, position, message, e);
         }
 
-        return new ExceptionInTemplate(fileOpt.get(), 0, 0, e.getMessage(), e);
+        return new ExceptionInTemplate(fileOpt, viewName, 0, 0, message, e);
     }
 
     private static Optional<File> createFile(final String fileUri) {
