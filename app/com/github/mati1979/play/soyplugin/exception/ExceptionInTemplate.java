@@ -1,9 +1,11 @@
 package com.github.mati1979.play.soyplugin.exception;
 
+import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.template.soy.base.SoySyntaxException;
 import org.apache.commons.io.FileUtils;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -19,9 +21,9 @@ public class ExceptionInTemplate extends play.api.PlayException.ExceptionSource 
 
     private final static Pattern PATTERN = Pattern.compile("^.+\\[line\\040(\\d{1,3}),\\040column\\040(\\d{1,3})\\].+$");
 
+    private Optional<File> templateFile = Optional.absent();
     private Integer line;
     private Integer position;
-    private String viewName;
     private String fileAsString = "";
 
     public ExceptionInTemplate(final Optional<File> templateFile,
@@ -30,8 +32,7 @@ public class ExceptionInTemplate extends play.api.PlayException.ExceptionSource 
                                final Integer position,
                                final String description,
                                final Throwable cause) {
-        super("Syntax error in soy template:" + viewName, description, cause);
-        this.viewName = viewName;
+        super("Syntax error in soy template: " + viewName, description, cause);
         this.line = line;
         this.position = position;
         this.fileAsString = fileAsString(templateFile);
@@ -50,7 +51,13 @@ public class ExceptionInTemplate extends play.api.PlayException.ExceptionSource 
     }
 
     public String sourceName() {
-        return viewName;
+        return templateFile.transform(new Function<File, String>() {
+            @Nullable
+            @Override
+            public String apply(final File input) {
+                return input.getAbsolutePath();
+            }
+        }).or("unknown source file...");
     }
 
     private String fileAsString(final Optional<File> templateFile) {
