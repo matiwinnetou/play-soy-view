@@ -8,7 +8,7 @@ Individual components have to be wired via a dependency injection framework of c
 # Example:
 https://github.com/mati1979/play-soy-view-example
 
-#Version:
+# Version:
 - 0.1 - early adopters only
 - 0.1.1 - minor bug fixes
 - 0.1.3 - minor improvements
@@ -17,8 +17,34 @@ https://github.com/mati1979/play-soy-view-example
 - 0.1.6 - fixed a small regression bug in PlaySoyViewConfig
 - 0.1.7 - minor bug fix to do with expire headers (typo) for ajax soy
 - 0.1.8 - removal of checked exception in favour of unchecked (runtime) exceptions
+- 0.1.9 - introduced ExceptionInTemplate from Play that shows line and column number of an error
 
-#Requirements:
+# TODO
+- Play 2.3 support
+
+- Move code to java 8
+
+- make it idiomatic for play, make sure ClosurePlugin bootstraps a tree of components, but so that it is reconfigurable later as well
+
+- try to continue putting soy files in app/views, there is an example go to do this based on Freemarker and play integration
+
+- introduce basic runtime data providers (cookie, request params, etc)
+
+- Try more than first accepted languages, if first one fails then proceed to next
+
+- JavaDoc
+
+- Unit Test
+
+- Is this a problem that we are accessing Play application statically
+
+- research if spring bootstrap can be used in library mode
+
+- Support Reverse Router and JavaScript reverse router from Play
+
+- convert messages from conf/messages automatically to xliffs
+
+# Requirements:
 - Java 7
 - Play (Java or Scala) 2.2.x
 

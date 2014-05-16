@@ -5,6 +5,7 @@ import com.github.mati1979.play.soyplugin.bundle.SoyMsgBundleResolver;
 import com.github.mati1979.play.soyplugin.config.EmptySoyViewConf;
 import com.github.mati1979.play.soyplugin.data.EmptyToSoyDataConverter;
 import com.github.mati1979.play.soyplugin.data.ToSoyDataConverter;
+import com.github.mati1979.play.soyplugin.exception.ExceptionInTemplate;
 import com.github.mati1979.play.soyplugin.global.runtime.EmptyGlobalRuntimeModelResolver;
 import com.github.mati1979.play.soyplugin.global.runtime.GlobalRuntimeModelResolver;
 import com.github.mati1979.play.soyplugin.holder.CompiledTemplatesHolder;
@@ -15,6 +16,7 @@ import com.github.mati1979.play.soyplugin.render.DefaultTemplateRenderer;
 import com.github.mati1979.play.soyplugin.render.RenderRequest;
 import com.github.mati1979.play.soyplugin.render.TemplateRenderer;
 import com.google.common.base.Optional;
+import com.google.template.soy.base.SoySyntaxException;
 import com.google.template.soy.data.SoyMapData;
 import play.mvc.Http;
 
@@ -52,9 +54,6 @@ public class DefaultSoy implements Soy {
         this.templateRenderer = templateRenderer;
         this.toSoyDataConverter = toSoyDataConverter;
         this.localeProvider = localeProvider;
-    }
-
-    public DefaultSoy() {
     }
 
     @Override
@@ -108,8 +107,10 @@ public class DefaultSoy implements Soy {
                     .soyModel(soyMapData)
                     .build();
             return templateRenderer.render(renderRequest);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new RuntimeException(e);
+        } catch (final SoySyntaxException e) {
+            throw ExceptionInTemplate.createExceptionInTemplate(e);
         }
     }
 
