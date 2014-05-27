@@ -1,6 +1,6 @@
 #play-soy-view
 
-An experimental implementation of Google Closure library support for Play framework 2.2.x for Java
+An experimental implementation of Google Closure library support for Play framework for Java
 
 At the moment, this plugin assumes it will be wired via dependency injection, there is no support for including the plugin in plugins file in play that would result in auto wiring.
 Individual components have to be wired via a dependency injection framework of choice or alternatively manually wired.
@@ -18,7 +18,7 @@ https://github.com/mati1979/play-soy-view-example
 - 0.1.7 - minor bug fix to do with expire headers (typo) for ajax soy
 - 0.1.8 - removal of checked exception in favour of unchecked (runtime) exceptions
 - 0.1.12 - introduced ExceptionInTemplate from Play that shows line and column number of an error
-- 0.1.x - using play logger and removed slf4j 
+- 0.1.13 - using play logger and removed slf4j
 
 # TODO
 - cross compile 2.3 version for Scala: 2.11.x
