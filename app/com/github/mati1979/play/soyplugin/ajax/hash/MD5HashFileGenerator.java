@@ -32,7 +32,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class MD5HashFileGenerator implements HashFileGenerator {
 
-    private static final play.Logger.ALogger logger = play.Logger.of(MD5HashFileGenerator.class);
+    private static final play.Logger.ALogger logger = play.Logger.of("play.soy.view");
 
     private final static int DEF_CACHE_MAX_SIZE = 10000;
 

@@ -21,7 +21,7 @@ import java.util.Collection;
  */
 public class DefaultCompiledTemplatesHolder implements CompiledTemplatesHolder {
 
-    private static final play.Logger.ALogger logger = play.Logger.of(DefaultCompiledTemplatesHolder.class);
+    private static final play.Logger.ALogger logger = play.Logger.of("play.soy.view");
 
     private TofuCompiler tofuCompiler = new EmptyTofuCompiler();
 

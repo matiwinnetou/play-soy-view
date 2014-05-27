@@ -21,7 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class DefaultSoyMsgBundleResolver implements SoyMsgBundleResolver {
 
-    private static final play.Logger.ALogger logger = play.Logger.of(DefaultSoyMsgBundleResolver.class);
+    private static final play.Logger.ALogger logger = play.Logger.of("play.soy.view");
 
     /** a cache of soy msg bundles */
     /** friendly */ Map<Locale, SoyMsgBundle> msgBundles = new ConcurrentHashMap<Locale, SoyMsgBundle>();

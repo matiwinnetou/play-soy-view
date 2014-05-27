@@ -29,7 +29,7 @@ import java.util.Map;
  */
 public class DefaultTofuCompiler implements TofuCompiler {
 
-    private static final Logger.ALogger logger = Logger.of(DefaultTofuCompiler.class);
+    private static final Logger.ALogger logger = Logger.of("play.soy.view");
 
     private CompileTimeGlobalModelResolver compileTimeGlobalModelResolver = new EmptyCompileTimeGlobalModelResolver();
 

@@ -19,14 +19,11 @@ import com.google.common.base.Preconditions;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.template.soy.msgs.SoyMsgBundle;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.concurrent.ThreadSafe;
 import java.io.IOException;
 import java.io.StringReader;
@@ -44,8 +41,6 @@ public class SoyAjaxController extends Controller {
     private final static String DEF_TIME_UNIT = "DAYS";
 
     private final static int DEF_EXPIRE_AFTER_WRITE = 1;
-
-    private static final Logger logger = LoggerFactory.getLogger(SoyAjaxController.class);
 
     /** maximum number of entries this cache will hold */
     private int cacheMaxSize = DEF_CACHE_MAX_SIZE;
@@ -185,7 +180,6 @@ public class SoyAjaxController extends Controller {
                 if (!authManager.isAllowed(templateFileName)) {
                     throw new RuntimeException("no permission to compile:" + templateFileName);
                 }
-                logger.debug("Compiling JavaScript template:" + templateUrl.orNull());
                 final Optional<String> templateContent = compileTemplateAndAssertSuccess(request, templateUrl, locale);
                 if (!templateContent.isPresent()) {
                     throw new RuntimeException("file cannot be compiled:" + templateUrl);
@@ -236,7 +230,6 @@ public class SoyAjaxController extends Controller {
 
             return ok(processTemplate);
         } catch (final Exception ex) {
-            logger.warn("Unable to process template", ex);
             return internalServerError("Unable to process template!");
         }
     }

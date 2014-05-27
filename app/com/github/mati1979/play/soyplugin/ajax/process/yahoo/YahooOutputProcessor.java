@@ -4,8 +4,6 @@ import com.github.mati1979.play.soyplugin.ajax.process.OutputProcessor;
 import com.yahoo.platform.yui.compressor.JavaScriptCompressor;
 import org.mozilla.javascript.ErrorReporter;
 import org.mozilla.javascript.EvaluatorException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -19,7 +17,7 @@ import java.io.Writer;
  */
 public class YahooOutputProcessor implements OutputProcessor {
 
-    private static final Logger logger = LoggerFactory.getLogger(YahooOutputProcessor.class);
+    private static final play.Logger.ALogger logger = play.Logger.of("play.soy.view");
 
     // options of YUI compressor
     private int linebreakpos = -1;
