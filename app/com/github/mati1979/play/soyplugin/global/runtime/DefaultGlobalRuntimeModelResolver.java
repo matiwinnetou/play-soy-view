@@ -19,7 +19,7 @@ import java.util.Map;
  */
 public class DefaultGlobalRuntimeModelResolver implements GlobalRuntimeModelResolver {
 
-    private static final play.Logger.ALogger logger = play.Logger.of(DefaultGlobalRuntimeModelResolver.class);
+    private static final play.Logger.ALogger logger = play.Logger.of("play.soy.view");
 
     private List<RuntimeDataResolver> resolvers = Lists.newArrayList();
 

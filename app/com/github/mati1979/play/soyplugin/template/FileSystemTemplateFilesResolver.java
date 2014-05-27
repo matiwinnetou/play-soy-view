@@ -31,7 +31,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @ThreadSafe
 public class FileSystemTemplateFilesResolver implements TemplateFilesResolver {
 
-    private static final play.Logger.ALogger logger = play.Logger.of(FileSystemTemplateFilesResolver.class);
+    private static final play.Logger.ALogger logger = play.Logger.of("play.soy.view");
 
     /** a thread safe cache for resolved templates, no need to worry of ddos attack */
     /** friendly */ CopyOnWriteArrayList<URL> cachedFiles = new CopyOnWriteArrayList<>();

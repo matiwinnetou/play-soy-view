@@ -6,8 +6,6 @@ import com.google.common.collect.Lists;
 import com.google.javascript.jscomp.*;
 import com.google.javascript.jscomp.Compiler;
 import org.apache.commons.io.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.concurrent.ThreadSafe;
@@ -26,7 +24,7 @@ import java.util.logging.Level;
 @ThreadSafe
 public class GoogleClosureOutputProcessor implements OutputProcessor {
 
-    private static final Logger logger = LoggerFactory.getLogger(GoogleClosureOutputProcessor.class);
+    private static final play.Logger.ALogger logger = play.Logger.of("play.soy.view");
 
     private CompilationLevel compilationLevel = CompilationLevel.SIMPLE_OPTIMIZATIONS;
 
