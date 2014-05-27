@@ -21,15 +21,13 @@ https://github.com/mati1979/play-soy-view-example
 - 0.1.x - using play logger and removed slf4j 
 
 # TODO
-- Play 2.3 support
+- cross compile 2.3 version for Scala: 2.11.x
 
 - Move code to java 8
 
-- make it idiomatic for play, make sure ClosurePlugin bootstraps a tree of components, but so that it is reconfigurable later as well
+- make it idiomatic for play, make sure ClosurePlugin bootstraps a tree of components, but so that it is reconfigurable later as well. This requires that play properly supports DI in plugins
 
-- try to continue putting soy files in app/views, there is an example go to do this based on Freemarker and play integration
-
-- introduce basic runtime data providers (cookie, request params, etc)
+- support soy files in app/views, there is an example go to do this based on Freemarker and play integration
 
 - Try more than first accepted languages, if first one fails then proceed to next
 
@@ -37,17 +35,13 @@ https://github.com/mati1979/play-soy-view-example
 
 - Unit Test
 
-- Is this a problem that we are accessing Play application statically
-
-- research if spring bootstrap can be used in library mode
-
-- Support Reverse Router and JavaScript reverse router from Play
-
-- convert messages from conf/messages automatically to xliffs
+- Convert messages from conf/messages automatically to xliffs
 
 # Requirements:
 - Java 7
-- Play (Java or Scala) 2.2.x
+- Play (Java or Scala) 2.2.x for version 0.13.play22 (Scala 2.10.x)
+- Play (Java or Scala) 2.3.x for version 0.13.play23 (Scala 2.10.x)
+
 
 # Maven Central:
 This artifact is available in maven central (http://mvnrepository.com/artifact/pl.matisoft/play-soy-view_2.10/)
