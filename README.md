@@ -42,6 +42,5 @@ https://github.com/mati1979/play-soy-view-example
 - Play (Java or Scala) 2.2.x for version 0.13.play22 (Scala 2.10.x)
 - Play (Java or Scala) 2.3.x for version 0.13.play23 (Scala 2.10.x)
 
-
 # Maven Central:
 This artifact is available in maven central (http://mvnrepository.com/artifact/pl.matisoft/play-soy-view_2.10/)
