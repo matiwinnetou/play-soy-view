@@ -18,18 +18,15 @@ https://github.com/mati1979/play-soy-view-example
 - 0.1.7 - minor bug fix to do with expire headers (typo) for ajax soy
 - 0.1.8 - removal of checked exception in favour of unchecked (runtime) exceptions
 - 0.1.12 - introduced ExceptionInTemplate from Play that shows line and column number of an error
-- 0.1.x - using play logger and removed slf4j 
+- 0.1.13.play22 - using play logger and removed slf4j 
+- 0.1.13.play23 - play 2.3 support 
 
 # TODO
-- Play 2.3 support
-
 - Move code to java 8
 
 - make it idiomatic for play, make sure ClosurePlugin bootstraps a tree of components, but so that it is reconfigurable later as well
 
 - try to continue putting soy files in app/views, there is an example go to do this based on Freemarker and play integration
-
-- introduce basic runtime data providers (cookie, request params, etc)
 
 - Try more than first accepted languages, if first one fails then proceed to next
 
@@ -37,17 +34,13 @@ https://github.com/mati1979/play-soy-view-example
 
 - Unit Test
 
-- Is this a problem that we are accessing Play application statically
-
-- research if spring bootstrap can be used in library mode
-
 - Support Reverse Router and JavaScript reverse router from Play
 
 - convert messages from conf/messages automatically to xliffs
 
 # Requirements:
 - Java 7
-- Play (Java or Scala) 2.2.x
+- Play (Java or Scala) 2.2.x or play 2.3.x (play23 branch)
 
 # Maven Central:
 This artifact is available in maven central (http://mvnrepository.com/artifact/pl.matisoft/play-soy-view_2.10/)
