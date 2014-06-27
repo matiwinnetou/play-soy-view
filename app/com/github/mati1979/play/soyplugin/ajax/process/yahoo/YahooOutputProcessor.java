@@ -39,6 +39,7 @@ public class YahooOutputProcessor implements OutputProcessor {
 
     @Override
     public void process(Reader reader, Writer writer) throws IOException {
+        logger.debug("yahoo processor processing...");
         final JavaScriptCompressor javaScriptCompressor = new JavaScriptCompressor(reader, new ErrorReporter() {
             public void warning(final String message, final String sourceName, final int line, final String lineSource,
                                 final int lineOffset) {

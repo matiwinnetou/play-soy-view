@@ -40,6 +40,7 @@ public class GoogleClosureOutputProcessor implements OutputProcessor {
 
     @Override
     public void process(final Reader reader, final Writer writer) throws IOException {
+        logger.debug("google closure processing...");
         final String originalJsSourceCode = IOUtils.toString(reader);
         try {
             Compiler.setLoggingLevel(Level.SEVERE);

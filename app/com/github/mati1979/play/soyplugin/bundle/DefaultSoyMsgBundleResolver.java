@@ -1,7 +1,6 @@
 package com.github.mati1979.play.soyplugin.bundle;
 
 import com.github.mati1979.play.soyplugin.config.SoyViewConf;
-import java.util.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.template.soy.msgs.SoyMsgBundle;
@@ -13,10 +12,7 @@ import play.Play;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class DefaultSoyMsgBundleResolver implements SoyMsgBundleResolver {
@@ -39,6 +35,7 @@ public class DefaultSoyMsgBundleResolver implements SoyMsgBundleResolver {
      * the implementation will return Optional.empty() as well
      */
     public Optional<SoyMsgBundle> resolve(final Optional<Locale> locale) throws IOException {
+        logger.debug("resolving soy msg bundle for locale:{}", locale);
         if (!locale.isPresent()) {
             return Optional.empty();
         }
@@ -66,6 +63,8 @@ public class DefaultSoyMsgBundleResolver implements SoyMsgBundleResolver {
                     msgBundles.put(locale.get(), soyMsgBundle);
                 }
             }
+
+            logger.debug("resolved soy msg bundle:{}", soyMsgBundle);
 
             return Optional.ofNullable(soyMsgBundle);
         }

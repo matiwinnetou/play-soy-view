@@ -1,11 +1,11 @@
 package com.github.mati1979.play.soyplugin.locale;
 
-import java.util.Optional;
 import play.i18n.Lang;
 import play.mvc.Http;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,10 +18,16 @@ import java.util.Locale;
  */
 public class AcceptHeaderLocaleProvider implements LocaleProvider {
 
+    private static final play.Logger.ALogger logger = play.Logger.of(AcceptHeaderLocaleProvider.class);
+
     public Optional<Locale> resolveLocale(final Http.Request request) {
         final List<Lang> langs = request.acceptLanguages();
+        logger.debug("http request langs:" + langs);
         if (langs.size() > 0) {
-            return Optional.of(langs.iterator().next().toLocale());
+            final Locale locale = langs.iterator().next().toLocale();
+            logger.debug("using first lang:" + locale);
+
+            return Optional.of(locale);
         }
 
         return Optional.empty();

@@ -2,7 +2,6 @@ package com.github.mati1979.play.soyplugin.ajax.hash;
 
 import com.github.mati1979.play.soyplugin.ajax.allowedurls.SoyAllowedUrls;
 import com.github.mati1979.play.soyplugin.config.SoyViewConf;
-import java.util.Optional;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.hash.HashCode;
@@ -16,6 +15,7 @@ import java.io.StringReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -109,10 +109,14 @@ public class MD5HashFileGenerator implements HashFileGenerator {
     @Override
     public Optional<String> hash() throws IOException {
         if (soyAllowedUrls.urls().isEmpty()) {
+            logger.warn("Cannot calculate hash, soyAllowedUrls is empty!");
             return Optional.empty();
         }
         if (soyAllowedUrls.urls().size() == 1) {
-            return hashP(Optional.of(soyAllowedUrls.resolvedUrls().iterator().next()));
+            final Optional<String> hashOpt = hashP(Optional.of(soyAllowedUrls.resolvedUrls().iterator().next()));
+            logger.debug("Returning url hash:" + hashOpt);
+
+            return hashOpt;
         }
 
         final List<String> hashes = new ArrayList<>();
@@ -128,7 +132,10 @@ public class MD5HashFileGenerator implements HashFileGenerator {
             builder.append(hash);
         }
 
-        return Optional.ofNullable(getMD5Checksum(new ReaderInputStream(new StringReader(builder.toString()))));
+        final Optional<String> hashOpt = Optional.ofNullable(getMD5Checksum(new ReaderInputStream(new StringReader(builder.toString()))));
+        logger.debug("Returning url hash:" + hashOpt);
+
+        return hashOpt;
     }
 
     public static String getMD5Checksum(final InputStream is) throws IOException {

@@ -35,6 +35,8 @@ import java.util.concurrent.TimeUnit;
 @ThreadSafe
 public class SoyAjaxController extends Controller {
 
+    private static final play.Logger.ALogger logger = play.Logger.of(SoyAjaxController.class);
+
     private final static int DEF_CACHE_MAX_SIZE = 10000;
 
     private final static String DEF_TIME_UNIT = "DAYS";
@@ -104,10 +106,12 @@ public class SoyAjaxController extends Controller {
     }
 
     public void init() {
+        logger.info("ajax controller init...");
         this.cachedJsTemplates = CacheBuilder.newBuilder()
                 .expireAfterWrite(expireAfterWrite, TimeUnit.valueOf(expireAfterWriteUnit))
                 .maximumSize(cacheMaxSize)
                 .build();
+        logger.info("ajax controller init complete.");
     }
 
     public Result compile(final String hash,
@@ -123,6 +127,7 @@ public class SoyAjaxController extends Controller {
                              final String locale
     ) {
         Preconditions.checkNotNull(templateFilesResolver, "templateFilesResolver cannot be null");
+        logger.debug("ajax controller compileJs,templates:{}, hash:{}, disableProcessors:{}, locale:{}", templateFileNames, hash, disableProcessors, locale);
 
         try {
             if (!soyViewConf.globalHotReloadMode()) {
@@ -132,7 +137,7 @@ public class SoyAjaxController extends Controller {
                 }
             }
 
-            final Map<URL,String> compiledTemplates = compileTemplates(templateFileNames, request(), locale);
+            final Map<URL, String> compiledTemplates = compileTemplates(templateFileNames, request(), locale);
             final Optional<String> allCompiledTemplates = concatCompiledTemplates(compiledTemplates);
             if (!allCompiledTemplates.isPresent()) {
                 return notFound("Template file(s) could not be resolved.");
@@ -169,7 +174,7 @@ public class SoyAjaxController extends Controller {
     }
 
     private Map<URL,String> compileTemplates(final String[] templateFileNames, final Http.Request request, final String locale) {
-        final HashMap<URL,String> map = new HashMap<URL,String>();
+        final HashMap<URL,String> map = new HashMap<>();
         for (final String templateFileName : templateFileNames) {
             try {
                 final Optional<URL> templateUrl = templateFilesResolver.resolve(templateFileName);
@@ -211,11 +216,16 @@ public class SoyAjaxController extends Controller {
         response().getHeaders().put("Content-Type", "text/javascript; charset=" + soyViewConf.globalEncoding());
         response().getHeaders().put("Cache-Control", soyViewConf.globalHotReloadMode() ? "no-cache" : soyViewConf.ajaxCacheControl());
 
+        logger.debug("Content-Type:" + response().getHeaders().get("Content-Type"));
+        logger.debug("Cache-Control:" + response().getHeaders().get("Cache-Control"));
+
         if (StringUtils.hasText(soyViewConf.ajaxExpireHeaders()) && !soyViewConf.globalHotReloadMode()) {
             response().getHeaders().put("Expires", soyViewConf.ajaxExpireHeaders());
         }
+        logger.debug("Expires:" + response().getHeaders().get("Expires"));
 
         if (disableProcessors) {
+            logger.debug("output post-processors are disabled.");
             return ok(templateContent);
         }
 

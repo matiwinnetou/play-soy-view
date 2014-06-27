@@ -99,7 +99,7 @@ public class ReflectionToSoyDataConverter implements ToSoyDataConverter {
         {
             @SuppressWarnings("unchecked")
             Map<String, Object> pojoMap = (Map<String, Object>) pojoToMap(obj);
-            Map<String, Object> newMap = new HashMap<String, Object>(pojoMap.size());
+            Map<String, Object> newMap = new HashMap<>(pojoMap.size());
             for (String key : pojoMap.keySet()) {
                 newMap.put(key, toSoyCompatibleObjects(pojoMap.get(key)));
             }

@@ -53,6 +53,17 @@ public class RenderRequest {
         return templateName;
     }
 
+    @Override
+    public String toString() {
+        return "RenderRequest{" +
+                "compiledTemplates=" + compiledTemplates +
+                ", templateName='" + templateName + '\'' +
+                ", soyModel=" + soyModel +
+                ", globalRuntimeModel=" + globalRuntimeModel +
+                ", soyMsgBundle=" + soyMsgBundle +
+                '}';
+    }
+
     public static class Builder {
 
         private Optional<SoyTofu> compiledTemplates;
