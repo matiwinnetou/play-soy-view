@@ -1,7 +1,7 @@
 package com.github.mati1979.play.soyplugin.template;
 
 import com.github.mati1979.play.soyplugin.config.SoyViewConf;
-import com.google.common.base.Optional;
+import java.util.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
@@ -31,7 +31,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @ThreadSafe
 public class FileSystemTemplateFilesResolver implements TemplateFilesResolver {
 
-    private static final play.Logger.ALogger logger = play.Logger.of("play.soy.view");
+    private static final play.Logger.ALogger logger = play.Logger.of(FileSystemTemplateFilesResolver.class);
 
     /** a thread safe cache for resolved templates, no need to worry of ddos attack */
     /** friendly */ CopyOnWriteArrayList<URL> cachedFiles = new CopyOnWriteArrayList<>();
@@ -69,24 +69,19 @@ public class FileSystemTemplateFilesResolver implements TemplateFilesResolver {
     @Override
     public Optional<URL> resolve(final @Nullable String templateFileName) throws IOException {
         if (templateFileName == null) {
-            return Optional.absent();
+            return Optional.empty();
         }
 
         final Collection<URL> files = resolve();
 
-        final URL templateFile = Iterables.find(files, new Predicate<URL>() {
+        final URL templateFile = Iterables.find(files, url -> {
+            final String fileName = url.getFile();
+            final File file = new File(fileName);
 
-            @Override
-            public boolean apply(final URL url) {
-                final String fileName = url.getFile();
-                final File file = new File(fileName);
-
-                return file.toURI().toString().endsWith(normalizeTemplateName(templateFileName));
-            }
-
+            return file.toURI().toString().endsWith(normalizeTemplateName(templateFileName));
         }, null);
 
-        return Optional.fromNullable(templateFile);
+        return Optional.ofNullable(templateFile);
     }
 
     private String normalizeTemplateName(final String templateFileName) {

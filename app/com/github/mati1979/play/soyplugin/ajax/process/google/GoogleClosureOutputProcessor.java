@@ -24,7 +24,7 @@ import java.util.logging.Level;
 @ThreadSafe
 public class GoogleClosureOutputProcessor implements OutputProcessor {
 
-    private static final play.Logger.ALogger logger = play.Logger.of("play.soy.view");
+    private static final play.Logger.ALogger logger = play.Logger.of(GoogleClosureOutputProcessor.class);
 
     private CompilationLevel compilationLevel = CompilationLevel.SIMPLE_OPTIMIZATIONS;
 

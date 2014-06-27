@@ -17,7 +17,7 @@ import java.io.Writer;
  */
 public class YahooOutputProcessor implements OutputProcessor {
 
-    private static final play.Logger.ALogger logger = play.Logger.of("play.soy.view");
+    private static final play.Logger.ALogger logger = play.Logger.of(YahooOutputProcessor.class);
 
     // options of YUI compressor
     private int linebreakpos = -1;

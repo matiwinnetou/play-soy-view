@@ -1,9 +1,10 @@
 package com.github.mati1979.play.soyplugin.global.runtime;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 import com.google.common.collect.Lists;
 import com.google.template.soy.data.SoyMapData;
 import play.mvc.Http;
+import scala.io.BytePickle;
 
 import java.util.List;
 import java.util.Map;
@@ -19,7 +20,7 @@ import java.util.Map;
  */
 public class DefaultGlobalRuntimeModelResolver implements GlobalRuntimeModelResolver {
 
-    private static final play.Logger.ALogger logger = play.Logger.of("play.soy.view");
+    private static final play.Logger.ALogger logger = play.Logger.of(DefaultGlobalRuntimeModelResolver.class);
 
     private List<RuntimeDataResolver> resolvers = Lists.newArrayList();
 

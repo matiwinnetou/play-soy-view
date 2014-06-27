@@ -3,7 +3,7 @@ package com.github.mati1979.play.soyplugin.compile;
 import com.github.mati1979.play.soyplugin.config.SoyViewConf;
 import com.github.mati1979.play.soyplugin.global.compile.CompileTimeGlobalModelResolver;
 import com.github.mati1979.play.soyplugin.global.compile.EmptyCompileTimeGlobalModelResolver;
-import com.google.common.base.Optional;
+import java.util.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.template.soy.SoyFileSet;
@@ -29,7 +29,7 @@ import java.util.Map;
  */
 public class DefaultTofuCompiler implements TofuCompiler {
 
-    private static final Logger.ALogger logger = Logger.of("play.soy.view");
+    private static final Logger.ALogger logger = Logger.of(DefaultTofuCompiler.class);
 
     private CompileTimeGlobalModelResolver compileTimeGlobalModelResolver = new EmptyCompileTimeGlobalModelResolver();
 
@@ -45,6 +45,8 @@ public class DefaultTofuCompiler implements TofuCompiler {
                                final SoyTofuOptions soyTofuOptions) {
         this.compileTimeGlobalModelResolver = compileTimeGlobalModelResolver;
         this.soyViewConf = soyViewConf;
+        this.soyJsSrcOptions = soyJsSrcOptions;
+        this.soyTofuOptions = soyTofuOptions;
     }
 
     @Override
@@ -99,15 +101,15 @@ public class DefaultTofuCompiler implements TofuCompiler {
     @Override
     public final Optional<String> compileToJsSrc(@Nullable final URL url, @Nullable final SoyMsgBundle soyMsgBundle) {
         if (url == null) {
-            return Optional.absent();
+            return Optional.empty();
         }
 
         final Collection<String> compiledTemplates = compileToJsSrc(Lists.newArrayList(url), soyMsgBundle);
         if (compiledTemplates.isEmpty()) {
-            return Optional.absent();
+            return Optional.empty();
         }
 
-        return Optional.fromNullable(compiledTemplates.iterator().next());
+        return Optional.ofNullable(compiledTemplates.iterator().next());
     }
 
     @Override

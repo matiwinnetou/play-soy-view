@@ -1,6 +1,6 @@
 package com.github.mati1979.play.soyplugin.compile;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 import com.google.template.soy.msgs.SoyMsgBundle;
 import com.google.template.soy.tofu.SoyTofu;
 

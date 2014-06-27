@@ -1,6 +1,6 @@
 package com.github.mati1979.play.soyplugin.global.compile;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 import com.google.template.soy.data.SoyMapData;
 
 import java.util.HashMap;
@@ -33,7 +33,7 @@ public class DefaultCompileTimeGlobalModelResolver implements CompileTimeGlobalM
     @Override
     public Optional<SoyMapData> resolveData() {
         if (data == null || data.isEmpty()) {
-            return Optional.absent();
+            return Optional.empty();
         }
 
         return Optional.of(new SoyMapData(data));

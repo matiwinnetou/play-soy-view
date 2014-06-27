@@ -14,7 +14,7 @@
 
 package com.github.mati1979.play.soyplugin.data;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Primitives;
 import com.google.template.soy.data.SoyMapData;
@@ -48,10 +48,10 @@ public class ReflectionToSoyDataConverter implements ToSoyDataConverter {
     @Override
     public Optional<SoyMapData> toSoyMap(final Object model) {
         if (model == null) {
-            return Optional.absent();
+            return Optional.empty();
         }
 
-        return Optional.fromNullable(objectToSoyDataMap(model));
+        return Optional.ofNullable(objectToSoyDataMap(model));
     }
 
     private Map<String, ?> toSoyCompatibleMap(final Object obj) {

@@ -1,6 +1,6 @@
 package com.github.mati1979.play.soyplugin.locale;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 import play.Play;
 import play.mvc.Http;
 
@@ -20,7 +20,7 @@ public class PlayLocaleProvider implements LocaleProvider {
             return Optional.of(Locale.forLanguageTag(langs[0]));
         }
 
-        return Optional.absent();
+        return Optional.empty();
     }
 
 }

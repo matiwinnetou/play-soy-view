@@ -1,6 +1,6 @@
 package com.github.mati1979.play.soyplugin.data;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 import com.google.template.soy.data.SoyMapData;
 
 /**
@@ -9,7 +9,7 @@ import com.google.template.soy.data.SoyMapData;
  * Date: 20/06/2013
  * Time: 22:34
  *
- * An implementation that always returns an Optional.absent(), implements
+ * An implementation that always returns an Optional.empty(), implements
  * Null Object Pattern
 */
 public class EmptyToSoyDataConverter implements ToSoyDataConverter {

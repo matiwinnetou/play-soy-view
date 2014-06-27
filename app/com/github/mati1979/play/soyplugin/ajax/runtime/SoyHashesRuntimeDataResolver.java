@@ -27,7 +27,7 @@ public class SoyHashesRuntimeDataResolver implements RuntimeDataResolver {
                             final Map<String, ?> model,
                             final SoyMapData root) {
         try {
-            root.put("soyplugin.ajax.soy.hash", hashFileGenerator.hash().orNull());
+            root.put("soyplugin.ajax.soy.hash", hashFileGenerator.hash().orElse(null));
         } catch (final IOException e) {
             throw new RuntimeException(e);
         }

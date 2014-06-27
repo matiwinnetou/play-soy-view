@@ -14,7 +14,6 @@ import com.github.mati1979.play.soyplugin.locale.EmptyLocaleProvider;
 import com.github.mati1979.play.soyplugin.locale.LocaleProvider;
 import com.github.mati1979.play.soyplugin.template.EmptyTemplateFilesResolver;
 import com.github.mati1979.play.soyplugin.template.TemplateFilesResolver;
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -76,7 +75,7 @@ public class SoyAjaxController extends Controller {
      * List of output processors, output processors typically perform obfuscation
      * of generated JavaScript code
      */
-    private List<OutputProcessor> outputProcessors = new ArrayList<OutputProcessor>();
+    private List<OutputProcessor> outputProcessors = new ArrayList<>();
 
     /**
      * By default there is no AuthManager and an external user can compile all templates to JavaScript
@@ -162,11 +161,11 @@ public class SoyAjaxController extends Controller {
             if (map != null) {
                 final String template = map.get(PathUtils.arrayToPath(templateFileNames));
 
-                return Optional.fromNullable(template);
+                return Optional.ofNullable(template);
             }
         }
 
-        return Optional.absent();
+        return Optional.empty();
     }
 
     private Map<URL,String> compileTemplates(final String[] templateFileNames, final Http.Request request, final String locale) {
@@ -196,7 +195,7 @@ public class SoyAjaxController extends Controller {
 
     private Optional<String> concatCompiledTemplates(final Map<URL,String> compiledTemplates) throws IOException, SecurityException {
         if (compiledTemplates.isEmpty()) {
-            return Optional.absent();
+            return Optional.empty();
         }
 
         final StringBuilder allJsTemplates = new StringBuilder();
@@ -240,16 +239,16 @@ public class SoyAjaxController extends Controller {
         Preconditions.checkNotNull(tofuCompiler, "tofuCompiler cannot be null");
 
         if (!templateFile.isPresent()) {
-            return Optional.absent();
+            return Optional.empty();
         }
 
-        Optional<Locale> localeOptional = Optional.fromNullable(I18nUtils.getLocaleFromString(locale));
+        Optional<Locale> localeOptional = Optional.ofNullable(I18nUtils.getLocaleFromString(locale));
         if (!localeOptional.isPresent()) {
             localeOptional = localeProvider.resolveLocale(request);
         }
 
         final Optional<SoyMsgBundle> soyMsgBundle = soyMsgBundleResolver.resolve(localeOptional);
-        final Optional<String> compiledTemplate = tofuCompiler.compileToJsSrc(templateFile.orNull(), soyMsgBundle.orNull());
+        final Optional<String> compiledTemplate = tofuCompiler.compileToJsSrc(templateFile.orElse(null), soyMsgBundle.orElse(null));
 
         return compiledTemplate;
     }

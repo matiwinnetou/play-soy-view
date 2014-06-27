@@ -1,6 +1,6 @@
 package com.github.mati1979.play.soyplugin.render;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 import com.google.template.soy.data.SoyMapData;
 import com.google.template.soy.msgs.SoyMsgBundle;
 import com.google.template.soy.tofu.SoyTofu;
@@ -60,8 +60,8 @@ public class RenderRequest {
 
         private Optional<SoyMapData> soyModel;
 
-        private Optional<SoyMapData> globalRuntimeModel = Optional.absent();
-        private Optional<SoyMsgBundle> soyMsgBundle = Optional.absent();
+        private Optional<SoyMapData> globalRuntimeModel = Optional.empty();
+        private Optional<SoyMsgBundle> soyMsgBundle = Optional.empty();
 
         public Builder compiledTemplates(final Optional<SoyTofu> compiledTemplates) {
             this.compiledTemplates = compiledTemplates;

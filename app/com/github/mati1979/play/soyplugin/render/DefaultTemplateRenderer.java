@@ -1,7 +1,7 @@
 package com.github.mati1979.play.soyplugin.render;
 
 import com.github.mati1979.play.soyplugin.config.SoyViewConf;
-import com.google.common.base.Optional;
+import java.util.Optional;
 import com.google.template.soy.data.SoyMapData;
 import com.google.template.soy.msgs.SoyMsgBundle;
 import com.google.template.soy.tofu.SoyTofu;

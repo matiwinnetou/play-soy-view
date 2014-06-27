@@ -1,6 +1,6 @@
 package com.github.mati1979.play.soyplugin.locale;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 import play.mvc.Http;
 
 import java.util.Locale;
@@ -17,7 +17,7 @@ public class EmptyLocaleProvider implements LocaleProvider {
 
     @Override
     public Optional<Locale> resolveLocale(final Http.Request request) {
-        return Optional.absent();
+        return Optional.empty();
     }
 
 }

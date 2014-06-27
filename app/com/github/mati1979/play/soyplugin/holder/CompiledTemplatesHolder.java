@@ -1,6 +1,6 @@
 package com.github.mati1979.play.soyplugin.holder;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 import com.google.template.soy.tofu.SoyTofu;
 
 import java.io.IOException;

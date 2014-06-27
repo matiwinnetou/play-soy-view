@@ -2,7 +2,7 @@ package com.github.mati1979.play.soyplugin.ajax.hash;
 
 import com.github.mati1979.play.soyplugin.ajax.allowedurls.SoyAllowedUrls;
 import com.github.mati1979.play.soyplugin.config.SoyViewConf;
-import com.google.common.base.Optional;
+import java.util.Optional;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.hash.HashCode;
@@ -32,7 +32,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class MD5HashFileGenerator implements HashFileGenerator {
 
-    private static final play.Logger.ALogger logger = play.Logger.of("play.soy.view");
+    private static final play.Logger.ALogger logger = play.Logger.of(MD5HashFileGenerator.class);
 
     private final static int DEF_CACHE_MAX_SIZE = 10000;
 
@@ -81,7 +81,7 @@ public class MD5HashFileGenerator implements HashFileGenerator {
      */
     private Optional<String> hashP(final Optional<URL> url) throws IOException {
         if (!url.isPresent()) {
-            return Optional.absent();
+            return Optional.empty();
         }
         logger.debug("Calculating md5 hash, url:{}", url);
         if (!soyViewConf.globalHotReloadMode()) {
@@ -103,13 +103,13 @@ public class MD5HashFileGenerator implements HashFileGenerator {
             cache.put(url.get(), md5);
         }
 
-        return Optional.fromNullable(md5);
+        return Optional.ofNullable(md5);
     }
 
     @Override
     public Optional<String> hash() throws IOException {
         if (soyAllowedUrls.urls().isEmpty()) {
-            return Optional.absent();
+            return Optional.empty();
         }
         if (soyAllowedUrls.urls().size() == 1) {
             return hashP(Optional.of(soyAllowedUrls.resolvedUrls().iterator().next()));
@@ -128,7 +128,7 @@ public class MD5HashFileGenerator implements HashFileGenerator {
             builder.append(hash);
         }
 
-        return Optional.fromNullable(getMD5Checksum(new ReaderInputStream(new StringReader(builder.toString()))));
+        return Optional.ofNullable(getMD5Checksum(new ReaderInputStream(new StringReader(builder.toString()))));
     }
 
     public static String getMD5Checksum(final InputStream is) throws IOException {

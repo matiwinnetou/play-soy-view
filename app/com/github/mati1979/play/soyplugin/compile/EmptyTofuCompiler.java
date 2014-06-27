@@ -1,6 +1,6 @@
 package com.github.mati1979.play.soyplugin.compile;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 import com.google.common.collect.Lists;
 import com.google.template.soy.msgs.SoyMsgBundle;
 import com.google.template.soy.tofu.SoyTofu;
@@ -27,7 +27,7 @@ public class EmptyTofuCompiler implements TofuCompiler {
 
     @Override
     public Optional<String> compileToJsSrc(final URL template, @Nullable SoyMsgBundle soyMsgBundle) {
-        return Optional.absent();
+        return Optional.empty();
     }
 
     @Override
