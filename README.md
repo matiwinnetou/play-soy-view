@@ -19,11 +19,10 @@ https://github.com/mati1979/play-soy-view-example
 - 0.1.8 - removal of checked exception in favour of unchecked (runtime) exceptions
 - 0.1.12 - introduced ExceptionInTemplate from Play that shows line and column number of an error
 - 0.1.13 - using play logger and removed slf4j
+- 0.1.x  - improved debug logging, moved o java 8
 
 # TODO
 - cross compile 2.3 version for Scala: 2.11.x
-
-- Move code to java 8 or scala (rewrite), this is a Play plugin anyway
 
 - make it idiomatic for play, make sure ClosurePlugin bootstraps a tree of components, but so that it is reconfigurable later as well. This requires that play properly supports DI in plugins (wait for 2.4.x)
 
@@ -32,6 +31,8 @@ https://github.com/mati1979/play-soy-view-example
 - Try more than first accepted languages, if first one fails then proceed to next
 
 - port ContentNegotiator from spring-soy-view
+
+- port excluded properties for reflection to soy converter
 
 - include routes, where we have a soyJs endpoint defined
 
@@ -42,7 +43,7 @@ https://github.com/mati1979/play-soy-view-example
 - Convert messages from conf/messages automatically to xliffs
 
 # Requirements:
-- Java 7
+- Java 7 or Java 8 in case of version >= 0.1.14
 - Play (Java or Scala) 2.2.x for version 0.13.play22 (Scala 2.10.x)
 - Play (Java or Scala) 2.3.x for version 0.13.play23 (Scala 2.10.x)
 
