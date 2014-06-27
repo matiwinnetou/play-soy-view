@@ -23,13 +23,17 @@ https://github.com/mati1979/play-soy-view-example
 # TODO
 - cross compile 2.3 version for Scala: 2.11.x
 
-- Move code to java 8
+- Move code to java 8 or scala (rewrite), this is a Play plugin anyway
 
-- make it idiomatic for play, make sure ClosurePlugin bootstraps a tree of components, but so that it is reconfigurable later as well. This requires that play properly supports DI in plugins
+- make it idiomatic for play, make sure ClosurePlugin bootstraps a tree of components, but so that it is reconfigurable later as well. This requires that play properly supports DI in plugins (wait for 2.4.x)
 
 - support soy files in app/views, there is an example go to do this based on Freemarker and play integration
 
 - Try more than first accepted languages, if first one fails then proceed to next
+
+- port ContentNegotiator from spring-soy-view
+
+- include routes, where we have a soyJs endpoint defined
 
 - JavaDoc
 
