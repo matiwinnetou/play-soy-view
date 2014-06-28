@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class DefaultSoyMsgBundleResolver implements SoyMsgBundleResolver {
 
@@ -23,6 +24,8 @@ public class DefaultSoyMsgBundleResolver implements SoyMsgBundleResolver {
     /** friendly */ Map<Locale, SoyMsgBundle> msgBundles = new ConcurrentHashMap<>();
 
     private SoyViewConf soyViewConf = null;
+
+    private ReentrantLock lock = new ReentrantLock(true);
 
     public DefaultSoyMsgBundleResolver(final SoyViewConf soyViewConf) {
         this.soyViewConf = soyViewConf;
@@ -35,38 +38,48 @@ public class DefaultSoyMsgBundleResolver implements SoyMsgBundleResolver {
      * the implementation will return Optional.empty() as well
      */
     public Optional<SoyMsgBundle> resolve(final Optional<Locale> locale) throws IOException {
-        logger.debug("resolving soy msg bundle for locale:{}", locale);
+        logger.debug("Resolving soy msg bundle for locale:{}", locale);
         if (!locale.isPresent()) {
             return Optional.empty();
         }
 
-        synchronized (msgBundles) {
+        try {
+            lock.lock();
             SoyMsgBundle soyMsgBundle = null;
             if (!soyViewConf.globalHotReloadMode()) {
+                logger.debug("global hot reload off - using cached version for locale:{}", locale);
                 soyMsgBundle = msgBundles.get(locale.get());
             }
             if (soyMsgBundle == null) {
                 soyMsgBundle = createSoyMsgBundle(locale.get());
                 if (soyMsgBundle == null) {
+                    logger.debug("creating soy msg bundle for locale:{}", locale);
                     soyMsgBundle = createSoyMsgBundle(new Locale(locale.get().getLanguage()));
                 }
 
                 if (soyMsgBundle == null && soyViewConf.i18nFallbackToEnglish()) {
+                    logger.debug("creating soy msg bundle and fallback to english enabled for locale:{}", locale);
+
                     soyMsgBundle = createSoyMsgBundle(Locale.ENGLISH);
                 }
 
                 if (soyMsgBundle == null) {
+                    logger.debug("could not create msg bundle bundle, fallback to english disabled? for locale:{}", locale);
                     return Optional.empty();
                 }
 
                 if (!soyViewConf.globalHotReloadMode()) {
+                    logger.debug("globalHotReloadMode is off, caching soy msg bundle for locale:{}", locale);
                     msgBundles.put(locale.get(), soyMsgBundle);
                 }
+                logger.debug("resolved soy msg bundle:{}", soyMsgBundle);
+
+                return Optional.ofNullable(soyMsgBundle);
             }
 
-            logger.debug("resolved soy msg bundle:{}", soyMsgBundle);
-
             return Optional.ofNullable(soyMsgBundle);
+        } finally {
+            lock.unlock();
         }
     }
 

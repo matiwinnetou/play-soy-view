@@ -30,7 +30,7 @@ public class SoyHashesRuntimeDataResolver implements RuntimeDataResolver {
                             final SoyMapData root) {
         try {
             final String hash = hashFileGenerator.hash().orElse(null);
-            logger.debug("putting hash to variable - soyplugin.ajax.soy.hash:" + hash);
+            logger.debug("Putting hash to global runtime variable - soyplugin.ajax.soy.hash:" + hash);
             root.put("soyplugin.ajax.soy.hash", hash);
         } catch (final IOException e) {
             throw new RuntimeException(e);

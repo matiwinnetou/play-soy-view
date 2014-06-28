@@ -37,7 +37,7 @@ public class DefaultSoyAllowedUrlsResolver implements SoyAllowedUrlsResolver {
                 .transform(templateName -> cache.get(templateName).get().get())
                 .toList();
 
-        logger.debug("allowedUrls:" + urls);
+        logger.debug("AllowedUrls:" + urls);
 
         return new SoyAllowedUrls(urls, templateNames, soyViewConf.ajaxSecurityEnabled());
     }

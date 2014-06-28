@@ -3,7 +3,6 @@ package com.github.mati1979.play.soyplugin.compile;
 import com.github.mati1979.play.soyplugin.config.SoyViewConf;
 import com.github.mati1979.play.soyplugin.global.compile.CompileTimeGlobalModelResolver;
 import com.github.mati1979.play.soyplugin.global.compile.EmptyCompileTimeGlobalModelResolver;
-import java.util.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.template.soy.SoyFileSet;
@@ -20,6 +19,7 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Created with IntelliJ IDEA.
@@ -57,7 +57,7 @@ public class DefaultTofuCompiler implements TofuCompiler {
             throw new IOException("Unable to compile, no urls found");
         }
 
-        logger.debug("SoyTofu compilation of templates:" + urls.size());
+        logger.info("SoyTofu compilation of templates:" + urls.size());
         final long time1 = System.currentTimeMillis();
 
         final SoyFileSet.Builder sfsBuilder = new SoyFileSet.Builder();
@@ -75,7 +75,7 @@ public class DefaultTofuCompiler implements TofuCompiler {
 
         final long time2 = System.currentTimeMillis();
 
-        logger.debug("SoyTofu compilation complete." + (time2 - time1) + " ms");
+        logger.info("SoyTofu compilation complete." + (time2 - time1) + " ms");
 
         return soyTofu;
     }
@@ -115,7 +115,7 @@ public class DefaultTofuCompiler implements TofuCompiler {
     @Override
     public Collection<String> compileToJsSrc(final Collection<URL> templates, @Nullable SoyMsgBundle soyMsgBundle) {
         Preconditions.checkNotNull("soyJsSrcOptions", soyJsSrcOptions);
-        logger.debug("SoyJavaScript compilation of template:" + templates);
+        logger.info("SoyJavaScript compilation of template:" + templates);
         final long time1 = System.currentTimeMillis();
 
         final SoyFileSet soyFileSet = buildSoyFileSetFrom(templates);
@@ -124,12 +124,13 @@ public class DefaultTofuCompiler implements TofuCompiler {
 
         final long time2 = System.currentTimeMillis();
 
-        logger.debug("SoyJavaScript compilation complete." + (time2 - time1) + " ms");
+        logger.info("SoyJavaScript compilation complete." + (time2 - time1) + " ms");
 
         return compiled;
     }
 
     private SoyFileSet buildSoyFileSetFrom(final Collection<URL> urls) {
+        logger.debug("Building soy file set from urls.count:" + urls.size());
         final SoyFileSet.Builder builder = new SoyFileSet.Builder();
 
         for (final URL url : urls) {

@@ -34,9 +34,9 @@ public class MD5HashFileGenerator implements HashFileGenerator {
 
     private static final play.Logger.ALogger logger = play.Logger.of(MD5HashFileGenerator.class);
 
-    private final static int DEF_CACHE_MAX_SIZE = 10000;
+    public final static int DEF_CACHE_MAX_SIZE = 10000;
 
-    private final static String DEF_TIME_UNIT = "DAYS";
+    public final static String DEF_TIME_UNIT = "DAYS";
 
     private final static int DEF_EXPIRE_AFTER_WRITE = 1;
 
@@ -58,7 +58,8 @@ public class MD5HashFileGenerator implements HashFileGenerator {
 
     private SoyViewConf soyViewConf;
 
-    public MD5HashFileGenerator(final SoyAllowedUrls soyAllowedUrls, final SoyViewConf soyViewConf) {
+    public MD5HashFileGenerator(final SoyAllowedUrls soyAllowedUrls,
+                                final SoyViewConf soyViewConf) {
         this.soyAllowedUrls = soyAllowedUrls;
         this.soyViewConf = soyViewConf;
     }
