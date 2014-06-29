@@ -57,7 +57,7 @@ public class DefaultTofuCompiler implements TofuCompiler {
             throw new IOException("Unable to compile, no urls found");
         }
 
-        logger.info("SoyTofu compilation of templates:" + urls.size());
+        logger.debug("SoyTofu compilation of templates:" + urls.size());
         final long time1 = System.currentTimeMillis();
 
         final SoyFileSet.Builder sfsBuilder = new SoyFileSet.Builder();
@@ -75,7 +75,7 @@ public class DefaultTofuCompiler implements TofuCompiler {
 
         final long time2 = System.currentTimeMillis();
 
-        logger.info("SoyTofu compilation complete." + (time2 - time1) + " ms");
+        logger.debug("SoyTofu compilation complete." + (time2 - time1) + " ms");
 
         return soyTofu;
     }
@@ -115,7 +115,7 @@ public class DefaultTofuCompiler implements TofuCompiler {
     @Override
     public Collection<String> compileToJsSrc(final Collection<URL> templates, @Nullable SoyMsgBundle soyMsgBundle) {
         Preconditions.checkNotNull("soyJsSrcOptions", soyJsSrcOptions);
-        logger.info("SoyJavaScript compilation of template:" + templates);
+        logger.debug("SoyJavaScript compilation of template:" + templates);
         final long time1 = System.currentTimeMillis();
 
         final SoyFileSet soyFileSet = buildSoyFileSetFrom(templates);
@@ -124,7 +124,7 @@ public class DefaultTofuCompiler implements TofuCompiler {
 
         final long time2 = System.currentTimeMillis();
 
-        logger.info("SoyJavaScript compilation complete." + (time2 - time1) + " ms");
+        logger.debug("SoyJavaScript compilation complete." + (time2 - time1) + " ms");
 
         return compiled;
     }

@@ -5,7 +5,7 @@ organization := "pl.matisoft"
 
 name := "play-soy-view"
 
-version := "0.1.14"
+version := "0.1.15-SNAPSHOT"
 
 scalaVersion := "2.10.4"
 
@@ -13,7 +13,7 @@ lazy val root = (project in file(".")).enablePlugins(PlayJava)
 
 libraryDependencies ++= Seq(
   "com.google.template" % "soy" % "2012-12-21",
-  "com.google.javascript" % "closure-compiler" % "v20130411",
+  "com.google.javascript" % "closure-compiler" % "v20140625",
   "com.yahoo.platform.yui" % "yuicompressor" % "2.4.7",
   "commons-io" % "commons-io" % "2.2"
 )

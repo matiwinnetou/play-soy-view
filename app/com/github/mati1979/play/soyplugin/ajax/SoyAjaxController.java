@@ -31,6 +31,7 @@ import java.net.URL;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantLock;
 
 @ThreadSafe
 public class SoyAjaxController extends Controller {
@@ -89,6 +90,8 @@ public class SoyAjaxController extends Controller {
 
     private SoyViewConf soyViewConf;
 
+    private ReentrantLock lock = new ReentrantLock();
+
     public SoyAjaxController(final AuthManager authManager,
                              final LocaleProvider localeProvider,
                              final SoyMsgBundleResolver soyMsgBundleResolver,
@@ -106,12 +109,10 @@ public class SoyAjaxController extends Controller {
     }
 
     public void init() {
-        logger.info("ajax controller init...");
         this.cachedJsTemplates = CacheBuilder.newBuilder()
                 .expireAfterWrite(expireAfterWrite, TimeUnit.valueOf(expireAfterWriteUnit))
                 .maximumSize(cacheMaxSize)
                 .build();
-        logger.info("ajax controller init complete.");
     }
 
     public Result compile(final String hash,
@@ -143,7 +144,8 @@ public class SoyAjaxController extends Controller {
                 return notFound("Template file(s) could not be resolved.");
             }
             if (!soyViewConf.globalHotReloadMode()) {
-                synchronized (cachedJsTemplates) {
+                try {
+                    lock.lock();
                     Map<String, String> map = cachedJsTemplates.getIfPresent(hash);
                     if (map == null) {
                         map = new ConcurrentHashMap<>();
@@ -151,6 +153,8 @@ public class SoyAjaxController extends Controller {
                         map.put(PathUtils.arrayToPath(templateFileNames), allCompiledTemplates.get());
                     }
                     this.cachedJsTemplates.put(hash, map);
+                } finally {
+                    lock.unlock();
                 }
             }
 
@@ -161,13 +165,16 @@ public class SoyAjaxController extends Controller {
     }
 
     private Optional<String> extractAndCombineAll(final String hash, final String[] templateFileNames) throws IOException {
-        synchronized (cachedJsTemplates) {
+        try {
+            lock.lock();
             final Map<String, String> map = cachedJsTemplates.getIfPresent(hash);
             if (map != null) {
                 final String template = map.get(PathUtils.arrayToPath(templateFileNames));
 
                 return Optional.ofNullable(template);
             }
+        } finally {
+            lock.unlock();
         }
 
         return Optional.empty();

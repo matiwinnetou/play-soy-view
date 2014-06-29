@@ -56,7 +56,7 @@ public class PlaySoyConfig {
 
     @Bean
     public CompileTimeGlobalModelResolver soyCompileTimeGlobalModelResolver() {
-        final Map<String,Object> merged = new HashMap<>();
+        final Map<String, Object> merged = new HashMap<>();
 
         final Optional<play.Configuration> pluginConfig = PlayConfAccessor.getPluginConfig();
         if (pluginConfig.isPresent()) {

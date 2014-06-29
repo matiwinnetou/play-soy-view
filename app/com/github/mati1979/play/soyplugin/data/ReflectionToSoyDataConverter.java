@@ -109,7 +109,7 @@ public class ReflectionToSoyDataConverter implements ToSoyDataConverter {
     }
 
     private static Map<String, ?> pojoToMap(final Object pojo) {
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
 
         try {
             final BeanInfo beanInfo = Introspector.getBeanInfo(pojo.getClass());

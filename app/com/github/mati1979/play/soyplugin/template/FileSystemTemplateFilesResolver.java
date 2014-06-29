@@ -1,9 +1,7 @@
 package com.github.mati1979.play.soyplugin.template;
 
 import com.github.mati1979.play.soyplugin.config.SoyViewConf;
-import java.util.Optional;
 import com.google.common.base.Preconditions;
-import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import play.Play;
@@ -17,7 +15,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Created with IntelliJ IDEA.
@@ -38,6 +38,8 @@ public class FileSystemTemplateFilesResolver implements TemplateFilesResolver {
 
     private SoyViewConf soyViewConf;
 
+    private ReentrantLock lock = new ReentrantLock(true);
+
     public FileSystemTemplateFilesResolver(final SoyViewConf soyViewConf) {
         this.soyViewConf = soyViewConf;
     }
@@ -54,13 +56,16 @@ public class FileSystemTemplateFilesResolver implements TemplateFilesResolver {
         }
 
         //no debug
-        synchronized (cachedFiles) {
+        try {
+            lock.lock();
             if (cachedFiles.isEmpty()) {
                 final List<URL> files = toFiles(soyViewConf.resolveTemplatesLocation());
                 logger.debug("templates location:" + soyViewConf.resolveTemplatesLocation());
                 logger.debug("Using cache resolve, debug off, urls:" + files.size());
                 cachedFiles.addAll(files);
             }
+        } finally {
+            lock.unlock();
         }
 
         return cachedFiles;
@@ -71,15 +76,9 @@ public class FileSystemTemplateFilesResolver implements TemplateFilesResolver {
         if (templateFileName == null) {
             return Optional.empty();
         }
-
         final Collection<URL> files = resolve();
-
-        final URL templateFile = Iterables.find(files, url -> {
-            final String fileName = url.getFile();
-            final File file = new File(fileName);
-
-            return file.toURI().toString().endsWith(normalizeTemplateName(templateFileName));
-        }, null);
+        final URL templateFile = Iterables.find(files, url
+                -> new File(url.getFile()).toURI().toString().endsWith(normalizeTemplateName(templateFileName)), null);
 
         return Optional.ofNullable(templateFile);
     }
