@@ -2,7 +2,6 @@ package com.github.mati1979.play.soyplugin.ajax.hash;
 
 import com.github.mati1979.play.soyplugin.ajax.allowedurls.SoyAllowedUrls;
 import com.github.mati1979.play.soyplugin.config.SoyViewConf;
-import com.google.common.base.Optional;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.hash.HashCode;
@@ -16,6 +15,7 @@ import java.io.StringReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -32,11 +32,11 @@ import java.util.concurrent.TimeUnit;
  */
 public class MD5HashFileGenerator implements HashFileGenerator {
 
-    private static final play.Logger.ALogger logger = play.Logger.of("play.soy.view");
+    private static final play.Logger.ALogger logger = play.Logger.of(MD5HashFileGenerator.class);
 
-    private final static int DEF_CACHE_MAX_SIZE = 10000;
+    public final static int DEF_CACHE_MAX_SIZE = 10000;
 
-    private final static String DEF_TIME_UNIT = "DAYS";
+    public final static String DEF_TIME_UNIT = "DAYS";
 
     private final static int DEF_EXPIRE_AFTER_WRITE = 1;
 
@@ -58,7 +58,8 @@ public class MD5HashFileGenerator implements HashFileGenerator {
 
     private SoyViewConf soyViewConf;
 
-    public MD5HashFileGenerator(final SoyAllowedUrls soyAllowedUrls, final SoyViewConf soyViewConf) {
+    public MD5HashFileGenerator(final SoyAllowedUrls soyAllowedUrls,
+                                final SoyViewConf soyViewConf) {
         this.soyAllowedUrls = soyAllowedUrls;
         this.soyViewConf = soyViewConf;
     }
@@ -81,7 +82,7 @@ public class MD5HashFileGenerator implements HashFileGenerator {
      */
     private Optional<String> hashP(final Optional<URL> url) throws IOException {
         if (!url.isPresent()) {
-            return Optional.absent();
+            return Optional.empty();
         }
         logger.debug("Calculating md5 hash, url:{}", url);
         if (!soyViewConf.globalHotReloadMode()) {
@@ -103,16 +104,20 @@ public class MD5HashFileGenerator implements HashFileGenerator {
             cache.put(url.get(), md5);
         }
 
-        return Optional.fromNullable(md5);
+        return Optional.ofNullable(md5);
     }
 
     @Override
     public Optional<String> hash() throws IOException {
         if (soyAllowedUrls.urls().isEmpty()) {
-            return Optional.absent();
+            logger.warn("Cannot calculate hash, soyAllowedUrls is empty!");
+            return Optional.empty();
         }
         if (soyAllowedUrls.urls().size() == 1) {
-            return hashP(Optional.of(soyAllowedUrls.resolvedUrls().iterator().next()));
+            final Optional<String> hashOpt = hashP(Optional.of(soyAllowedUrls.resolvedUrls().iterator().next()));
+            logger.debug("Returning url hash:" + hashOpt);
+
+            return hashOpt;
         }
 
         final List<String> hashes = new ArrayList<>();
@@ -128,7 +133,10 @@ public class MD5HashFileGenerator implements HashFileGenerator {
             builder.append(hash);
         }
 
-        return Optional.fromNullable(getMD5Checksum(new ReaderInputStream(new StringReader(builder.toString()))));
+        final Optional<String> hashOpt = Optional.ofNullable(getMD5Checksum(new ReaderInputStream(new StringReader(builder.toString()))));
+        logger.debug("Returning url hash:" + hashOpt);
+
+        return hashOpt;
     }
 
     public static String getMD5Checksum(final InputStream is) throws IOException {

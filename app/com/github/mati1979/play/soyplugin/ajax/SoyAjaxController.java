@@ -14,7 +14,6 @@ import com.github.mati1979.play.soyplugin.locale.EmptyLocaleProvider;
 import com.github.mati1979.play.soyplugin.locale.LocaleProvider;
 import com.github.mati1979.play.soyplugin.template.EmptyTemplateFilesResolver;
 import com.github.mati1979.play.soyplugin.template.TemplateFilesResolver;
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -32,9 +31,12 @@ import java.net.URL;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantLock;
 
 @ThreadSafe
 public class SoyAjaxController extends Controller {
+
+    private static final play.Logger.ALogger logger = play.Logger.of(SoyAjaxController.class);
 
     private final static int DEF_CACHE_MAX_SIZE = 10000;
 
@@ -76,7 +78,7 @@ public class SoyAjaxController extends Controller {
      * List of output processors, output processors typically perform obfuscation
      * of generated JavaScript code
      */
-    private List<OutputProcessor> outputProcessors = new ArrayList<OutputProcessor>();
+    private List<OutputProcessor> outputProcessors = new ArrayList<>();
 
     /**
      * By default there is no AuthManager and an external user can compile all templates to JavaScript
@@ -87,6 +89,8 @@ public class SoyAjaxController extends Controller {
     private AuthManager authManager = new PermissableAuthManager();
 
     private SoyViewConf soyViewConf;
+
+    private ReentrantLock lock = new ReentrantLock();
 
     public SoyAjaxController(final AuthManager authManager,
                              final LocaleProvider localeProvider,
@@ -124,6 +128,7 @@ public class SoyAjaxController extends Controller {
                              final String locale
     ) {
         Preconditions.checkNotNull(templateFilesResolver, "templateFilesResolver cannot be null");
+        logger.debug("ajax controller compileJs,templates:{}, hash:{}, disableProcessors:{}, locale:{}", templateFileNames, hash, disableProcessors, locale);
 
         try {
             if (!soyViewConf.globalHotReloadMode()) {
@@ -133,13 +138,14 @@ public class SoyAjaxController extends Controller {
                 }
             }
 
-            final Map<URL,String> compiledTemplates = compileTemplates(templateFileNames, request(), locale);
+            final Map<URL, String> compiledTemplates = compileTemplates(templateFileNames, request(), locale);
             final Optional<String> allCompiledTemplates = concatCompiledTemplates(compiledTemplates);
             if (!allCompiledTemplates.isPresent()) {
                 return notFound("Template file(s) could not be resolved.");
             }
             if (!soyViewConf.globalHotReloadMode()) {
-                synchronized (cachedJsTemplates) {
+                try {
+                    lock.lock();
                     Map<String, String> map = cachedJsTemplates.getIfPresent(hash);
                     if (map == null) {
                         map = new ConcurrentHashMap<>();
@@ -147,6 +153,8 @@ public class SoyAjaxController extends Controller {
                         map.put(PathUtils.arrayToPath(templateFileNames), allCompiledTemplates.get());
                     }
                     this.cachedJsTemplates.put(hash, map);
+                } finally {
+                    lock.unlock();
                 }
             }
 
@@ -157,20 +165,23 @@ public class SoyAjaxController extends Controller {
     }
 
     private Optional<String> extractAndCombineAll(final String hash, final String[] templateFileNames) throws IOException {
-        synchronized (cachedJsTemplates) {
+        try {
+            lock.lock();
             final Map<String, String> map = cachedJsTemplates.getIfPresent(hash);
             if (map != null) {
                 final String template = map.get(PathUtils.arrayToPath(templateFileNames));
 
-                return Optional.fromNullable(template);
+                return Optional.ofNullable(template);
             }
+        } finally {
+            lock.unlock();
         }
 
-        return Optional.absent();
+        return Optional.empty();
     }
 
     private Map<URL,String> compileTemplates(final String[] templateFileNames, final Http.Request request, final String locale) {
-        final HashMap<URL,String> map = new HashMap<URL,String>();
+        final HashMap<URL,String> map = new HashMap<>();
         for (final String templateFileName : templateFileNames) {
             try {
                 final Optional<URL> templateUrl = templateFilesResolver.resolve(templateFileName);
@@ -196,7 +207,7 @@ public class SoyAjaxController extends Controller {
 
     private Optional<String> concatCompiledTemplates(final Map<URL,String> compiledTemplates) throws IOException, SecurityException {
         if (compiledTemplates.isEmpty()) {
-            return Optional.absent();
+            return Optional.empty();
         }
 
         final StringBuilder allJsTemplates = new StringBuilder();
@@ -212,11 +223,16 @@ public class SoyAjaxController extends Controller {
         response().getHeaders().put("Content-Type", "text/javascript; charset=" + soyViewConf.globalEncoding());
         response().getHeaders().put("Cache-Control", soyViewConf.globalHotReloadMode() ? "no-cache" : soyViewConf.ajaxCacheControl());
 
+        logger.debug("Content-Type:" + response().getHeaders().get("Content-Type"));
+        logger.debug("Cache-Control:" + response().getHeaders().get("Cache-Control"));
+
         if (StringUtils.hasText(soyViewConf.ajaxExpireHeaders()) && !soyViewConf.globalHotReloadMode()) {
             response().getHeaders().put("Expires", soyViewConf.ajaxExpireHeaders());
         }
+        logger.debug("Expires:" + response().getHeaders().get("Expires"));
 
         if (disableProcessors) {
+            logger.debug("output post-processors are disabled.");
             return ok(templateContent);
         }
 
@@ -240,16 +256,16 @@ public class SoyAjaxController extends Controller {
         Preconditions.checkNotNull(tofuCompiler, "tofuCompiler cannot be null");
 
         if (!templateFile.isPresent()) {
-            return Optional.absent();
+            return Optional.empty();
         }
 
-        Optional<Locale> localeOptional = Optional.fromNullable(I18nUtils.getLocaleFromString(locale));
+        Optional<Locale> localeOptional = Optional.ofNullable(I18nUtils.getLocaleFromString(locale));
         if (!localeOptional.isPresent()) {
             localeOptional = localeProvider.resolveLocale(request);
         }
 
         final Optional<SoyMsgBundle> soyMsgBundle = soyMsgBundleResolver.resolve(localeOptional);
-        final Optional<String> compiledTemplate = tofuCompiler.compileToJsSrc(templateFile.orNull(), soyMsgBundle.orNull());
+        final Optional<String> compiledTemplate = tofuCompiler.compileToJsSrc(templateFile.orElse(null), soyMsgBundle.orElse(null));
 
         return compiledTemplate;
     }

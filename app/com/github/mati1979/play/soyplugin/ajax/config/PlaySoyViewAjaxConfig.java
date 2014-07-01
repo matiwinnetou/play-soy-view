@@ -75,5 +75,4 @@ public class PlaySoyViewAjaxConfig {
         return new PermissableAuthManager();
     }
 
-
 }

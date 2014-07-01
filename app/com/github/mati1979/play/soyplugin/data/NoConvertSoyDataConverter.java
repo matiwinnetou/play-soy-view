@@ -1,6 +1,6 @@
 package com.github.mati1979.play.soyplugin.data;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 import com.google.template.soy.data.SoyMapData;
 
 import javax.annotation.Nullable;

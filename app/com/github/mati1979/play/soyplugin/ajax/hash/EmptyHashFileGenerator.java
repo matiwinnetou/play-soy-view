@@ -1,10 +1,7 @@
 package com.github.mati1979.play.soyplugin.ajax.hash;
 
-import com.google.common.base.Optional;
-
 import java.io.IOException;
-import java.net.URL;
-import java.util.Collection;
+import java.util.Optional;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,7 +13,7 @@ public class EmptyHashFileGenerator implements HashFileGenerator {
 
     @Override
     public Optional<String> hash() throws IOException {
-        return Optional.absent();
+        return Optional.empty();
     }
 
 }

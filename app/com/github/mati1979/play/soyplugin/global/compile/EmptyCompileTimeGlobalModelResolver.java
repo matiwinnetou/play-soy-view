@@ -1,6 +1,6 @@
 package com.github.mati1979.play.soyplugin.global.compile;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 import com.google.template.soy.data.SoyMapData;
 
 /**
@@ -14,7 +14,7 @@ import com.google.template.soy.data.SoyMapData;
 public class EmptyCompileTimeGlobalModelResolver implements CompileTimeGlobalModelResolver {
 
     public Optional<SoyMapData> resolveData() {
-        return Optional.absent();
+        return Optional.empty();
     }
 
 }

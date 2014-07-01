@@ -17,7 +17,7 @@ import java.io.Writer;
  */
 public class YahooOutputProcessor implements OutputProcessor {
 
-    private static final play.Logger.ALogger logger = play.Logger.of("play.soy.view");
+    private static final play.Logger.ALogger logger = play.Logger.of(YahooOutputProcessor.class);
 
     // options of YUI compressor
     private int linebreakpos = -1;
@@ -39,6 +39,7 @@ public class YahooOutputProcessor implements OutputProcessor {
 
     @Override
     public void process(Reader reader, Writer writer) throws IOException {
+        logger.debug("yahoo processor processing...");
         final JavaScriptCompressor javaScriptCompressor = new JavaScriptCompressor(reader, new ErrorReporter() {
             public void warning(final String message, final String sourceName, final int line, final String lineSource,
                                 final int lineOffset) {

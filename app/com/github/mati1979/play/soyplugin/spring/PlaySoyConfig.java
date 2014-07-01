@@ -23,7 +23,7 @@ import com.github.mati1979.play.soyplugin.render.DefaultTemplateRenderer;
 import com.github.mati1979.play.soyplugin.render.TemplateRenderer;
 import com.github.mati1979.play.soyplugin.template.FileSystemTemplateFilesResolver;
 import com.github.mati1979.play.soyplugin.template.TemplateFilesResolver;
-import com.google.common.base.Optional;
+import java.util.Optional;
 import com.google.template.soy.jssrc.SoyJsSrcOptions;
 import com.google.template.soy.tofu.SoyTofuOptions;
 import org.springframework.context.annotation.Bean;
@@ -56,7 +56,7 @@ public class PlaySoyConfig {
 
     @Bean
     public CompileTimeGlobalModelResolver soyCompileTimeGlobalModelResolver() {
-        final Map<String,Object> merged = new HashMap<>();
+        final Map<String, Object> merged = new HashMap<>();
 
         final Optional<play.Configuration> pluginConfig = PlayConfAccessor.getPluginConfig();
         if (pluginConfig.isPresent()) {

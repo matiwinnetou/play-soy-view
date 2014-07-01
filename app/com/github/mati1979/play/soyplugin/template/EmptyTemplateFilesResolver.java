@@ -1,6 +1,6 @@
 package com.github.mati1979.play.soyplugin.template;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 import java.io.IOException;
 import java.net.URL;
@@ -22,7 +22,7 @@ public class EmptyTemplateFilesResolver implements TemplateFilesResolver {
 
     @Override
     public Optional<URL> resolve(final String templateName) throws IOException {
-        return Optional.absent();
+        return Optional.empty();
     }
 
 }

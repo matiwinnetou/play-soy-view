@@ -1,7 +1,5 @@
 package com.github.mati1979.play.soyplugin.exception;
 
-import com.google.common.base.Function;
-import com.google.common.base.Optional;
 import com.google.template.soy.base.SoySyntaxException;
 import org.apache.commons.io.FileUtils;
 
@@ -10,6 +8,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,7 +19,7 @@ public class ExceptionInTemplate extends play.api.PlayException.ExceptionSource 
 
     private final static Pattern PATTERN = Pattern.compile("^.+\\[line\\040(\\d{1,3}),\\040column\\040(\\d{1,3})\\].+$");
 
-    private Optional<File> templateFile = Optional.absent();
+    private Optional<File> templateFile = Optional.empty();
     private Integer line;
     private Integer position;
     private String fileAsString = "";
@@ -51,14 +50,7 @@ public class ExceptionInTemplate extends play.api.PlayException.ExceptionSource 
     }
 
     public String sourceName() {
-        final Optional<String> transform = templateFile.transform(new Function<File, String>() {
-            @Override
-            public String apply(final File input) {
-                return input.getAbsolutePath();
-            }
-        });
-
-        return transform.or("missing source file");
+        return templateFile.map(input -> input.getAbsolutePath()).orElse("missing source file");
     }
 
     private String fileAsString(final Optional<File> templateFile) {
@@ -96,7 +88,7 @@ public class ExceptionInTemplate extends play.api.PlayException.ExceptionSource 
         } catch (MalformedURLException ex) {
         }
 
-        return Optional.absent();
+        return Optional.empty();
     }
 
 }

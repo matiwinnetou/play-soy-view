@@ -16,6 +16,8 @@ import java.util.Map;
  */
 public class SoyHashesRuntimeDataResolver implements RuntimeDataResolver {
 
+    private static final play.Logger.ALogger logger = play.Logger.of(SoyHashesRuntimeDataResolver.class);
+
     private HashFileGenerator hashFileGenerator;
 
     public SoyHashesRuntimeDataResolver(final HashFileGenerator hashFileGenerator) {
@@ -27,7 +29,9 @@ public class SoyHashesRuntimeDataResolver implements RuntimeDataResolver {
                             final Map<String, ?> model,
                             final SoyMapData root) {
         try {
-            root.put("soyplugin.ajax.soy.hash", hashFileGenerator.hash().orNull());
+            final String hash = hashFileGenerator.hash().orElse(null);
+            logger.debug("Putting hash to global runtime variable - soyplugin.ajax.soy.hash:" + hash);
+            root.put("soyplugin.ajax.soy.hash", hash);
         } catch (final IOException e) {
             throw new RuntimeException(e);
         }

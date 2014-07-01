@@ -15,6 +15,8 @@ import java.util.List;
  */
 public class ConfigurableAuthManager implements AuthManager {
 
+    private static final play.Logger.ALogger logger = play.Logger.of(ConfigurableAuthManager.class);
+
     /**friendly*/ List<String> allowedTemplates = Lists.newArrayList();
 
     public ConfigurableAuthManager(final List<String> allowedTemplates) {
@@ -23,7 +25,14 @@ public class ConfigurableAuthManager implements AuthManager {
 
     @Override
     public boolean isAllowed(final String url) {
-        return allowedTemplates.contains(url);
+        final boolean allowed = allowedTemplates.contains(url);
+        if (allowed) {
+            logger.debug("Access allowed for, url:" + url);
+        } else {
+            logger.debug("Access denied for, url:" + url);
+        }
+
+        return allowed;
     }
 
 }

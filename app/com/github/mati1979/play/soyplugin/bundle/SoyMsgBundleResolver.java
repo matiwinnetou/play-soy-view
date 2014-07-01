@@ -1,6 +1,6 @@
 package com.github.mati1979.play.soyplugin.bundle;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 import com.google.template.soy.msgs.SoyMsgBundle;
 
 import java.io.IOException;

@@ -1,6 +1,6 @@
 package com.github.mati1979.play.soyplugin.ajax.hash;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 import java.io.IOException;
 import java.net.URL;

@@ -5,13 +5,13 @@ import com.github.mati1979.play.soyplugin.compile.TofuCompiler;
 import com.github.mati1979.play.soyplugin.config.SoyViewConf;
 import com.github.mati1979.play.soyplugin.template.EmptyTemplateFilesResolver;
 import com.github.mati1979.play.soyplugin.template.TemplateFilesResolver;
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.template.soy.tofu.SoyTofu;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collection;
+import java.util.Optional;
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,13 +21,13 @@ import java.util.Collection;
  */
 public class DefaultCompiledTemplatesHolder implements CompiledTemplatesHolder {
 
-    private static final play.Logger.ALogger logger = play.Logger.of("play.soy.view");
+    private static final play.Logger.ALogger logger = play.Logger.of(DefaultCompiledTemplatesHolder.class);
 
     private TofuCompiler tofuCompiler = new EmptyTofuCompiler();
 
     private TemplateFilesResolver templatesFileResolver = new EmptyTemplateFilesResolver();
 
-    private Optional<SoyTofu> compiledTemplates = Optional.absent();
+    private Optional<SoyTofu> compiledTemplates = Optional.empty();
 
     private SoyViewConf soyViewConf = null;
 
@@ -42,7 +42,8 @@ public class DefaultCompiledTemplatesHolder implements CompiledTemplatesHolder {
 
     public Optional<SoyTofu> compiledTemplates() throws IOException {
         if (shouldCompileTemplates()) {
-            this.compiledTemplates = Optional.fromNullable(compileTemplates());
+            logger.debug("compiling templates...");
+            this.compiledTemplates = Optional.ofNullable(compileTemplates());
         }
 
         return compiledTemplates;
@@ -55,7 +56,9 @@ public class DefaultCompiledTemplatesHolder implements CompiledTemplatesHolder {
     public void init() throws IOException {
         logger.debug("TemplatesHolder init...");
         if (soyViewConf.compilePrecompileTemplates()) {
-            this.compiledTemplates = Optional.fromNullable(compileTemplates());
+            logger.info("Precompilation of soy templates...");
+
+            this.compiledTemplates = Optional.ofNullable(compileTemplates());
         }
     }
 

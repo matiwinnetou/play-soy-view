@@ -15,7 +15,6 @@ import com.github.mati1979.play.soyplugin.locale.LocaleProvider;
 import com.github.mati1979.play.soyplugin.render.DefaultTemplateRenderer;
 import com.github.mati1979.play.soyplugin.render.RenderRequest;
 import com.github.mati1979.play.soyplugin.render.TemplateRenderer;
-import com.google.common.base.Optional;
 import com.google.template.soy.base.SoySyntaxException;
 import com.google.template.soy.data.SoyMapData;
 import play.mvc.Http;
@@ -24,6 +23,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Created by mati on 02/02/2014.
@@ -77,12 +77,12 @@ public class DefaultSoy implements Soy {
         final Http.Request request = Http.Context.current().request();
         final Http.Response response = Http.Context.current().response();
 
-        return htmlPriv(request, response, view, Optional.<SoyMapData>absent());
+        return htmlPriv(request, response, view, Optional.empty());
     }
 
     @Override
     public String html(final Http.Request request, final Http.Response response, final String view, final SoyMapData soyMapData) {
-        return htmlPriv(request, response, view, Optional.fromNullable(soyMapData));
+        return htmlPriv(request, response, view, Optional.ofNullable(soyMapData));
     }
 
     @Override
@@ -92,7 +92,7 @@ public class DefaultSoy implements Soy {
 
     @Override
     public String html(final Http.Request request, final Http.Response response, final String view) {
-        return htmlPriv(request, response, view, Optional.<SoyMapData>absent());
+        return htmlPriv(request, response, view, Optional.empty());
     }
 
     private String htmlPriv(final Http.Request request, final Http.Response response, final String viewName, final Optional<SoyMapData> soyMapData) {

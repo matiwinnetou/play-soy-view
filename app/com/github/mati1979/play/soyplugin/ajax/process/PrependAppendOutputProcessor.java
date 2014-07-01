@@ -36,6 +36,16 @@ public class PrependAppendOutputProcessor implements OutputProcessor {
     /** whether to add a new line in append case */
     private boolean appendNewLine = true;
 
+    public PrependAppendOutputProcessor(final String prependText,
+                                        final boolean prependNewLine,
+                                        final String appendText,
+                                        boolean appendNewLine) {
+        this.prependText = prependText;
+        this.prependNewLine = prependNewLine;
+        this.appendText = appendText;
+        this.appendNewLine = appendNewLine;
+    }
+
     @Override
     public void process(final Reader reader, final Writer writer) throws IOException {
         final StringBuilder builder = new StringBuilder();
@@ -57,22 +67,6 @@ public class PrependAppendOutputProcessor implements OutputProcessor {
         }
 
         writer.write(builder.toString());
-    }
-
-    public void setPrependText(String prependText) {
-        this.prependText = prependText;
-    }
-
-    public void setAppendText(String appendText) {
-        this.appendText = appendText;
-    }
-
-    public void setPrependNewLine(boolean prependNewLine) {
-        this.prependNewLine = prependNewLine;
-    }
-
-    public void setAppendNewLine(boolean appendNewLine) {
-        this.appendNewLine = appendNewLine;
     }
 
 }

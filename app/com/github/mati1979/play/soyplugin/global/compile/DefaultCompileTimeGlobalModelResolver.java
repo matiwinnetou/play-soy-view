@@ -1,10 +1,10 @@
 package com.github.mati1979.play.soyplugin.global.compile;
 
-import com.google.common.base.Optional;
 import com.google.template.soy.data.SoyMapData;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Properties;
 
 /**
@@ -16,6 +16,8 @@ import java.util.Properties;
  * A default implementation, which delegates to a map
  */
 public class DefaultCompileTimeGlobalModelResolver implements CompileTimeGlobalModelResolver {
+
+    private static final play.Logger.ALogger logger = play.Logger.of(DefaultCompileTimeGlobalModelResolver.class);
 
     private Map data;
 
@@ -32,8 +34,10 @@ public class DefaultCompileTimeGlobalModelResolver implements CompileTimeGlobalM
 
     @Override
     public Optional<SoyMapData> resolveData() {
+        logger.debug("resolving data...");
         if (data == null || data.isEmpty()) {
-            return Optional.absent();
+            logger.debug("nothing to resolve, empty map returned.");
+            return Optional.empty();
         }
 
         return Optional.of(new SoyMapData(data));

@@ -14,7 +14,7 @@
 
 package com.github.mati1979.play.soyplugin.data;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Primitives;
 import com.google.template.soy.data.SoyMapData;
@@ -48,10 +48,10 @@ public class ReflectionToSoyDataConverter implements ToSoyDataConverter {
     @Override
     public Optional<SoyMapData> toSoyMap(final Object model) {
         if (model == null) {
-            return Optional.absent();
+            return Optional.empty();
         }
 
-        return Optional.fromNullable(objectToSoyDataMap(model));
+        return Optional.ofNullable(objectToSoyDataMap(model));
     }
 
     private Map<String, ?> toSoyCompatibleMap(final Object obj) {
@@ -99,7 +99,7 @@ public class ReflectionToSoyDataConverter implements ToSoyDataConverter {
         {
             @SuppressWarnings("unchecked")
             Map<String, Object> pojoMap = (Map<String, Object>) pojoToMap(obj);
-            Map<String, Object> newMap = new HashMap<String, Object>(pojoMap.size());
+            Map<String, Object> newMap = new HashMap<>(pojoMap.size());
             for (String key : pojoMap.keySet()) {
                 newMap.put(key, toSoyCompatibleObjects(pojoMap.get(key)));
             }
@@ -109,7 +109,7 @@ public class ReflectionToSoyDataConverter implements ToSoyDataConverter {
     }
 
     private static Map<String, ?> pojoToMap(final Object pojo) {
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
 
         try {
             final BeanInfo beanInfo = Introspector.getBeanInfo(pojo.getClass());
