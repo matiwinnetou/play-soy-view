@@ -1,11 +1,12 @@
 import sbt._
-import scala.Some
+import sbtrelease._
+
+import ReleaseStateTransformations._
+import ReleaseKeys._
 
 organization := "pl.matisoft"
 
 name := "play-soy-view"
-
-version := "0.1.15"
 
 scalaVersion := "2.10.4"
 
@@ -18,13 +19,27 @@ libraryDependencies ++= Seq(
   "commons-io" % "commons-io" % "2.2"
 )
 
+releaseSettings
+
 sonatypeSettings
 
-releaseSettings
+releaseProcess :=
+  Seq[ReleaseStep](
+  checkSnapshotDependencies,
+  inquireVersions,
+  runClean,
+  runTest,
+  setReleaseVersion,
+  commitReleaseVersion,
+  tagRelease,
+  publishArtifacts,
+  setNextVersion,
+  commitNextVersion,
+  pushChanges)
 
 publishMavenStyle := true
 
-//crossScalaVersions := Seq("2.10.4", "2.11.0")
+crossScalaVersions := Seq("2.10.4", "2.11.1")
 
 publishTo := {
   val nexus = "https://oss.sonatype.org/"

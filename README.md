@@ -10,7 +10,7 @@ https://github.com/mati1979/play-soy-view-example
 
 # Version:
 - 0.1 - early adopters only
-- 0.1.1 - minor bug fixes
+- 0.1.1 - minor bug fixes2
 - 0.1.3 - minor improvements
 - 0.1.4 - minor improvements, e.g. AllowedUrls for ajax, introduced SoyViewConf interface and two implementations, play getting * config values from play config and default where a user can configure values overriding defaults
 - 0.1.5 - small bug fix in SoyHashesRuntimeResolver
@@ -20,6 +20,8 @@ https://github.com/mati1979/play-soy-view-example
 - 0.1.12 - introduced ExceptionInTemplate from Play that shows line and column number of an error
 - 0.1.13 - using play logger and removed slf4j
 - 0.1.14 - improved debug logging, moved o java 8 and play 2.3 for older version of play use old versions
+- 0.1.15 - improved debug logging
+- 0.1.16 - shows compilation time for in case hot reload mode is on
 
 # TODO
 - cross compile 2.3 version for Scala: 2.11.x

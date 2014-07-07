@@ -6,12 +6,14 @@ import com.github.mati1979.play.soyplugin.config.SoyViewConf;
 import com.github.mati1979.play.soyplugin.template.EmptyTemplateFilesResolver;
 import com.github.mati1979.play.soyplugin.template.TemplateFilesResolver;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Stopwatch;
 import com.google.template.soy.tofu.SoyTofu;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created with IntelliJ IDEA.
@@ -42,8 +44,11 @@ public class DefaultCompiledTemplatesHolder implements CompiledTemplatesHolder {
 
     public Optional<SoyTofu> compiledTemplates() throws IOException {
         if (shouldCompileTemplates()) {
-            logger.debug("compiling templates...");
+            final Stopwatch stopwatch = new Stopwatch().start();
+            logger.debug("Compiling templates...");
             this.compiledTemplates = Optional.ofNullable(compileTemplates());
+            stopwatch.stop();
+            logger.info(String.format("Compiling templates, took: %d ms", stopwatch.elapsed(TimeUnit.MILLISECONDS)));
         }
 
         return compiledTemplates;
