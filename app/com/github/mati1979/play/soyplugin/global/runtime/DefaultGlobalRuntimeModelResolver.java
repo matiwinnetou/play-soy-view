@@ -4,7 +4,6 @@ import java.util.Optional;
 import com.google.common.collect.Lists;
 import com.google.template.soy.data.SoyMapData;
 import play.mvc.Http;
-import scala.io.BytePickle;
 
 import java.util.List;
 import java.util.Map;
