@@ -7,6 +7,7 @@ import com.github.mati1979.play.soyplugin.template.EmptyTemplateFilesResolver;
 import com.github.mati1979.play.soyplugin.template.TemplateFilesResolver;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Stopwatch;
+import com.google.common.base.Ticker;
 import com.google.template.soy.tofu.SoyTofu;
 
 import java.io.IOException;
@@ -44,7 +45,7 @@ public class DefaultCompiledTemplatesHolder implements CompiledTemplatesHolder {
 
     public Optional<SoyTofu> compiledTemplates() throws IOException {
         if (shouldCompileTemplates()) {
-            final Stopwatch stopwatch = new Stopwatch().start();
+            final Stopwatch stopwatch = Stopwatch.createStarted();
             logger.debug("Compiling templates...");
             this.compiledTemplates = Optional.ofNullable(compileTemplates());
             stopwatch.stop();
