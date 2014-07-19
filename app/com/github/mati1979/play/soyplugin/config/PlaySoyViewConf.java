@@ -11,6 +11,11 @@ public class PlaySoyViewConf implements SoyViewConf {
     }
 
     @Override
+    public int globalHotReloadCompileTimeInSecs() {
+        return PlayConfAccessor.GLOBAL_HOT_RELOAD_COMPILE_TIME_IN_SECS;
+    }
+
+    @Override
     public String globalEncoding() {
         return PlayConfAccessor.GLOBAL_ENCODING;
     }

@@ -7,6 +7,8 @@ public class DefaultSoyViewConf implements SoyViewConf {
 
     private boolean hotReloadMode = ConfigDefaults.GLOBAL_HOT_RELOAD_MODE;
 
+    private int globalHotReloadCompileTimeInSecs = ConfigDefaults.GLOBAL_HOT_RELOAD_COMPILE_TIME_IN_SECS;
+
     private String globalEncoding = ConfigDefaults.GLOBAL_CHARSET_ENCODING;
 
     private boolean compilePrecompileTemplates = ConfigDefaults.COMPILE_PRECOMPILE_TEMPLATES;
@@ -32,6 +34,11 @@ public class DefaultSoyViewConf implements SoyViewConf {
     @Override
     public boolean globalHotReloadMode() {
         return hotReloadMode;
+    }
+
+    @Override
+    public int globalHotReloadCompileTimeInSecs() {
+        return globalHotReloadCompileTimeInSecs;
     }
 
     @Override
@@ -100,6 +107,11 @@ public class DefaultSoyViewConf implements SoyViewConf {
 
         public Builder withHotReloadMode(boolean hotReloadMode) {
             defaultSoyViewConf.hotReloadMode = hotReloadMode;
+            return this;
+        }
+
+        public Builder withGlobalHotReloadCompileTimeInSecs(final int globalHotReloadCompileTimeInSecs) {
+            defaultSoyViewConf.globalHotReloadCompileTimeInSecs = globalHotReloadCompileTimeInSecs;
             return this;
         }
 

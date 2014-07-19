@@ -11,6 +11,11 @@ public class EmptySoyViewConf implements SoyViewConf {
     }
 
     @Override
+    public int globalHotReloadCompileTimeInSecs() {
+        return 10;
+    }
+
+    @Override
     public String globalEncoding() {
         return "utf-8";
     }

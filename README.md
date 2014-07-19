@@ -1,6 +1,6 @@
 #play-soy-view
 
-An experimental implementation of Google Closure library support for Play framework for Java
+An implementation of Google Closure library support for Play framework for Java
 
 At the moment, this plugin assumes it will be wired via dependency injection, there is no support for including the plugin in plugins file in play that would result in auto wiring.
 Individual components have to be wired via a dependency injection framework of choice or alternatively manually wired.
@@ -22,11 +22,20 @@ https://github.com/mati1979/play-soy-view-example
 - 0.1.14 - improved debug logging, moved o java 8 and play 2.3 for older version of play use old versions
 - 0.1.15 - improved debug logging
 - 0.1.16 - shows compilation time for in case hot reload mode is on
+- 0.1.18 - introduced a short lived cache (10 sec by default) for compiled templates in dev mode (hot reload mode), removed yahoo minimification, one library less
 
 # TODO
+- get rid of commons-io dependency
+
+- consider splitting away core and web module since a lot of people may choose to use grunt or sbt -> soy to js compilation instead of ajax controller to compile soy to js
+
+- upgrade to latest soy templates 04.2014 release (pending: https://github.com/google/closure-templates/issues/4)
+
+- Adopt latest google closure templates features
+
 - cross compile 2.3 version for Scala: 2.11.x
 
-- make it idiomatic for play, make sure ClosurePlugin bootstraps a tree of components, but so that it is reconfigurable later as well. This requires that play properly supports DI in plugins (wait for 2.4.x)
+- When Play 2.4 is released think about improving library from point of view - dependency injection
 
 - support soy files in app/views, there is an example go to do this based on Freemarker and play integration
 
@@ -35,8 +44,6 @@ https://github.com/mati1979/play-soy-view-example
 - port ContentNegotiator from spring-soy-view
 
 - port excluded properties for reflection to soy converter
-
-- include routes, where we have a soyJs endpoint defined
 
 - JavaDoc
 

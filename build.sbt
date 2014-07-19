@@ -15,7 +15,6 @@ lazy val root = (project in file(".")).enablePlugins(PlayJava)
 libraryDependencies ++= Seq(
   "com.google.template" % "soy" % "2012-12-21",
   "com.google.javascript" % "closure-compiler" % "v20140625",
-  "com.yahoo.platform.yui" % "yuicompressor" % "2.4.7",
   "commons-io" % "commons-io" % "2.2"
 )
 
@@ -23,8 +22,7 @@ releaseSettings
 
 sonatypeSettings
 
-releaseProcess :=
-  Seq[ReleaseStep](
+releaseProcess := Seq[ReleaseStep](
   checkSnapshotDependencies,
   inquireVersions,
   runClean,

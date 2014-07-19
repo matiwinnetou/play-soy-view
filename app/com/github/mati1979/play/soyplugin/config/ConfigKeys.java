@@ -7,6 +7,8 @@ public class ConfigKeys {
 
     public final static String GLOBAL_HOT_RELOAD_MODE = "global_hot_reload_mode";
 
+    public final static String GLOBAL_HOT_RELOAD_COMPILE_TIME_IN_SECS = "global_hot_reload_compile_time_in_secs";
+
     public final static String GLOBAL_CHARSET_ENCODING = "global_charset_encoding";
 
     public final static String I18N_MESSAGES_PATH = "i18n_messages_path";

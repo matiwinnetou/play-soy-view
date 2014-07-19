@@ -52,6 +52,8 @@ public class PlayConfAccessor {
     //GLOBAL
     public static boolean GLOBAL_HOT_RELOAD_MODE = getPluginConfig().orElse(Configuration.root()).getBoolean(ConfigKeys.GLOBAL_HOT_RELOAD_MODE, ConfigDefaults.GLOBAL_HOT_RELOAD_MODE);
 
+    public final static int GLOBAL_HOT_RELOAD_COMPILE_TIME_IN_SECS = getPluginConfig().orElse(Configuration.root()).getInt(ConfigKeys.GLOBAL_HOT_RELOAD_COMPILE_TIME_IN_SECS, ConfigDefaults.GLOBAL_HOT_RELOAD_COMPILE_TIME_IN_SECS);
+
     public static String GLOBAL_ENCODING = getPluginConfig().orElse(Configuration.root()).getString(ConfigKeys.GLOBAL_CHARSET_ENCODING, ConfigDefaults.GLOBAL_CHARSET_ENCODING);
 
     //COMPILE

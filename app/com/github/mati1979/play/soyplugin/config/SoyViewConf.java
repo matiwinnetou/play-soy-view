@@ -7,8 +7,9 @@ public interface SoyViewConf {
 
     boolean globalHotReloadMode();
 
-    String globalEncoding();
+    int globalHotReloadCompileTimeInSecs();
 
+    String globalEncoding();
 
     boolean compilePrecompileTemplates();
 

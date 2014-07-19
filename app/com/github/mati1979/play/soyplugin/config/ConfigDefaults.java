@@ -12,6 +12,8 @@ public class ConfigDefaults {
 
     public final static boolean GLOBAL_HOT_RELOAD_MODE = Play.isDev();
 
+    public final static int GLOBAL_HOT_RELOAD_COMPILE_TIME_IN_SECS = 10;
+
     public final static String GLOBAL_CHARSET_ENCODING = "utf-8";
 
     /**
