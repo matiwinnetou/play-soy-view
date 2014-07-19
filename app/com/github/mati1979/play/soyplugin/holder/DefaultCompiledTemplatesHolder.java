@@ -80,7 +80,7 @@ public class DefaultCompiledTemplatesHolder implements CompiledTemplatesHolder {
         logger.debug("TemplatesHolder init...");
         if (soyViewConf.compilePrecompileTemplates()) {
             logger.info("Precompilation of soy templates...");
-            cache.put(TEMPLATES_KEY, Optional.ofNullable(compileTemplates()));
+            cache.put(TEMPLATES_KEY, compileTemplates());
         }
     }
 
