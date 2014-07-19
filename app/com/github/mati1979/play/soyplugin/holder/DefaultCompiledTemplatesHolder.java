@@ -5,6 +5,7 @@ import com.github.mati1979.play.soyplugin.compile.TofuCompiler;
 import com.github.mati1979.play.soyplugin.config.SoyViewConf;
 import com.github.mati1979.play.soyplugin.template.EmptyTemplateFilesResolver;
 import com.github.mati1979.play.soyplugin.template.TemplateFilesResolver;
+import com.github.mati1979.play.soyplugin.utils.Locks;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Stopwatch;
 import com.google.common.cache.Cache;
@@ -16,6 +17,7 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Created with IntelliJ IDEA.
@@ -31,11 +33,13 @@ public class DefaultCompiledTemplatesHolder implements CompiledTemplatesHolder {
 
     private TemplateFilesResolver templatesFileResolver = new EmptyTemplateFilesResolver();
 
-    private Cache<String, Optional<SoyTofu>> cache = CacheBuilder.newBuilder().build();
+    private Cache<String, SoyTofu> cache = CacheBuilder.newBuilder().build();
 
     private SoyViewConf soyViewConf = null;
 
     private final static String TEMPLATES_KEY = "templates";
+
+    private ReentrantLock cacheLock = new ReentrantLock();
 
     public DefaultCompiledTemplatesHolder(final TofuCompiler tofuCompiler,
                                           final TemplateFilesResolver templatesFileResolver,
@@ -44,27 +48,32 @@ public class DefaultCompiledTemplatesHolder implements CompiledTemplatesHolder {
         this.templatesFileResolver = templatesFileResolver;
         this.soyViewConf = soyViewConf;
         this.cache = CacheBuilder.newBuilder().maximumSize(1).expireAfterWrite(soyViewConf.globalHotReloadCompileTimeInSecs(), TimeUnit.SECONDS).build();
-        this.cache.put(TEMPLATES_KEY, Optional.empty());
         init();
     }
 
     public Optional<SoyTofu> compiledTemplates() throws IOException {
         if (shouldCompileTemplates()) {
-            if (cache.getIfPresent(TEMPLATES_KEY) != null && cache.getIfPresent(TEMPLATES_KEY).isPresent()) {
-                return cache.getIfPresent(TEMPLATES_KEY);
-            }
-            final Stopwatch stopwatch = Stopwatch.createStarted();
-            logger.debug("Compiling templates...");
-            cache.put(TEMPLATES_KEY, Optional.ofNullable(compileTemplates()));
-            stopwatch.stop();
-            logger.info(String.format("Compiling templates, took: %d ms", stopwatch.elapsed(TimeUnit.MILLISECONDS)));
+            return Locks.withLock(cacheLock, () -> { //loan pattern
+                Optional<SoyTofu> soyTofuOpt = Optional.ofNullable(cache.getIfPresent(TEMPLATES_KEY));
+                if (soyTofuOpt.isPresent()) {
+                    return soyTofuOpt;
+                }
+                final Stopwatch stopwatch = Stopwatch.createStarted();
+                logger.debug("Compiling templates...");
+                final SoyTofu soyTofu = compileTemplates();
+                cache.put(TEMPLATES_KEY, soyTofu);
+                stopwatch.stop();
+                logger.info(String.format("Compiling templates, took: %d ms", stopwatch.elapsed(TimeUnit.MILLISECONDS)));
+
+                return Optional.of(soyTofu);
+            });
         }
 
-        return cache.getIfPresent(TEMPLATES_KEY);
+        return Optional.ofNullable(cache.getIfPresent(TEMPLATES_KEY));
     }
 
     private boolean shouldCompileTemplates() {
-        return soyViewConf.globalHotReloadMode() || !cache.getIfPresent(TEMPLATES_KEY).isPresent();
+        return soyViewConf.globalHotReloadMode() || !Optional.ofNullable(cache.getIfPresent(TEMPLATES_KEY)).isPresent();
     }
 
     public void init() throws IOException {
