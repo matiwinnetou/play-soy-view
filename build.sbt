@@ -1,8 +1,5 @@
 import sbt._
-import sbtrelease._
-
-import ReleaseStateTransformations._
-import ReleaseKeys._
+import Keys._
 
 organization := "pl.matisoft"
 
@@ -17,23 +14,6 @@ libraryDependencies ++= Seq(
   "com.google.javascript" % "closure-compiler" % "v20140625",
   "commons-io" % "commons-io" % "2.2"
 )
-
-releaseSettings
-
-sonatypeSettings
-
-releaseProcess := Seq[ReleaseStep](
-  checkSnapshotDependencies,
-  inquireVersions,
-  runClean,
-  runTest,
-  setReleaseVersion,
-  commitReleaseVersion,
-  tagRelease,
-  publishArtifacts,
-  setNextVersion,
-  commitNextVersion,
-  pushChanges)
 
 publishMavenStyle := true
 
