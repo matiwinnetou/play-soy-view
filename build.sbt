@@ -36,13 +36,13 @@ pomIncludeRepository := { _ => false }
 pomExtra := (
   <scm>
     <url>git@github.com:mati1979/play-soy-view.git</url>
-    <connection>scm:git:git@github.com:mati1979/play-soy-view.git</connection>
+    <connection>scm:git:git@github.com:matiwinnetou/play-soy-view.git</connection>
   </scm>
-    <url>https://github.com/mati1979/play-soy-view</url>
+    <url>https://github.com/matiwinnetou/play-soy-view</url>
     <developers>
       <developer>
         <id>matiwinnetou</id>
         <name>Mateusz Szczap</name>
-        <url>https://github.com/mati1979</url>
+        <url>https://github.com/matiwinnetou</url>
       </developer>
     </developers>)
