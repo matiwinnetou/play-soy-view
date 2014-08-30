@@ -17,7 +17,9 @@ public class SoyAllowedUrls {
 
     private boolean enabledSecurity = false;
 
-    public SoyAllowedUrls(final List<URL> resolvedUrls, final List<String> urls,  boolean enabledSecurity) {
+    public SoyAllowedUrls(final List<URL> resolvedUrls,
+                          final List<String> urls,
+                          boolean enabledSecurity) {
         this.urls = urls;
         this.resolvedUrls = resolvedUrls;
         this.enabledSecurity = enabledSecurity;
