@@ -1,6 +1,7 @@
 package com.github.mati1979.play.soyplugin.ajax.hash;
 
 import com.github.mati1979.play.soyplugin.ajax.allowedurls.SoyAllowedUrls;
+import com.github.mati1979.play.soyplugin.ajax.allowedurls.SoyAllowedUrlsResolver;
 import com.github.mati1979.play.soyplugin.config.SoyViewConf;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -9,6 +10,7 @@ import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
 import org.apache.commons.io.input.ReaderInputStream;
 
+import javax.inject.Inject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
@@ -28,7 +30,7 @@ import java.util.concurrent.TimeUnit;
  *
  * It is important to notice that this implementation supports a dev and prod modes
  * in dev (hotReloadMode) mode the implementation will not cache md5 hash checksums, conversely
- * in prod mode it will cache it. The cache can be fine tuned via setters.
+ * in prod mode it will cache it.
  */
 public class MD5HashFileGenerator implements HashFileGenerator {
 
@@ -54,14 +56,16 @@ public class MD5HashFileGenerator implements HashFileGenerator {
             .maximumSize(cacheMaxSize)
             .build();
 
-    private SoyAllowedUrls soyAllowedUrls;
+    private SoyAllowedUrlsResolver soyAllowedUrlsResolver;
 
     private SoyViewConf soyViewConf;
 
-    public MD5HashFileGenerator(final SoyAllowedUrls soyAllowedUrls,
+    @Inject
+    public MD5HashFileGenerator(final SoyAllowedUrlsResolver soyAllowedUrlsResolver,
                                 final SoyViewConf soyViewConf) {
-        this.soyAllowedUrls = soyAllowedUrls;
+        this.soyAllowedUrlsResolver = soyAllowedUrlsResolver;
         this.soyViewConf = soyViewConf;
+        init();
     }
 
     public void init() {
@@ -109,6 +113,8 @@ public class MD5HashFileGenerator implements HashFileGenerator {
 
     @Override
     public Optional<String> hash() throws IOException {
+        final SoyAllowedUrls soyAllowedUrls = soyAllowedUrlsResolver.allowedUrls();
+
         if (soyAllowedUrls.urls().isEmpty()) {
             logger.warn("Cannot calculate hash, soyAllowedUrls is empty!");
             return Optional.empty();

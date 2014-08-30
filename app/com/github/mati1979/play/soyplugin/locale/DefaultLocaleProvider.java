@@ -19,7 +19,7 @@ public class DefaultLocaleProvider implements LocaleProvider {
 
     private Locale locale = Locale.US;
 
-    public DefaultLocaleProvider(Locale locale) {
+    public DefaultLocaleProvider(final Locale locale) {
         this.locale = locale;
     }
 

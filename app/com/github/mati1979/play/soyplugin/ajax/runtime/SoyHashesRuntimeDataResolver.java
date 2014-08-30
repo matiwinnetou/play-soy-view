@@ -5,6 +5,8 @@ import com.github.mati1979.play.soyplugin.global.runtime.RuntimeDataResolver;
 import com.google.template.soy.data.SoyMapData;
 import play.mvc.Http;
 
+import javax.inject.Inject;
+import javax.inject.Named;
 import java.io.IOException;
 import java.util.Map;
 
@@ -14,12 +16,14 @@ import java.util.Map;
  * Date: 14.11.13
  * Time: 11:02
  */
+@Named("hashesRuntimeDataResolver")
 public class SoyHashesRuntimeDataResolver implements RuntimeDataResolver {
 
     private static final play.Logger.ALogger logger = play.Logger.of(SoyHashesRuntimeDataResolver.class);
 
     private HashFileGenerator hashFileGenerator;
 
+    @Inject
     public SoyHashesRuntimeDataResolver(final HashFileGenerator hashFileGenerator) {
         this.hashFileGenerator = hashFileGenerator;
     }

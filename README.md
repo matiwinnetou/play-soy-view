@@ -45,6 +45,10 @@ https://github.com/mati1979/play-soy-view-example
 
 - port excluded properties for reflection to soy converter
 
+- support for such LocaleResolver that respects List[Locale], as user may have specified multiple locale preferences
+
+- add ability to fine tune various in-app caches
+
 - JavaDoc
 
 - Unit Test

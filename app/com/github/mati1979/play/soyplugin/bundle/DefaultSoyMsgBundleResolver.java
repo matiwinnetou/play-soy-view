@@ -10,6 +10,7 @@ import com.google.template.soy.msgs.restricted.SoyMsgBundleImpl;
 import com.google.template.soy.xliffmsgplugin.XliffMsgPlugin;
 import play.Play;
 
+import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -27,6 +28,7 @@ public class DefaultSoyMsgBundleResolver implements SoyMsgBundleResolver {
 
     private ReentrantLock lock = new ReentrantLock(true);
 
+    @Inject
     public DefaultSoyMsgBundleResolver(final SoyViewConf soyViewConf) {
         this.soyViewConf = soyViewConf;
     }

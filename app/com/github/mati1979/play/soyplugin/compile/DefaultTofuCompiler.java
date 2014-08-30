@@ -14,6 +14,7 @@ import com.google.template.soy.tofu.SoyTofuOptions;
 import play.Logger;
 
 import javax.annotation.Nullable;
+import javax.inject.Inject;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collection;
@@ -39,6 +40,7 @@ public class DefaultTofuCompiler implements TofuCompiler {
 
     private SoyViewConf soyViewConf;
 
+    @Inject
     public DefaultTofuCompiler(final CompileTimeGlobalModelResolver compileTimeGlobalModelResolver,
                                final SoyViewConf soyViewConf,
                                final SoyJsSrcOptions soyJsSrcOptions,

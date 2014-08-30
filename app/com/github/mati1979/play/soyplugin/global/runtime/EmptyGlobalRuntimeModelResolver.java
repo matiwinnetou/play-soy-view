@@ -16,6 +16,9 @@ import java.util.Map;
  */
 public class EmptyGlobalRuntimeModelResolver implements GlobalRuntimeModelResolver {
 
+    public EmptyGlobalRuntimeModelResolver() {
+    }
+
     public Optional<SoyMapData> resolveData(final Http.Request request, final Http.Response response, final Map<String, ? extends Object> model) {
         return Optional.empty();
     }

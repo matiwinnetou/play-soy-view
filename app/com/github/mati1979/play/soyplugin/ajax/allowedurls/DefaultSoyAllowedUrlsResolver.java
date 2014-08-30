@@ -7,6 +7,7 @@ import com.google.common.base.Suppliers;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 
+import javax.inject.Inject;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
@@ -21,6 +22,7 @@ public class DefaultSoyAllowedUrlsResolver implements SoyAllowedUrlsResolver {
     private final TemplateFilesResolver templateFilesResolver;
     private final SoyViewConf soyViewConf;
 
+    @Inject
     public DefaultSoyAllowedUrlsResolver(final TemplateFilesResolver templateFilesResolver,
                                          final SoyViewConf soyViewConf) {
         this.templateFilesResolver = templateFilesResolver;

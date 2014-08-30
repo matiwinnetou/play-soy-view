@@ -12,6 +12,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.template.soy.tofu.SoyTofu;
 
+import javax.inject.Inject;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collection;
@@ -41,13 +42,17 @@ public class DefaultCompiledTemplatesHolder implements CompiledTemplatesHolder {
 
     private ReentrantLock cacheLock = new ReentrantLock();
 
+    @Inject
     public DefaultCompiledTemplatesHolder(final TofuCompiler tofuCompiler,
                                           final TemplateFilesResolver templatesFileResolver,
                                           final SoyViewConf soyViewConf) throws IOException {
         this.tofuCompiler = tofuCompiler;
         this.templatesFileResolver = templatesFileResolver;
         this.soyViewConf = soyViewConf;
-        this.cache = CacheBuilder.newBuilder().maximumSize(1).expireAfterWrite(soyViewConf.globalHotReloadCompileTimeInSecs(), TimeUnit.SECONDS).build();
+        this.cache = CacheBuilder.newBuilder().
+                maximumSize(1).
+                expireAfterWrite(soyViewConf.globalHotReloadCompileTimeInSecs(), TimeUnit.SECONDS)
+                .build();
         init();
     }
 

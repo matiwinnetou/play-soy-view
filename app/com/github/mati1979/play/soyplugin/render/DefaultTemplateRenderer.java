@@ -5,6 +5,7 @@ import com.google.template.soy.data.SoyMapData;
 import com.google.template.soy.msgs.SoyMsgBundle;
 import com.google.template.soy.tofu.SoyTofu;
 
+import javax.inject.Inject;
 import java.util.Optional;
 
 public class DefaultTemplateRenderer implements TemplateRenderer {
@@ -13,6 +14,7 @@ public class DefaultTemplateRenderer implements TemplateRenderer {
 
     private SoyViewConf soyViewConf;
 
+    @Inject
     public DefaultTemplateRenderer(final SoyViewConf soyViewConf) {
         this.soyViewConf = soyViewConf;
     }

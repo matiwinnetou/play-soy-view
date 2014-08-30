@@ -2,7 +2,9 @@ package com.github.mati1979.play.soyplugin.ajax;
 
 import com.github.mati1979.play.soyplugin.ajax.auth.AuthManager;
 import com.github.mati1979.play.soyplugin.ajax.auth.PermissableAuthManager;
+import com.github.mati1979.play.soyplugin.ajax.process.EmptyOutputProcessors;
 import com.github.mati1979.play.soyplugin.ajax.process.OutputProcessor;
+import com.github.mati1979.play.soyplugin.ajax.process.OutputProcessors;
 import com.github.mati1979.play.soyplugin.ajax.utils.I18nUtils;
 import com.github.mati1979.play.soyplugin.ajax.utils.PathUtils;
 import com.github.mati1979.play.soyplugin.bundle.EmptySoyMsgBundleResolver;
@@ -24,6 +26,7 @@ import play.mvc.Http;
 import play.mvc.Result;
 
 import javax.annotation.concurrent.ThreadSafe;
+import javax.inject.Inject;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -78,7 +81,7 @@ public class SoyAjaxController extends Controller {
      * List of output processors, output processors typically perform obfuscation
      * of generated JavaScript code
      */
-    private List<OutputProcessor> outputProcessors = new ArrayList<>();
+    private OutputProcessors outputProcessors = new EmptyOutputProcessors();
 
     /**
      * By default there is no AuthManager and an external user can compile all templates to JavaScript
@@ -92,12 +95,13 @@ public class SoyAjaxController extends Controller {
 
     private ReentrantLock lock = new ReentrantLock();
 
+    @Inject
     public SoyAjaxController(final AuthManager authManager,
                              final LocaleProvider localeProvider,
                              final SoyMsgBundleResolver soyMsgBundleResolver,
                              final TofuCompiler tofuCompiler,
                              final TemplateFilesResolver templateFilesResolver,
-                             final List<OutputProcessor> outputProcessors,
+                             final OutputProcessors outputProcessors,
                              final SoyViewConf soyViewConf) {
         this.authManager = authManager;
         this.localeProvider = localeProvider;
@@ -106,6 +110,7 @@ public class SoyAjaxController extends Controller {
         this.templateFilesResolver = templateFilesResolver;
         this.outputProcessors = outputProcessors;
         this.soyViewConf = soyViewConf;
+        init();
     }
 
     public void init() {
@@ -181,7 +186,7 @@ public class SoyAjaxController extends Controller {
     }
 
     private Map<URL,String> compileTemplates(final String[] templateFileNames, final Http.Request request, final String locale) {
-        final HashMap<URL,String> map = new HashMap<>();
+        final HashMap<URL, String> map = new HashMap<>();
         for (final String templateFileName : templateFileNames) {
             try {
                 final Optional<URL> templateUrl = templateFilesResolver.resolve(templateFileName);
@@ -238,7 +243,7 @@ public class SoyAjaxController extends Controller {
 
         String processTemplate = templateContent;
         try {
-            for (final OutputProcessor outputProcessor : outputProcessors) {
+            for (final OutputProcessor outputProcessor : outputProcessors.processors()) {
                 final StringWriter writer = new StringWriter();
                 outputProcessor.process(new StringReader(templateContent), writer);
                 processTemplate = writer.getBuffer().toString();

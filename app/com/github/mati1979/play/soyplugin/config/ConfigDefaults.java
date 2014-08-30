@@ -10,16 +10,16 @@ import play.Play;
  */
 public class ConfigDefaults {
 
-    public final static boolean GLOBAL_HOT_RELOAD_MODE = Play.isDev();
+    public final static boolean GLOBAL_HOT_RELOAD_MODE = false;
 
-    public final static int GLOBAL_HOT_RELOAD_COMPILE_TIME_IN_SECS = 10;
+    public final static int GLOBAL_HOT_RELOAD_COMPILE_TIME_IN_SECS = 5;
 
     public final static String GLOBAL_CHARSET_ENCODING = "utf-8";
 
     /**
      * Whether templates should be precompiled on the startup of application
      */
-    public final static boolean COMPILE_PRECOMPILE_TEMPLATES = Play.isProd();
+    public final static boolean COMPILE_PRECOMPILE_TEMPLATES = true;
 
     public final static boolean RESOLVE_RECURSIVE = true;
 
@@ -29,9 +29,9 @@ public class ConfigDefaults {
 
     public static final String I18N_MESSAGES_PATH = "conf/xliffs/messages";
 
-    public final static boolean I18N_FALLBACK_TO_ENGLISH = Play.isProd(); //fallback to english only in production mode
+    public final static boolean I18N_FALLBACK_TO_ENGLISH = true;
 
-    public final static boolean AJAX_SECURITY_ENABLED = Play.isProd(); //enable secure mode in production
+    public final static boolean AJAX_SECURITY_ENABLED = true;
 
     public final static String AJAX_ALLOWED_URLS = "";
 

@@ -8,6 +8,7 @@ import play.Play;
 
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
+import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -40,6 +41,7 @@ public class FileSystemTemplateFilesResolver implements TemplateFilesResolver {
 
     private ReentrantLock lock = new ReentrantLock(true);
 
+    @Inject
     public FileSystemTemplateFilesResolver(final SoyViewConf soyViewConf) {
         this.soyViewConf = soyViewConf;
     }

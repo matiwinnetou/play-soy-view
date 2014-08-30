@@ -3,6 +3,7 @@ package com.github.mati1979.play.soyplugin.ajax.process.google;
 import com.github.mati1979.play.soyplugin.ajax.process.OutputProcessor;
 import com.github.mati1979.play.soyplugin.config.SoyViewConf;
 import com.google.common.collect.Lists;
+import com.google.inject.Inject;
 import com.google.javascript.jscomp.*;
 import com.google.javascript.jscomp.Compiler;
 import org.apache.commons.io.IOUtils;
@@ -34,6 +35,7 @@ public class GoogleClosureOutputProcessor implements OutputProcessor {
 
     private SoyViewConf soyViewConf;
 
+    @Inject
     public GoogleClosureOutputProcessor(final SoyViewConf soyViewConf) {
         this.soyViewConf = soyViewConf;
     }

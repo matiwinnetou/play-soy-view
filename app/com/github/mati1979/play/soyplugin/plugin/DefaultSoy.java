@@ -19,6 +19,7 @@ import com.google.template.soy.base.SoySyntaxException;
 import com.google.template.soy.data.SoyMapData;
 import play.mvc.Http;
 
+import javax.inject.Inject;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
@@ -42,6 +43,7 @@ public class DefaultSoy implements Soy {
 
     private LocaleProvider localeProvider = new EmptyLocaleProvider();
 
+    @Inject
     public DefaultSoy(final CompiledTemplatesHolder compiledTemplatesHolder,
                       final GlobalRuntimeModelResolver globalRuntimeModelResolver,
                       final SoyMsgBundleResolver soyMsgBundleResolver,
