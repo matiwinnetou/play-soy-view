@@ -1,4 +1,4 @@
-package com.github.mati1979.play.soyplugin.locale;
+package com.github.mati1979.play.soyplugin.i18n;
 
 import java.util.Optional;
 import play.mvc.Http;

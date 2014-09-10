@@ -14,7 +14,7 @@
 //import com.github.mati1979.play.soyplugin.bundle.SoyMsgBundleResolver;
 //import com.github.mati1979.play.soyplugin.compile.TofuCompiler;
 //import com.github.mati1979.play.soyplugin.config.SoyViewConf;
-//import com.github.mati1979.play.soyplugin.locale.LocaleProvider;
+//import com.github.mati1979.play.soyplugin.i18n.LocaleProvider;
 //import com.github.mati1979.play.soyplugin.spring.PlaySoyConfig;
 //import com.github.mati1979.play.soyplugin.template.TemplateFilesResolver;
 //import com.google.common.collect.Lists;

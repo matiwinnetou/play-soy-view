@@ -13,10 +13,10 @@
 //import com.github.mati1979.play.soyplugin.global.compile.DefaultCompileTimeGlobalModelResolver;
 //import com.github.mati1979.play.soyplugin.global.runtime.EmptyGlobalRuntimeModelResolver;
 //import com.github.mati1979.play.soyplugin.global.runtime.GlobalRuntimeModelResolver;
-//import com.github.mati1979.play.soyplugin.holder.CompiledTemplatesHolder;
-//import com.github.mati1979.play.soyplugin.holder.DefaultCompiledTemplatesHolder;
-//import com.github.mati1979.play.soyplugin.locale.AcceptHeaderLocaleProvider;
-//import com.github.mati1979.play.soyplugin.locale.LocaleProvider;
+//import com.github.mati1979.play.soyplugin.compile.CompiledTemplatesHolder;
+//import com.github.mati1979.play.soyplugin.compile.DefaultCompiledTemplatesHolder;
+//import com.github.mati1979.play.soyplugin.i18n.AcceptHeaderLocaleProvider;
+//import com.github.mati1979.play.soyplugin.i18n.LocaleProvider;
 //import com.github.mati1979.play.soyplugin.plugin.DefaultSoy;
 //import com.github.mati1979.play.soyplugin.plugin.Soy;
 //import com.github.mati1979.play.soyplugin.render.DefaultTemplateRenderer;

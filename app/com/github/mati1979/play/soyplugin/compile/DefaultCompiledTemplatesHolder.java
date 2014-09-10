@@ -1,10 +1,8 @@
-package com.github.mati1979.play.soyplugin.holder;
+package com.github.mati1979.play.soyplugin.compile;
 
-import com.github.mati1979.play.soyplugin.compile.EmptyTofuCompiler;
-import com.github.mati1979.play.soyplugin.compile.TofuCompiler;
 import com.github.mati1979.play.soyplugin.config.SoyViewConf;
-import com.github.mati1979.play.soyplugin.template.EmptyTemplateFilesResolver;
-import com.github.mati1979.play.soyplugin.template.TemplateFilesResolver;
+import com.github.mati1979.play.soyplugin.resolve.EmptyTemplateFilesResolver;
+import com.github.mati1979.play.soyplugin.resolve.TemplateFilesResolver;
 import com.github.mati1979.play.soyplugin.utils.Locks;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Stopwatch;

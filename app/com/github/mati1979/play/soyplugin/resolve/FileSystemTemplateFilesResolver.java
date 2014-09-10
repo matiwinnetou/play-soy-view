@@ -1,4 +1,4 @@
-package com.github.mati1979.play.soyplugin.template;
+package com.github.mati1979.play.soyplugin.resolve;
 
 import com.github.mati1979.play.soyplugin.config.SoyViewConf;
 import com.google.common.base.Preconditions;

@@ -1,4 +1,4 @@
-package com.github.mati1979.play.soyplugin.bundle;
+package com.github.mati1979.play.soyplugin.i18n;
 
 import com.github.mati1979.play.soyplugin.config.SoyViewConf;
 import com.google.common.base.Preconditions;

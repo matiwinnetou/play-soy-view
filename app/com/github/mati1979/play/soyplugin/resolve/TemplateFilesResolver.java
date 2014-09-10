@@ -1,4 +1,4 @@
-package com.github.mati1979.play.soyplugin.template;
+package com.github.mati1979.play.soyplugin.resolve;
 
 import java.util.Optional;
 

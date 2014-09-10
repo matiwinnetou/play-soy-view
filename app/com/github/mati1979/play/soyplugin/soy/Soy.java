@@ -1,4 +1,4 @@
-package com.github.mati1979.play.soyplugin.plugin;
+package com.github.mati1979.play.soyplugin.soy;
 
 import com.google.template.soy.data.SoyMapData;
 import play.mvc.Http;

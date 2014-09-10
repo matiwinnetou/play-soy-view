@@ -1,7 +1,7 @@
 package com.github.mati1979.play.soyplugin.ajax.allowedurls;
 
 import com.github.mati1979.play.soyplugin.config.SoyViewConf;
-import com.github.mati1979.play.soyplugin.template.TemplateFilesResolver;
+import com.github.mati1979.play.soyplugin.resolve.TemplateFilesResolver;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.FluentIterable;

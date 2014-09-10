@@ -1,4 +1,4 @@
-package com.github.mati1979.play.soyplugin.holder;
+package com.github.mati1979.play.soyplugin.compile;
 
 import java.util.Optional;
 import com.google.template.soy.tofu.SoyTofu;

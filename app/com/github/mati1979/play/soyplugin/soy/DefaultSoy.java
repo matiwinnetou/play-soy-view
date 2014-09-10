@@ -1,17 +1,17 @@
-package com.github.mati1979.play.soyplugin.plugin;
+package com.github.mati1979.play.soyplugin.soy;
 
-import com.github.mati1979.play.soyplugin.bundle.EmptySoyMsgBundleResolver;
-import com.github.mati1979.play.soyplugin.bundle.SoyMsgBundleResolver;
+import com.github.mati1979.play.soyplugin.i18n.EmptySoyMsgBundleResolver;
+import com.github.mati1979.play.soyplugin.i18n.SoyMsgBundleResolver;
 import com.github.mati1979.play.soyplugin.config.EmptySoyViewConf;
 import com.github.mati1979.play.soyplugin.data.EmptyToSoyDataConverter;
 import com.github.mati1979.play.soyplugin.data.ToSoyDataConverter;
 import com.github.mati1979.play.soyplugin.exception.ExceptionInTemplate;
 import com.github.mati1979.play.soyplugin.global.runtime.EmptyGlobalRuntimeModelResolver;
 import com.github.mati1979.play.soyplugin.global.runtime.GlobalRuntimeModelResolver;
-import com.github.mati1979.play.soyplugin.holder.CompiledTemplatesHolder;
-import com.github.mati1979.play.soyplugin.holder.EmptyCompiledTemplatesHolder;
-import com.github.mati1979.play.soyplugin.locale.EmptyLocaleProvider;
-import com.github.mati1979.play.soyplugin.locale.LocaleProvider;
+import com.github.mati1979.play.soyplugin.compile.CompiledTemplatesHolder;
+import com.github.mati1979.play.soyplugin.compile.EmptyCompiledTemplatesHolder;
+import com.github.mati1979.play.soyplugin.i18n.EmptyLocaleProvider;
+import com.github.mati1979.play.soyplugin.i18n.LocaleProvider;
 import com.github.mati1979.play.soyplugin.render.DefaultTemplateRenderer;
 import com.github.mati1979.play.soyplugin.render.RenderRequest;
 import com.github.mati1979.play.soyplugin.render.TemplateRenderer;
