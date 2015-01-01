@@ -22,12 +22,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-/**
- * Created with IntelliJ IDEA.
- * User: mszczap
- * Date: 20.06.13
- * Time: 17:40
- */
 public class DefaultTofuCompiler implements TofuCompiler {
 
     private static final Logger.ALogger logger = Logger.of(DefaultTofuCompiler.class);

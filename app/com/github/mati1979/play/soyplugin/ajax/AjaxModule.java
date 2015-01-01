@@ -6,7 +6,6 @@ import com.github.mati1979.play.soyplugin.ajax.auth.AuthManager;
 import com.github.mati1979.play.soyplugin.ajax.auth.PermissableAuthManager;
 import com.github.mati1979.play.soyplugin.ajax.hash.HashFileGenerator;
 import com.github.mati1979.play.soyplugin.ajax.hash.MD5HashFileGenerator;
-import com.github.mati1979.play.soyplugin.ajax.process.DefaultOutputProcessors;
 import com.github.mati1979.play.soyplugin.ajax.process.EmptyOutputProcessors;
 import com.github.mati1979.play.soyplugin.ajax.process.OutputProcessor;
 import com.github.mati1979.play.soyplugin.ajax.process.OutputProcessors;
@@ -25,20 +24,16 @@ public class AjaxModule extends Module {
 
     @Override
     public Seq<Binding<?>> bindings(final Environment environment, final Configuration configuration) {
-        if (configuration.getBoolean("play.soy.view.module.ajax").apply(true).get()) {
-            return seq(
-                    bind(SoyAllowedUrlsResolver.class).to(DefaultSoyAllowedUrlsResolver.class),
-                    bind(HashFileGenerator.class).to(MD5HashFileGenerator.class),
-                    bind(AuthManager.class).to(PermissableAuthManager.class),
+        return seq(
+                bind(SoyAllowedUrlsResolver.class).to(DefaultSoyAllowedUrlsResolver.class),
+                bind(HashFileGenerator.class).to(MD5HashFileGenerator.class),
+                bind(AuthManager.class).to(PermissableAuthManager.class),
 
-                    bind(OutputProcessor.class).qualifiedWith(Names.named("google")).to(GoogleClosureOutputProcessor.class),
-                    bind(OutputProcessors.class).to(EmptyOutputProcessors.class),
+                bind(OutputProcessor.class).qualifiedWith(Names.named("google")).to(GoogleClosureOutputProcessor.class),
+                bind(OutputProcessors.class).to(EmptyOutputProcessors.class),
 
-                    bind(SoyAjaxController.class).toSelf()
-            );
-        }
-
-        return seq();
+                bind(SoyAjaxController.class).toSelf()
+        );
     }
 
 }

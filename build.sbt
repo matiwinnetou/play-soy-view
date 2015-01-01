@@ -9,6 +9,7 @@ scalaVersion := "2.10.4"
 
 lazy val root = (project in file(".")).enablePlugins(PlayJava)
 
+
 libraryDependencies ++= Seq(
   "nathancomstock.github" % "closure-templates" % "2014-04-22",
   "com.google.javascript" % "closure-compiler" % "v20140625",
@@ -17,9 +18,11 @@ libraryDependencies ++= Seq(
 
 publishMavenStyle := true
 
-crossScalaVersions := Seq("2.10.4", "2.11.1")
+crossScalaVersions := Seq("2.10.4", "2.11.4")
 
 resolvers += "nathancomstock-releases" at "https://github.com/nathancomstock/maven-repo/raw/master/releases"
+
+resolvers += "Scalaz Bintray Repo" at "http://dl.bintray.com/scalaz/releases"
 
 publishTo := {
   val nexus = "https://oss.sonatype.org/"
