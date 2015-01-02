@@ -3,9 +3,8 @@ package com.github.mati1979.play.soyplugin.config;
 import com.google.inject.Inject;
 import play.Configuration;
 
-/**
- * Created by mszczap on 26.04.14.
- */
+import java.util.Optional;
+
 public class PlaySoyViewConf implements SoyViewConf {
 
     private ConfigDefaults configDefaults;
@@ -84,7 +83,7 @@ public class PlaySoyViewConf implements SoyViewConf {
     }
 
     private Configuration getConfig() {
-        return configuration.getConfig("play.soy.view.config");
+        return Optional.ofNullable(configuration.getConfig("play.soy.view.config")).orElse(Configuration.root());
     }
 
 }
