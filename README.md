@@ -1,3 +1,5 @@
+# Discontinued, as of latest most recent versions of library is much better to directly integrate google closure library with your app, without frameworky part. I may provide examples how to do this successfully upon request.
+
 #play-soy-view
 
 An implementation of Google Closure library support for Play framework for Java
